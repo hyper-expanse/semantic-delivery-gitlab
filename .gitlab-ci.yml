@@ -1,0 +1,51 @@
+cache:
+  paths:
+    - node_modules/
+
+.all_jobs: &all_jobs_definition
+  script:
+    - npm install
+    - npm test
+
+.node_010: &node_010_definition
+  <<: *all_jobs_definition
+  image: node:0.10
+
+.node_012: &node_012_definition
+  <<: *all_jobs_definition
+  image: node:0.12
+
+.node_4: &node_4_definition
+  <<: *all_jobs_definition
+  image: node:4
+
+npm_2_node_010:
+  <<: *node_010_definition
+  before_script:
+    - npm install --global npm@2
+
+npm_3_node_010:
+  <<: *node_010_definition
+  before_script:
+    - npm install --global npm@3
+
+npm_2_node_012:
+  <<: *node_012_definition
+  before_script:
+    - npm install --global npm@2
+
+npm_3_node_012:
+  <<: *node_012_definition
+  before_script:
+    - npm install --global npm@3
+
+npm_2_node_4:
+  <<: *node_4_definition
+  before_script:
+    - npm install --global npm@2
+
+npm_3_node_4:
+  <<: *node_4_definition
+  before_script:
+    - npm install --global npm@3
+
