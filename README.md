@@ -22,8 +22,6 @@ npm install --global semantic-release-gitlab
 
 ## Usage
 
-
-
 ## Contributing
 
 Read [CONTRIBUTING](CONTRIBUTING.md).

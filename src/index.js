@@ -33,7 +33,7 @@ function processLastTag(lastTag) {
 
         function (cb) {
           config.data.commits = commits;
-          config.options.scmToken = process.env.GH_TOKEN;
+          config.options.scmToken = process.env.GL_TOKEN;
           config.options.preset = conventionalCommitsDetector(commits);
           config.pkg = require(path.join(process.cwd(), 'package.json'));
 
@@ -41,8 +41,7 @@ function processLastTag(lastTag) {
           bump(lastTag, config.options.preset)
             .then(function (toBeReleasedVersion) {
               releasedVersion = toBeReleasedVersion;
-              console.log(releasedVersion);
-              return true; //exec('npm publish');
+              return exec('npm publish');
             })
             .then(function () {
               return exec('git tag ' + releasedVersion);

@@ -1,6 +1,6 @@
 'use strict';
 
-var mock = require('./index.mock');
+var mock = require('./index.mocks');
 var chai = require('chai');
 var sinonChai = require('sinon-chai');
 
@@ -13,7 +13,6 @@ describe('semantic-release-gitlab', function () {
 
   beforeEach(function () {
     mocks.conventionalCommitsDetector.returns('angular');
-    mocks.gitlabNotifier.resolves(true);
     mocks.gitlabReleaser.resolves(true);
   });
 
