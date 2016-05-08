@@ -1,0 +1,74 @@
+{
+  "author": {
+    "name": "Hutson Betts",
+    "email": "hutson@hyper-expanse.net",
+    "url": "https://gitlab.com/hutson"
+  },
+  "bin": "./src/cli.js",
+  "bugs": "https://gitlab.com/hutson/semantic-release-gitlab/issues",
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  },
+  "description": "semantic-release CLI tool for automatically publishing npm packages hosted on GitLib.",
+  "engines": {
+    "node": "^4.1.0 || ^0.12.0",
+    "npm": "^3.0.0 || ^2.1.9"
+  },
+  "files": [
+    "src/"
+  ],
+  "homepage": "https://gitlab.com/hutson/semantic-release-gitlab#readme",
+  "keywords": [
+    "semantic-release",
+    "npm",
+    "gitlab"
+  ],
+  "license": "Apache-2.0",
+  "main": "src/index.js",
+  "name": "semantic-release-gitlab",
+  "repository": {
+    "type": "git",
+    "url": "https://gitlab.com/hutson/semantic-release-gitlab.git"
+  },
+  "scripts": {
+    "docs": "gulp docs",
+    "semantic-release": "semantic-release-gitlab pre && npm publish && semantic-release-gitlab post",
+    "test": "gulp"
+  },
+  "version": "1.0.0",
+  "dependencies": {
+    "bluebird": "^3.3.4",
+    "commander": "^2.9.0",
+    "conventional-commits-detector": "^0.1.1",
+    "conventional-recommended-bump": "^0.2.0",
+    "git-latest-semver-tag": "^1.0.1",
+    "git-raw-commits": "^1.1.0",
+    "lodash": "^4.7.0",
+    "semantic-release-gitlab-releaser": "^4.0.0",
+    "semver": "^5.1.0",
+    "through2": "^2.0.1"
+  },
+  "devDependencies": {
+    "chai": "^3.4.0",
+    "codecov": "^1.0.1",
+    "cz-conventional-changelog": "^1.1.4",
+    "del": "^2.0.2",
+    "gulp": "^3.4.0",
+    "gulp-istanbul": "^0.10.0",
+    "gulp-jscs": "^3.0.0",
+    "gulp-jsdoc3": "^0.2.0",
+    "gulp-jshint": "^2.0.0",
+    "gulp-mocha": "^2.0.0",
+    "gulp-watch": "^4.3.5",
+    "jshint": "^2.8.0",
+    "jshint-stylish": "^2.0.1",
+    "proxyquire": "^1.7.4",
+    "shelljs": "^0.7.0",
+    "sinon": "^1.17.3",
+    "sinon-as-promised": "^4.0.0",
+    "sinon-chai": "^2.8.0",
+    "tmp": "0.0.28"
+  }
+}
