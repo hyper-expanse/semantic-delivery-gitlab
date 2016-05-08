@@ -1,6 +1,6 @@
 # semantic-release-gitlab
 
-[![Build Status](https://gitlab.com/hutson/semantic-release-gitlab/badges/branch/build.svg)](https://gitlab.com/hutson/semantic-release-gitlab/builds)
+[![build status](https://gitlab.com/hutson/semantic-release-gitlab/badges/master/build.svg)](https://gitlab.com/hutson/semantic-release-gitlab/commits/master)
 [![codecov.io](https://codecov.io/gitlab/hutson/semantic-release-gitlab/coverage.svg?branch=master)](https://codecov.io/gitlab/hutson/semantic-release-gitlab?branch=master)
 [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.gitlab.io/cz-cli/)
 
