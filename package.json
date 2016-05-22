@@ -37,7 +37,7 @@
     "semantic-release": "semantic-release-gitlab pre && npm publish && semantic-release-gitlab post",
     "test": "gulp"
   },
-  "version": "1.0.0",
+  "version": "0.0.0",
   "dependencies": {
     "bluebird": "^3.3.4",
     "commander": "^2.9.0",
