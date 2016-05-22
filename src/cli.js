@@ -10,13 +10,12 @@ program
   .parse(process.argv)
 ;
 
-semanticRelease().then(function (releasedVersion) {
-  console.log('Released version ' + releasedVersion);
-
-  process.exit(0);
-}, function (err) {
-
-  console.error(err.message);
-
-  process.exit(1);
-});
+semanticRelease()
+  .then(function (releasedVersion) {
+    console.log('Released version ' + releasedVersion);
+    process.exit(0);
+  })
+  .catch(function (err) {
+    console.error(err.message);
+    process.exit(1);
+  });
