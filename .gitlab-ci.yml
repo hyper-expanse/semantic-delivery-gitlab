@@ -9,6 +9,8 @@ cache:
     - node_modules/
 
 .all_jobs: &all_jobs_definition
+  after_script:
+    - $(npm bin)/codecov
   script:
     - $(npm bin)/npm install
     - $(npm bin)/npm test
@@ -62,13 +64,10 @@ npm_3_node_4:
   stage: test
 
 publish:
-  after_script:
-    - $(npm bin)/codecov
-    - echo "publish"
   before_script:
-    - npm install
+    - npm install semantic-release-gitlab
   only:
     - master@hutson/semantic-release-gitlab
   script:
-    - npm test
+    - echo "publish"
   stage: deploy
