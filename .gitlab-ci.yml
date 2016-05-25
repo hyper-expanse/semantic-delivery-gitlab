@@ -62,11 +62,13 @@ npm_3_node_4:
   stage: test
 
 publish:
+  after_script:
+    - $(npm bin)/codecov
+    - echo "publish"
   before_script:
     - npm install
   only:
     - master@hutson/semantic-release-gitlab
   script:
-    - $(npm bin)/codecov
-    - echo "publish"
+    - npm test
   stage: deploy
