@@ -12,16 +12,6 @@
 
 * [&#x2713;] Detect commit message convention used in the project using [conventional-commits-detector](https://www.npmjs.com/package/conventional-commits-detector).
 
-## Installation
-
-To install `semantic-release-gitlab` from npm, run:
-
-```bash
-npm install --global semantic-release-gitlab
-```
-
-## Usage
-
 ## Contributing
 
 Read [CONTRIBUTING](CONTRIBUTING.md).
