@@ -13,6 +13,10 @@ var mocks = {
   gitlabReleaser: sinon.stub(),
   gitLatestSemverTag: sinon.stub(),
   gitRawCommits: sinon.stub(),
+  npmUtils: {
+    setAuthToken: sinon.stub(),
+    publish: sinon.stub(),
+  },
 };
 
 module.exports = {
@@ -29,6 +33,7 @@ function createSemanticRelease() {
     'conventional-commits-detector': mocks.conventionalCommitsDetector,
     'git-latest-semver-tag': mocks.gitLatestSemverTag,
     'git-raw-commits': mocks.gitRawCommits,
+    'npm-utils': mocks.npmUtils,
     'semantic-release-gitlab-releaser': mocks.gitlabReleaser,
   });
 
@@ -42,4 +47,6 @@ function reset() {
   mocks.gitlabReleaser();
   mocks.gitLatestSemverTag.reset();
   mocks.gitRawCommits.reset();
+  mocks.npmUtils.setAuthToken.reset();
+  mocks.npmUtils.publish.reset();
 }

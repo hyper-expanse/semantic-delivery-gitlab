@@ -14,6 +14,8 @@ describe('semantic-release-gitlab', function () {
   beforeEach(function () {
     mocks.conventionalCommitsDetector.returns('angular');
     mocks.gitlabReleaser.resolves(true);
+    mocks.npmUtils.setAuthToken.resolves(true);
+    mocks.npmUtils.publish.resolves(true);
   });
 
   afterEach(function () {
@@ -35,17 +37,18 @@ describe('semantic-release-gitlab', function () {
 
         return semanticRelease().then(function (releasedVersion) {
           expect(releasedVersion).to.equal('1.1.0');
+          expect(mocks.childProcess.exec)
+            .to.have.been.calledOnce;
           expect(mocks.childProcess.exec.firstCall)
-            .to.have.been.calledWith('npm publish');
-          expect(mocks.childProcess.exec.secondCall)
             .to.have.been.calledWith('git tag 1.1.0');
         });
       });
 
       it('rejects if npm publish fails', function () {
         mocks.gitRawCommits.returns(createCommitStream());
-        mocks.childProcess.exec.yields('Unable to publish.');
+        mocks.childProcess.exec.yields(null);
         mocks.bump.resolves('1.1.0');
+        mocks.npmUtils.publish.rejects(new Error('Unable to publish.'));
 
         return semanticRelease().catch(function (err) {
           expect(err instanceof Error).to.be.true;
