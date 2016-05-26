@@ -64,6 +64,8 @@ npm_3_node_4:
   stage: test
 
 publish:
+  before_script:
+    - npm install
   only:
     - master@hutson/semantic-release-gitlab
   script:
