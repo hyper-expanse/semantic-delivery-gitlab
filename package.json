@@ -46,6 +46,7 @@
     "git-latest-semver-tag": "^1.0.1",
     "git-raw-commits": "^1.1.0",
     "lodash": "^4.7.0",
+    "npm-utils": "^1.5.1",
     "semantic-release-gitlab-releaser": "^2.0.1",
     "semver": "^5.1.0",
     "through2": "^2.0.1"
