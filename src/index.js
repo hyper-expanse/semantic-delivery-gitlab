@@ -36,6 +36,8 @@ function processLastTag(lastTag) {
           config.data.commits = commits;
           config.options.scmToken = process.env.GL_TOKEN;
           config.options.preset = conventionalCommitsDetector(commits);
+          config.options.preset = config.options.preset === 'unknown' ?
+            undefined : config.options.preset;
           config.pkg = require(path.join(process.cwd(), 'package.json'));
 
           var releasedVersion;
