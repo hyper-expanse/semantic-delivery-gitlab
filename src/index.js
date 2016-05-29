@@ -34,6 +34,7 @@ function processLastTag(lastTag) {
 
         function (cb) {
           config.data.commits = commits;
+          config.options.debug = false;
           config.options.scmToken = process.env.GITLAB_AUTH_TOKEN;
           config.options.preset = conventionalCommitsDetector(commits);
           config.options.preset = config.options.preset === 'unknown' ?
