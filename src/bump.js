@@ -11,7 +11,8 @@ module.exports = bump;
 function bump(lastTag, commitConvention) {
   return recommendedBump({ preset: commitConvention }).then(function (recommendation) {
     if (recommendation.releaseAs === undefined) {
-      throw new Error('Unable to determine next version to release. Likely because there are no changes to release.');
+      throw new Error('Unable to determine next version to release. ' +
+        'Likely because there are no changes to release.');
     }
 
     // If the project has never been released before,
