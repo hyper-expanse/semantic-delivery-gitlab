@@ -84,5 +84,5 @@ publish:
   only:
     - master@hutson/semantic-release-gitlab
   script:
-    - $(npm bin)/semantic-release-gitlab
+    - node ./src/cli.js
   stage: deploy
