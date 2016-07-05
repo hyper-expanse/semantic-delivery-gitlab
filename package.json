@@ -34,7 +34,7 @@
   },
   "scripts": {
     "docs": "gulp docs",
-    "semantic-release": "semantic-release-gitlab pre && npm publish && semantic-release-gitlab post",
+    "semantic-release": "node ./src/cli.js",
     "test": "gulp"
   },
   "version": "1.0.0",
