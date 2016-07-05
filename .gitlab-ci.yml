@@ -81,6 +81,7 @@ npm_3_node_6:
 
 publish:
   before_script:
+    - rm -rf node_modules/
     - npm install
   only:
     - master@hutson/semantic-release-gitlab
