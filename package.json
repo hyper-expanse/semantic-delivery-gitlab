@@ -34,7 +34,6 @@
   },
   "scripts": {
     "docs": "gulp docs",
-    "semantic-release": "node ./src/cli.js",
     "test": "gulp"
   },
   "version": "1.0.0",
