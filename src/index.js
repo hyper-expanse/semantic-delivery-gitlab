@@ -7,7 +7,6 @@ var exec = Bluebird.promisify(require('child_process').exec);
 var gitlabReleaser = require('semantic-release-gitlab-releaser');
 var gitRawCommits = require('git-raw-commits');
 var gitLatestSemverTag = Bluebird.promisify(require('git-latest-semver-tag'));
-var npmUtils = require('npm-utils');
 var path = require('path');
 var through = require('through2');
 
@@ -46,8 +45,6 @@ function processLastTag(lastTag) {
             .then(function (toBeReleasedVersion) {
               releasedVersion = toBeReleasedVersion;
             })
-            .then(npmUtils.setAuthToken)
-            .then(npmUtils.publish)
             .then(function () {
               return exec('git tag ' + releasedVersion);
             })
