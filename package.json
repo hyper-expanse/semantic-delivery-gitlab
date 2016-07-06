@@ -11,7 +11,7 @@
       "path": "./node_modules/cz-conventional-changelog"
     }
   },
-  "description": "semantic-release CLI tool for automatically publishing npm packages hosted on GitLib.",
+  "description": "Automatically publish packages to the npm registry for source code hosted on GitLab.",
   "engines": {
     "node": "^4.1.0 || ^0.12.0",
     "npm": "^3.0.0 || ^2.1.9"

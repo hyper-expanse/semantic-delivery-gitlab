@@ -6,22 +6,25 @@
 
 > Automatically publish packages to the npm registry for source code hosted on GitLab.
 
-`semantic-release-gitlab` is designed to help automate the workflow of releasing GitLab-hosted code to the [npm](https://www.npmjs.com/) registry for public consumption.
+`semantic-release-gitlab` is designed to help automate releasing GitLab-hosted code to the [npm](https://www.npmjs.com/) registry for public consumption.
 
-That workflow may include:
+Releasing GitLab-hosted code to npm may include:
 * Determining the appropriate [semantic version](http://semver.org/) to release.
-* Tag the git repository on GitLab with that version.
-* Publish a list of changes included in that version.
-* Publish an npm package containing those changes to the npm registry.
+* Generating a git tag for the repository on GitLab with that version.
+* Publishing a list of changes included in that version.
+* Publishing an npm package containing those changes to the npm registry.
 
-`semantic-release-gitlab` handles all those steps for you.
+By automating these steps `semantic-release-gitlab` alleviates some of the overhead associated with managing a project, while providing consistency in how your project is published to the web.
+
+This idea is not new. `semantic-release-gitlab` was heavily inspired by the work accomplished by [semantic-release](https://www.npmjs.com/package/semantic-release). If you have a GitHub project you're highly encouraged to check out `semantic-release`.
 
 ## Features
 
 * [&#x2713;] Detect commit message convention used by a project with [conventional-commits-detector](https://www.npmjs.com/package/conventional-commits-detector).
 * [&#x2713;] Determine appropriate version to publish with [conventional-recommended-bump](https://www.npmjs.com/package/conventional-recommended-bump).
 * [&#x2713;] Publish package to the npm registry.
-* [&#x2713;] Publish a [GitLab release] using [conventional-gitlab-releaser](https://www.npmjs.com/package/conventional-gitlab-releaser) through the [semantic-release-gitlab-releaser](https://www.npmjs.com/package/semantic-release-gitlab-releaser) plugin.
+* [&#x2713;] Publish a [GitLab release](http://docs.gitlab.com/ce/workflow/releases.html) using [conventional-gitlab-releaser](https://www.npmjs.com/package/conventional-gitlab-releaser) through the [semantic-release-gitlab-releaser](https://www.npmjs.com/package/semantic-release-gitlab-releaser) plugin.
+* [&#x2713;] Create an annotated [git tag](https://git-scm.com/book/en/v2/Git-Basics-Tagging<Paste>) that can be fetched from GitLab.
 
 ## Installation
 
@@ -49,7 +52,7 @@ For `semantic-release-gitlab` to publish packages to the npm registry, and a cha
 
 ### Continuous Integration (CI) Setup
 
-Since `semantic-release-gitlab` relies soley on a few environment variables and a publicaly excessible npm package. Therefore `semantic-release-gitlab` should be compatible with all continuous integration platforms that work with GitLab.
+Since `semantic-release-gitlab` relies solely on a few environment variables and a publicly accessible npm package. Therefore `semantic-release-gitlab` should be compatible with all continuous integration platforms that work with GitLab.
 
 However, given the enormous number of CI providers available I will only cover the CI system built into GitLab.
 
