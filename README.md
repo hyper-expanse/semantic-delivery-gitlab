@@ -46,7 +46,8 @@ For more on the meanings of `patch`, `minor`, and `major`, please see [Semantic 
 
 For `semantic-release-gitlab` to publish packages to the npm registry, and a changelog to GitLab, several environment variables must be setup within your continuous integration job.
 
-| Required Token | Environment Variable Name |
+| **Required Token** | **Environment Variable Name** |
+| ------------------ | ----------------------------- |
 | [npm token](http://blog.npmjs.org/post/118393368555/deploying-with-npm-private-modules) | `NPM_TOKEN` |
 | [GitLab Private Token](https://gitlab.com/profile/account) | `GITLAB_AUTH_TOKEN` |
 
