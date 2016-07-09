@@ -42,7 +42,7 @@ By default `conventional-recommended-bump` will recommend at least a `patch` rel
 
 For more on the meanings of `patch`, `minor`, and `major`, please see [Semantic Versioning](http://semver.org/).
 
-## Required Environment Settings
+### Required Environment Settings
 
 For `semantic-release-gitlab` to publish packages to the npm registry, and a changelog to GitLab, several environment variables must be setup within your continuous integration job.
 
