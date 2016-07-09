@@ -83,6 +83,12 @@ Full documentation for GitLab CI is available on the [GitLab CI](http://docs.git
 
 You may also take a look at our [.gitlab-ci.yml](./.gitlab-ci.yml) file as an example.
 
+## Version Selection
+
+As noted earlier `semantic-release-gitlab` uses [conventional-recommended-bump](https://www.npmjs.com/package/conventional-recommended-bump) to determine the version to use when publishing a package. If `conventional-recommended-bump` indicates that no valid version could be determined, typically because it believes no new version should be released, then `semantic-release-gitlab` will **not** publish the package.
+
+Rules used by `conventional-recommended-bump` are housed in it's repository. If you have any questions or concerns regarding those rules, or the version provided by `conventional-recommended-bump`, please reach out to their project on GitHub.
+
 ## Contributing
 
 Read [CONTRIBUTING](CONTRIBUTING.md).
