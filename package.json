@@ -21,9 +21,12 @@
   ],
   "homepage": "https://gitlab.com/hutson/semantic-release-gitlab#readme",
   "keywords": [
-    "semantic-release",
+  	"automation",
+    "gitlab",
     "npm",
-    "gitlab"
+    "publish",
+    "release",
+    "semantic-release"
   ],
   "license": "Apache-2.0",
   "main": "src/index.js",
