@@ -6,15 +6,15 @@
 
 > Automatically publish packages to the npm registry for source code hosted on GitLab.
 
-`semantic-release-gitlab` is designed to help automate releasing GitLab-hosted code to the [npm](https://www.npmjs.com/) registry for public consumption.
+`semantic-release-gitlab` is designed to automate the process of releasing GitLab-hosted code to an npm registry.
 
-Releasing GitLab-hosted code to npm may include:
+Releasing GitLab-hosted code to an npm registry may include:
 * Determining the appropriate [semantic version](http://semver.org/) to release.
 * Generating a git tag for the repository on GitLab with that version.
 * Publishing a list of changes included in that version.
-* Publishing an npm package containing those changes to the npm registry.
+* Publishing an npm package containing those changes to an npm registry.
 
-By automating these steps `semantic-release-gitlab` alleviates some of the overhead associated with managing a project, while providing consistency in how your project is published to the web.
+By automating these steps `semantic-release-gitlab` alleviates some of the overhead associated with managing a project, while providing consistency in how your project is published.
 
 This idea is not new. `semantic-release-gitlab` was heavily inspired by the work accomplished by [semantic-release](https://www.npmjs.com/package/semantic-release). If you have a GitHub project you're highly encouraged to check out `semantic-release`.
 
@@ -82,6 +82,12 @@ publish:
 Full documentation for GitLab CI is available on the [GitLab CI](http://docs.gitlab.com/ce/ci/yaml/README.html) website.
 
 You may also take a look at our [.gitlab-ci.yml](./.gitlab-ci.yml) file as an example.
+
+## Publishing Elsewhere Besides Public npm Registry
+
+It's possible to publish your package to any npm registry, not just the official public registry. When publishing a package `semantic-release-gitlab` uses the built-in `publish` command of npm. Any features supported by `npm publish` are available. For example, you may specify, on a per-project basis, which registry to publish your package to by setting the [publishConfig](https://docs.npmjs.com/misc/registry#i-dont-want-my-package-published-in-the-official-registry-its-private) property in your project's `package.json` file.
+
+Alternative registries may include on-premise solutions such as [Artifactory](https://www.jfrog.com/artifactory/) and [npm enterprise](https://www.npmjs.com/enterprise).
 
 ## Version Selection
 
