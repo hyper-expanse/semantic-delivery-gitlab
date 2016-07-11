@@ -28,7 +28,7 @@ This idea is not new. `semantic-release-gitlab` was heavily inspired by the work
 
 ## Installation
 
-To install the `semantic-release-gitlab` tool as a development dependency please run the following command:
+To install the `semantic-release-gitlab` tool for use in your project's release process please run the following command:
 
 ```bash
 npm install --save-dev semantic-release-gitlab
@@ -36,9 +36,11 @@ npm install --save-dev semantic-release-gitlab
 
 ## Usage
 
-As noted under _Features_ we determine the commit convention used by your project with `conventional-commits-detector`. Once your commit message convention has been determined we pass that information on to `conventional-recommended-bump` to determine the appropriate version to publish.
+Once installed `semantic-release-gitlab` may be invoked by executing the CLI tool exported by the package. Installed into your project's `node_modules` `bin` directory is the `semantic-release-gitlab` executable. It can be invoked directly by calling `$(npm bin)/semantic-release-gitlab`. To learn how `semantic-release-gitlab` can be used as part of your project's release process please see the _Continuous Integration and Delivery (CID) Setup_ section below.
 
-By default `conventional-recommended-bump` will recommend at least a `patch` release. Depending on the commit convention you follow, commits may be released as a `major` or `minor` release instead.
+As noted under _Features_ we determine the commit convention used by your project with `conventional-commits-detector`. Once we have determined your commit message convention we pass that information on to `conventional-recommended-bump` to determine the appropriate version to publish.
+
+By default `conventional-recommended-bump` will recommend at least a `patch` release. Depending on the commit convention you follow, commits may be released as a `major` or `minor` release instead. For more information on how versions are dtermined, please see the _Version Selection_ section below.
 
 For more on the meanings of `patch`, `minor`, and `major`, please see [Semantic Versioning](http://semver.org/).
 
@@ -51,7 +53,7 @@ For `semantic-release-gitlab` to publish packages to the npm registry, and a cha
 | [npm token](http://blog.npmjs.org/post/118393368555/deploying-with-npm-private-modules) | `NPM_TOKEN` |
 | [GitLab Private Token](https://gitlab.com/profile/account) | `GITLAB_AUTH_TOKEN` |
 
-### Continuous Integration (CI) Setup
+### Continuous Integration and Delivery (CID) Setup
 
 Since `semantic-release-gitlab` relies solely on a few environment variables and a publicly accessible npm package. Therefore `semantic-release-gitlab` should be compatible with all continuous integration platforms that work with GitLab.
 
