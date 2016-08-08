@@ -4,6 +4,7 @@ var Bluebird = require('bluebird');
 var bump = require('./bump');
 var conventionalCommitsDetector = require('conventional-commits-detector');
 var exec = Bluebird.promisify(require('child_process').exec);
+var gitlabNotifier = require('semantic-release-gitlab-notifier');
 var gitlabReleaser = require('semantic-release-gitlab-releaser');
 var gitRawCommits = require('git-raw-commits');
 var gitLatestSemverTag = Bluebird.promisify(require('git-latest-semver-tag'));
@@ -53,6 +54,9 @@ function processLastTag(lastTag) {
             })
             .then(function () {
               return gitlabReleaser(config);
+            })
+            .then(function () {
+              return gitlabNotifier(config);
             })
             .then(function () {
               resolve(releasedVersion);

@@ -10,6 +10,7 @@ var mocks = {
     exec: sinon.stub(),
   },
   conventionalCommitsDetector: sinon.stub(),
+  gitlabNotifier: sinon.stub(),
   gitlabReleaser: sinon.stub(),
   gitLatestSemverTag: sinon.stub(),
   gitRawCommits: sinon.stub(),
@@ -34,6 +35,7 @@ function createSemanticRelease() {
     'git-latest-semver-tag': mocks.gitLatestSemverTag,
     'git-raw-commits': mocks.gitRawCommits,
     'npm-utils': mocks.npmUtils,
+    'semantic-release-gitlab-notifier': mocks.gitlabNotifier,
     'semantic-release-gitlab-releaser': mocks.gitlabReleaser,
   });
 
@@ -44,6 +46,7 @@ function reset() {
   mocks.bump.reset();
   mocks.childProcess.exec.reset();
   mocks.conventionalCommitsDetector.reset();
+  mocks.gitlabNotifier.reset();
   mocks.gitlabReleaser();
   mocks.gitLatestSemverTag.reset();
   mocks.gitRawCommits.reset();

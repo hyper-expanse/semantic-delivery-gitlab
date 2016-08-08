@@ -1,7 +1,8 @@
 'use strict';
 
-var mock = require('./index.mocks');
 var chai = require('chai');
+var mock = require('./index.mocks');
+var nock = require('nock');
 var sinonChai = require('sinon-chai');
 
 chai.use(sinonChai);
@@ -11,8 +12,13 @@ describe('semantic-release-gitlab', function () {
   var mocks = mock.mocks;
   var semanticRelease = mock.createSemanticRelease();
 
+  before(function () {
+    nock.disableNetConnect();
+  });
+
   beforeEach(function () {
     mocks.conventionalCommitsDetector.returns('angular');
+    mocks.gitlabNotifier(true);
     mocks.gitlabReleaser.resolves(true);
     mocks.npmUtils.setAuthToken.resolves(true);
     mocks.npmUtils.publish.resolves(true);
@@ -139,7 +145,7 @@ function createCommitStream() {
   var commitStream;
 
   commitStream = new Readable();
-  commitStream.push('feat(widget): Add feature.');
+  commitStream.push('feat(widget): Add feature.\n\nCloses #1');
   commitStream.push('fix(sprocket): Parse input correctly.');
   commitStream.push(null);
 
