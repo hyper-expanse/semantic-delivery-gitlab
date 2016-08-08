@@ -42,15 +42,14 @@ function processLastTag(lastTag) {
             undefined : config.options.preset;
           config.pkg = require(path.join(process.cwd(), 'package.json'));
 
-          var releasedVersion;
           bump(lastTag, config.options.preset)
             .then(function (toBeReleasedVersion) {
-              releasedVersion = toBeReleasedVersion;
+              config.data.version = toBeReleasedVersion;
             })
             .then(npmUtils.setAuthToken)
             .then(npmUtils.publish)
             .then(function () {
-              return exec('git tag ' + releasedVersion);
+              return exec('git tag ' + config.data.version);
             })
             .then(function () {
               return gitlabReleaser(config);
@@ -59,7 +58,7 @@ function processLastTag(lastTag) {
               return gitlabNotifier(config);
             })
             .then(function () {
-              resolve(releasedVersion);
+              resolve(config.data.version);
             })
             .catch(reject);
 
