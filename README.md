@@ -42,7 +42,7 @@ Once installed `semantic-release-gitlab` may be invoked by executing the CLI too
 
 As noted under _Features_ we determine the commit convention used by your project with `conventional-commits-detector`. Once we have determined your commit message convention we pass that information on to `conventional-recommended-bump` to determine the appropriate version to publish.
 
-By default `conventional-recommended-bump` will recommend at least a `patch` release. Depending on the commit convention you follow, commits may be released as a `major` or `minor` release instead. For more information on how versions are dtermined, please see the _Version Selection_ section below.
+By default `conventional-recommended-bump` will recommend at least a `patch` release. Depending on the commit convention you follow, commits may be released as a `major` or `minor` release instead. For more information on how versions are determined, please see the _Version Selection_ section below.
 
 For more on the meanings of `patch`, `minor`, and `major`, please see [Semantic Versioning](http://semver.org/).
 
