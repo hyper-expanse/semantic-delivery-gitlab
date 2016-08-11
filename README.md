@@ -13,6 +13,7 @@ Releasing GitLab-hosted code to an npm registry may include:
 * Generating a git tag for the repository on GitLab with that version.
 * Publishing a list of changes included in that version.
 * Publishing an npm package containing those changes to an npm registry.
+* Informing people subscribed to GitLab issues or merge requests about the release.
 
 By automating these steps `semantic-release-gitlab` alleviates some of the overhead associated with managing a project, while providing consistency in how your project is published.
 
@@ -25,6 +26,7 @@ This idea is not new. `semantic-release-gitlab` was heavily inspired by the work
 * [&#x2713;] Publish package to the npm registry.
 * [&#x2713;] Publish a [GitLab release](http://docs.gitlab.com/ce/workflow/releases.html) using [conventional-gitlab-releaser](https://www.npmjs.com/package/conventional-gitlab-releaser) through the [semantic-release-gitlab-releaser](https://www.npmjs.com/package/semantic-release-gitlab-releaser) plugin.
 * [&#x2713;] Create an annotated [git tag](https://git-scm.com/book/en/v2/Git-Basics-Tagging) that can be fetched from GitLab.
+* [&#x2713;] Post a comment to GitLab issues closed by changes included in a package release through [semantic-release-gitlab-notifier](https://www.npmjs.com/package/semantic-release-gitlab-notifier) plugin.
 
 ## Installation
 
