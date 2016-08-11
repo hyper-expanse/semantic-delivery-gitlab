@@ -24,7 +24,7 @@ This idea is not new. `semantic-release-gitlab` was heavily inspired by the work
 * [&#x2713;] Determine appropriate version to publish with [conventional-recommended-bump](https://www.npmjs.com/package/conventional-recommended-bump).
 * [&#x2713;] Publish package to the npm registry.
 * [&#x2713;] Publish a [GitLab release](http://docs.gitlab.com/ce/workflow/releases.html) using [conventional-gitlab-releaser](https://www.npmjs.com/package/conventional-gitlab-releaser) through the [semantic-release-gitlab-releaser](https://www.npmjs.com/package/semantic-release-gitlab-releaser) plugin.
-* [&#x2713;] Create an annotated [git tag](https://git-scm.com/book/en/v2/Git-Basics-Tagging<Paste>) that can be fetched from GitLab.
+* [&#x2713;] Create an annotated [git tag](https://git-scm.com/book/en/v2/Git-Basics-Tagging) that can be fetched from GitLab.
 
 ## Installation
 
