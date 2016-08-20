@@ -99,11 +99,35 @@ As noted earlier `semantic-release-gitlab` uses [conventional-recommended-bump](
 
 Rules used by `conventional-recommended-bump` are housed in it's repository. If you have any questions or concerns regarding those rules, or the version provided by `conventional-recommended-bump`, please reach out to their project on GitHub.
 
+## Debugging
+
+To assist users of `semantic-release-gitlab` with debugging the behavior of this module we use the [debug](https://www.npmjs.com/package/debug) utility package to print information about the release process to the console.
+
+To print debug messages on a unix system set the environment variable `DEBUG` with the name of this package prior to executing `semantic-release-gitlab`:
+
+```bash
+DEBUG=semantic-release-gitlab semantic-release-gitlab
+```
+
+On the Windows command line you may do:
+
+```bash
+set DEBUG=semantic-release-gitlab
+semantic-release-gitlab
+```
+
+All `semantic-release-gitlab` plugins use `debug` to print information to the console. You can instruct all plugins to print their debugging information by using `semantic-release-gitlab-*` as the value of the `DEBUG` environment variable.
+
+```bash
+DEBUG=semantic-release-gitlab-* semantic-release-gitlab
+```
+
+`semantic-release-gitlab` uses numerous other npm packages and many of those use the `debug` utility package as well. For example to print the debug messages from [npm-utils](https://www.npmjs.com/package/npm-utils) you may assign `semantic-relesae-gitlab` and `npm-utils` to the `DEBUG` environment variable like so:
+
+```bash
+DEBUG=semantic-release-gitlab,npm-utils semantic-release-gitlab
+```
+
 ## Contributing
 
 Read [CONTRIBUTING](CONTRIBUTING.md).
-
-## Debugging
-
-To see debug messages, run this module with `DEBUG=semantic-release-gitlab` environment
-variable. To see NPM commands too, run with `DEBUG=semantic-release-gitlab,npm-utils` variable.
