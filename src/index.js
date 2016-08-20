@@ -11,6 +11,7 @@ var gitLatestSemverTag = Bluebird.promisify(require('git-latest-semver-tag'));
 var npmUtils = require('npm-utils');
 var path = require('path');
 var through = require('through2');
+var debug = require('debug')('semantic-release-gitlab');
 
 module.exports = semanticRelease;
 
@@ -34,6 +35,7 @@ function processLastTag(lastTag) {
         },
 
         function (cb) {
+          debug('fetched %d commits', commits.length);
           config.data.commits = commits;
           config.options.debug = false;
           config.options.scmToken = process.env.GITLAB_AUTH_TOKEN;
@@ -47,17 +49,24 @@ function processLastTag(lastTag) {
               config.data.version = toBeReleasedVersion;
             })
             .then(npmUtils.setAuthToken)
+            .then(function () {
+              debug('publishing to NPM');
+            })
             .then(npmUtils.publish)
             .then(function () {
+              debug('tagging Git commit');
               return exec('git tag ' + config.data.version);
             })
             .then(function () {
+              debug('gitlab release');
               return gitlabReleaser(config);
             })
             .then(function () {
+              debug('gitlab notifier');
               return gitlabNotifier(config);
             })
             .then(function () {
+              debug('resolving with version %s', config.data.version);
               resolve(config.data.version);
             })
             .catch(reject);

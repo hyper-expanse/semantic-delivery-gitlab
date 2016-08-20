@@ -5,11 +5,17 @@ var fs = require('fs');
 var path = require('path');
 var recommendedBump = Bluebird.promisify(require('conventional-recommended-bump'));
 var semver = require('semver');
+var debug = require('debug')('semantic-release-gitlab');
 
 module.exports = bump;
 
 function bump(lastTag, commitConvention) {
+  debug('last tag', lastTag);
+  debug('commit convention', commitConvention);
+
   return recommendedBump({ preset: commitConvention }).then(function (recommendation) {
+    debug('bump recommendation', recommendation);
+
     if (recommendation.releaseAs === undefined) {
       throw new Error('Unable to determine next version to release. ' +
         'Likely because there are no changes to release.');
@@ -25,6 +31,7 @@ function bump(lastTag, commitConvention) {
     var packageJson = JSON.parse(fs.readFileSync(packageFilePath));
     packageJson.version = nextRelease;
     fs.writeFileSync(packageFilePath, JSON.stringify(packageJson, null, 2) + '\n');
+    debug('wrote version %s into package file %s', nextRelease, packageFilePath);
 
     return nextRelease;
   });

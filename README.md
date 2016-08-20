@@ -102,3 +102,8 @@ Rules used by `conventional-recommended-bump` are housed in it's repository. If 
 ## Contributing
 
 Read [CONTRIBUTING](CONTRIBUTING.md).
+
+## Debugging
+
+To see debug messages, run this module with `DEBUG=semantic-release-gitlab` environment
+variable. To see NPM commands too, run with `DEBUG=semantic-release-gitlab,npm-utils` variable.
