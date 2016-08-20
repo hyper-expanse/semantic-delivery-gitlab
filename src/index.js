@@ -19,6 +19,15 @@ var config = { data: {}, options: {} };
 
 function semanticRelease() {
   return gitLatestSemverTag()
+    .then(function (lastTag) {
+      if (lastTag) {
+        debug('%s is latest version of project', lastTag);
+      } else {
+        debug('no previous version found for this project');
+      }
+
+      return lastTag;
+    })
     .then(processLastTag);
 }
 
@@ -36,12 +45,19 @@ function processLastTag(lastTag) {
 
         function (cb) {
           debug('fetched %d commits', commits.length);
+
           config.data.commits = commits;
           config.options.debug = false;
           config.options.scmToken = process.env.GITLAB_AUTH_TOKEN;
           config.options.preset = conventionalCommitsDetector(commits);
+
+          debug('detected %s commit convention', config.options.preset);
+
           config.options.preset = config.options.preset === 'unknown' ?
             undefined : config.options.preset;
+
+          debug('using %s commit convention', config.options.preset);
+
           config.pkg = require(path.join(process.cwd(), 'package.json'));
 
           bump(lastTag, config.options.preset)
@@ -50,23 +66,27 @@ function processLastTag(lastTag) {
             })
             .then(npmUtils.setAuthToken)
             .then(function () {
-              debug('publishing to NPM');
+              debug('publishing to npm');
             })
             .then(npmUtils.publish)
             .then(function () {
-              debug('tagging Git commit');
+              debug('tagging git commit');
+
               return exec('git tag ' + config.data.version);
             })
             .then(function () {
-              debug('gitlab release');
+              debug('running semantic-release-gitlab-releaser plugin');
+
               return gitlabReleaser(config);
             })
             .then(function () {
-              debug('gitlab notifier');
+              debug('running semantic-release-gitlab-notifier plugin');
+
               return gitlabNotifier(config);
             })
             .then(function () {
-              debug('resolving with version %s', config.data.version);
+              debug('finished releasing version %s', config.data.version);
+
               resolve(config.data.version);
             })
             .catch(reject);
