@@ -116,10 +116,10 @@ set DEBUG=semantic-release-gitlab
 semantic-release-gitlab
 ```
 
-All `semantic-release-gitlab` plugins use `debug` to print information to the console. You can instruct all plugins to print their debugging information by using `semantic-release-gitlab-*` as the value of the `DEBUG` environment variable.
+All `semantic-release-gitlab` plugins use `debug` to print information to the console. You can instruct all plugins, and `semantic-release-gitlab`, to print their debugging information by using `semantic-release-gitlab*` as the value of the `DEBUG` environment variable.
 
 ```bash
-DEBUG=semantic-release-gitlab-* semantic-release-gitlab
+DEBUG=semantic-release-gitlab* semantic-release-gitlab
 ```
 
 `semantic-release-gitlab` uses numerous other npm packages and many of those use the `debug` utility package as well. For example to print the debug messages from [npm-utils](https://www.npmjs.com/package/npm-utils) you may assign `semantic-relesae-gitlab` and `npm-utils` to the `DEBUG` environment variable like so:
