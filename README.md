@@ -69,9 +69,9 @@ You can see a snippet of a `.gitlab-ci.yml` file with this setup below:
 
 ```yaml
 stages:
-	- build
-	- test
-	- deploy
+  - build
+  - test
+  - deploy
 
 publish:
   before_script:
@@ -101,7 +101,9 @@ Rules used by `conventional-recommended-bump` are housed in it's repository. If 
 
 ## Debugging
 
-To assist users of `semantic-release-gitlab` with debugging the behavior of this module we use the [debug](https://www.npmjs.com/package/debug) utility package to print information about the release process to the console.
+To assist users of `semantic-release-gitlab` with debugging the behavior of this module we use the [debug](https://www.npmjs.com/package/debug) utility package to print information about the release process to the console. To enable debug message printing, the environment variable `DEBUG`, which is the variable used by the `debug` package, must be set to a value configured by the package containing the debug messages to be printed.
+
+
 
 To print debug messages on a unix system set the environment variable `DEBUG` with the name of this package prior to executing `semantic-release-gitlab`:
 
@@ -127,6 +129,8 @@ DEBUG=semantic-release-gitlab* semantic-release-gitlab
 ```bash
 DEBUG=semantic-release-gitlab,npm-utils semantic-release-gitlab
 ```
+
+You may also print debug messages for the underlying HTTP request library, [request](https://www.npmjs.com/package/request), by setting the `NODE_DEBUG` environment variable to `request`, as [shown in their documentation](https://www.npmjs.com/package/request#debugging).
 
 ## Contributing
 
