@@ -55,6 +55,8 @@ For `semantic-release-gitlab` to publish packages to the npm registry, and a cha
 | [npm token](http://blog.npmjs.org/post/118393368555/deploying-with-npm-private-modules) | `NPM_TOKEN` |
 | [GitLab Private Token](https://gitlab.com/profile/account) | `GITLAB_AUTH_TOKEN` |
 
+The account associated with the GitLab private token must have _Developer_ permissions on the project to be released to meet the requirements of `semantic-release-gitlab-releaser`. GitLab permissions are documented on the [GitLab Permissions](http://docs.gitlab.com/ce/user/permissions.html) site.
+
 ### Continuous Integration and Delivery (CID) Setup
 
 Since `semantic-release-gitlab` relies solely on a few environment variables and a publicly accessible npm package. Therefore `semantic-release-gitlab` should be compatible with all continuous integration platforms that work with GitLab.
@@ -85,7 +87,7 @@ publish:
 
 Full documentation for GitLab CI is available on the [GitLab CI](http://docs.gitlab.com/ce/ci/yaml/README.html) website.
 
-You may also take a look at our [.gitlab-ci.yml](./.gitlab-ci.yml) file as an example.
+You may also take a look at our [.gitlab-ci.yml](https://gitlab.com/hutson/semantic-release-gitlab/blob/master/.gitlab-ci.yml) file as an example.
 
 ## Publishing Elsewhere Besides Public npm Registry
 
@@ -102,8 +104,6 @@ Rules used by `conventional-recommended-bump` are housed in it's repository. If 
 ## Debugging
 
 To assist users of `semantic-release-gitlab` with debugging the behavior of this module we use the [debug](https://www.npmjs.com/package/debug) utility package to print information about the release process to the console. To enable debug message printing, the environment variable `DEBUG`, which is the variable used by the `debug` package, must be set to a value configured by the package containing the debug messages to be printed.
-
-
 
 To print debug messages on a unix system set the environment variable `DEBUG` with the name of this package prior to executing `semantic-release-gitlab`:
 
@@ -134,4 +134,4 @@ You may also print debug messages for the underlying HTTP request library, [requ
 
 ## Contributing
 
-Read [CONTRIBUTING](CONTRIBUTING.md).
+Please read our [contributing](CONTRIBUTING.md) guide on how you can help improve this project.
