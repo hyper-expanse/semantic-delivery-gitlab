@@ -33,7 +33,7 @@ describe('bumping a package version', function () {
     mocks.recommendedBump.yields(null, {
       level: 1,
       reason: 'There are 0 BREAKING CHANGES and 1 features',
-      releaseAs: 'minor',
+      releaseType: 'minor',
     });
   });
 

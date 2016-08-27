@@ -13,7 +13,7 @@ function bump(lastTag, commitConvention) {
   return recommendedBump({ preset: commitConvention }).then(function (recommendation) {
     debug('recommended version bump - ' + JSON.stringify(recommendation));
 
-    if (recommendation.releaseAs === undefined) {
+    if (recommendation.releaseType === undefined) {
       throw new Error('Unable to determine next version to release. ' +
         'Likely because there are no changes to release.');
     }
@@ -22,7 +22,7 @@ function bump(lastTag, commitConvention) {
     // no git tag exists, then start the project at version 1.0.0.
     var nextRelease = lastTag.length === 0 ?
       '1.0.0' :
-      semver.inc(lastTag, recommendation.releaseAs);
+      semver.inc(lastTag, recommendation.releaseType);
 
     var packageFilePath = path.join(process.cwd(), 'package.json');
     var packageJson = JSON.parse(fs.readFileSync(packageFilePath));

@@ -44,7 +44,7 @@
     "bluebird": "^3.3.4",
     "commander": "^2.9.0",
     "conventional-commits-detector": "^0.1.1",
-    "conventional-recommended-bump": "^0.2.0",
+    "conventional-recommended-bump": "^0.3.0",
     "debug": "^2.2.0",
     "git-latest-semver-tag": "^1.0.1",
     "git-raw-commits": "^1.1.0",
