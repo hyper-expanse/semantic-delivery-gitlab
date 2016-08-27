@@ -134,4 +134,4 @@ You may also print debug messages for the underlying HTTP request library, [requ
 
 ## Contributing
 
-Please read our [contributing](CONTRIBUTING.md) guide on how you can help improve this project.
+Please read our [contributing](https://gitlab.com/hutson/semantic-release-gitlab/blob/master/CONTRIBUTING.md) guide on how you can help improve this project.
