@@ -59,7 +59,7 @@ The account associated with the GitLab private token must have _Developer_ permi
 
 ### Continuous Integration and Delivery (CID) Setup
 
-Since `semantic-release-gitlab` relies solely on a few environment variables and a publicly accessible npm package. Therefore `semantic-release-gitlab` should be compatible with all continuous integration platforms that work with GitLab.
+Since `semantic-release-gitlab` relies solely on a few environment variables, and a publicly accessible npm package, `semantic-release-gitlab` is compatible with all continuous integration platforms that work with GitLab.
 
 However, given the enormous number of CI providers available I will only cover the CI system built into GitLab.
 
