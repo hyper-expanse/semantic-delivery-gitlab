@@ -11,7 +11,10 @@ var debug = require('debug')('semantic-release-gitlab');
 module.exports = bump;
 
 function bump(lastTag, commitConvention) {
-  return recommendedBump({ preset: commitConvention }).then(function (recommendation) {
+  return recommendedBump({
+    ignoreReverted: false,
+    preset: commitConvention,
+  }).then(function (recommendation) {
     debug('recommended version bump - ' + JSON.stringify(recommendation));
 
     if (recommendation.releaseType === undefined) {

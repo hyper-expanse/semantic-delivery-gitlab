@@ -54,7 +54,7 @@ function processLastTag(lastTag) {
           debug('detected %s commit convention', config.options.preset);
 
           config.options.preset = config.options.preset === 'unknown' ?
-            undefined : config.options.preset;
+            'angular' : config.options.preset;
 
           debug('using %s commit convention', config.options.preset);
 
