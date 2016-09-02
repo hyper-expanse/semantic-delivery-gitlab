@@ -44,8 +44,8 @@ describe('bumping a package version', function () {
     mocks.recommendedBump.reset();
   });
 
-  it('bump version if a tag already exists', function () {
-    return bump('1.2.3', 'angular').then(function (nextRelease) {
+  it('bump version if a tag already exists', function (done) {
+    bump('1.2.3', 'angular').then(function (nextRelease) {
       expect(mocks.recommendedBump).to.have.been.calledOnce
         .and.to.have.been.calledWith({ ignoreReverted: false, preset: 'angular' });
       expect(mocks.fs.writeFileSync).to.have.been.calledOnce
@@ -54,11 +54,13 @@ describe('bumping a package version', function () {
           '{\n  "version": "1.3.0"\n}\n'
         );
       expect(nextRelease).to.equal('1.3.0');
+
+      done();
     });
   });
 
-  it('sets version to 1.0.0 if a tag did not already exist', function () {
-    return bump('', 'angular').then(function (nextRelease) {
+  it('sets version to 1.0.0 if a tag did not already exist', function (done) {
+    bump('', 'angular').then(function (nextRelease) {
       expect(mocks.recommendedBump).to.have.been.calledOnce
         .and.to.have.been.calledWith({ ignoreReverted: false, preset: 'angular' });
       expect(mocks.fs.writeFileSync).to.have.been.calledOnce
@@ -67,6 +69,8 @@ describe('bumping a package version', function () {
           '{\n  "version": "1.0.0"\n}\n'
         );
       expect(nextRelease).to.equal('1.0.0');
+
+      done();
     });
   });
 
