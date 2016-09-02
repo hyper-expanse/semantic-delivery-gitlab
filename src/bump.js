@@ -1,6 +1,7 @@
 'use strict';
 
 var Bluebird = require('bluebird');
+var EarlyExit = require('./early-exit');
 var fs = require('fs');
 var path = require('path');
 var recommendedBump = Bluebird.promisify(require('conventional-recommended-bump'));
@@ -14,8 +15,7 @@ function bump(lastTag, commitConvention) {
     debug('recommended version bump - ' + JSON.stringify(recommendation));
 
     if (recommendation.releaseType === undefined) {
-      throw new Error('Unable to determine next version to release. ' +
-        'Likely because there are no changes to release.');
+      throw new EarlyExit('No changes are available to release.');
     }
 
     // If the project has never been released before,

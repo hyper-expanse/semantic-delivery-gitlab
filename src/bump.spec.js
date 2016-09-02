@@ -1,6 +1,7 @@
 'use strict';
 
 var chai = require('chai');
+var EarlyExit = require('./early-exit');
 var path = require('path');
 var proxyquire = require('proxyquire');
 var sinon = require('sinon');
@@ -66,6 +67,20 @@ describe('bumping a package version', function () {
           '{\n  "version": "1.0.0"\n}\n'
         );
       expect(nextRelease).to.equal('1.0.0');
+    });
+  });
+
+  it('throws an early exit if no changes are available for release', function (done) {
+    mocks.recommendedBump.yields(null, {});
+
+    bump('', 'angular').catch(function (error) {
+      expect(error).to.be.an.instanceOf(EarlyExit);
+      expect(error.message).to.equal('No changes are available to release.');
+      expect(mocks.recommendedBump).to.have.been.calledOnce
+        .and.to.have.been.calledWith({ preset: 'angular' });
+      expect(mocks.fs.writeFileSync).to.not.have.been.called;
+
+      done();
     });
   });
 });
