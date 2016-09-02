@@ -9,9 +9,6 @@ stages:
     - $(npm bin)/codecov
   except:
     - tags
-  cache:
-    paths:
-      - node_modules/
   script:
     - $(npm bin)/npm install
     - $(npm bin)/npm test
