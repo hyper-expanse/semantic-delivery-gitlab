@@ -46,6 +46,12 @@ function processLastTag(lastTag) {
         function (cb) {
           debug('fetched %d commits', commits.length);
 
+          if (commits.length === 0) {
+            debug('no commits to release so terminating release process now');
+
+            return resolve(null);
+          }
+
           config.data.commits = commits;
           config.options.debug = false;
           config.options.scmToken = process.env.GITLAB_AUTH_TOKEN;

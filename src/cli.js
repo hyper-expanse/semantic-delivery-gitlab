@@ -12,10 +12,16 @@ program
 
 semanticRelease()
   .then(function (releasedVersion) {
-    console.log('Released version ' + releasedVersion);
+    if (releasedVersion === null) {
+      console.log('No changes are available to release.');
+    } else {
+      console.log('Released version ' + releasedVersion);
+    }
+
     process.exit(0);
   })
   .catch(function (err) {
     console.error(err.message);
+
     process.exit(1);
   });

@@ -9,6 +9,7 @@
 `semantic-release-gitlab` is designed to automate the process of releasing GitLab-hosted code to an npm registry.
 
 Releasing GitLab-hosted code to an npm registry may include:
+* Getting a list of all commits to a project that have not been published.
 * Determining the appropriate [semantic version](http://semver.org/) to release.
 * Generating a git tag for the repository on GitLab with that version.
 * Publishing a list of changes included in that version.
@@ -21,6 +22,7 @@ This idea is not new. `semantic-release-gitlab` was heavily inspired by the work
 
 ## Features
 
+* [&#x2713;] Get a list of unpublished commits using [git-raw-commits](https://www.npmjs.com/package/git-raw-commits).
 * [&#x2713;] Detect commit message convention used by a project with [conventional-commits-detector](https://www.npmjs.com/package/conventional-commits-detector).
 * [&#x2713;] Determine appropriate version to publish with [conventional-recommended-bump](https://www.npmjs.com/package/conventional-recommended-bump).
 * [&#x2713;] Publish package to the npm registry.
@@ -39,6 +41,8 @@ npm install --save-dev semantic-release-gitlab
 ## Usage
 
 Once installed `semantic-release-gitlab` may be invoked by executing the CLI tool exported by the package. Installed into your project's `node_modules` `bin` directory is the `semantic-release-gitlab` executable. It can be invoked directly by calling `$(npm bin)/semantic-release-gitlab`. To learn how `semantic-release-gitlab` can be used as part of your project's release process please see the _Continuous Integration and Delivery (CID) Setup_ section below.
+
+First step of `semantic-release-gitlab` is to get a list of commits made to your project after the latest semantic version tag. If no commits are found, which typically occurs if the latest commit in your project is pointed to by a semantic version tag, then `semantic-release-gitlab` will exit cleanly, and indicate that no changes can be released. This ensures you can run the release process multiple times only releasing new versions if there are unreleased commits. If commits are available, `semantic-release-gitlab` will proceed onto the next step.
 
 As noted under _Features_ we determine the commit convention used by your project with `conventional-commits-detector`. Once we have determined your commit message convention we pass that information on to `conventional-recommended-bump` to determine the appropriate version to publish.
 

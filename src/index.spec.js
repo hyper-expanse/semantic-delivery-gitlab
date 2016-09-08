@@ -1,10 +1,12 @@
 'use strict';
 
 var chai = require('chai');
+var chaiAsPromised = require('chai-as-promised');
 var mock = require('./index.mocks');
 var nock = require('nock');
 var sinonChai = require('sinon-chai');
 
+chai.use(chaiAsPromised);
 chai.use(sinonChai);
 var expect = chai.expect;
 
@@ -81,16 +83,13 @@ describe('semantic-release-gitlab', function () {
 
     describe('when there are no new commits', function () {
 
-      it('rejects', function (done) {
+      it('resolves with null', function () {
         mocks.gitRawCommits.returns(createEmptyCommitStream());
-        mocks.bump.rejects(new Error('No commits to process.'));
 
-        semanticRelease().catch(function (err) {
-          expect(err instanceof Error).to.be.true;
-          expect(err.message).to.equal('No commits to process.');
-
-          done();
-        });
+        return expect(semanticRelease()).to.eventually.equal(null)
+          .then(function () {
+            expect(mocks.bump).to.not.have.been.called;
+          });
       });
     });
   });
