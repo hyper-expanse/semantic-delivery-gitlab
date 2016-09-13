@@ -81,9 +81,9 @@ stages:
 
 publish:
   before_script:
-    - npm install
+    - npm install semantic-release-gitlab
   only:
-    - master@hutson/semantic-release-gitlab
+    - master@<GROUP>/<PROJECT>
   script:
     - $(npm bin)/semantic-release-gitlab
   stage: deploy
