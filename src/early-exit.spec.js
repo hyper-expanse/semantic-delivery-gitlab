@@ -16,10 +16,10 @@ describe('early-exit', function () {
   });
 
   it('has the expected message', function () {
-    expect(this.event.message).to.equal('exiting early');
+    expect(this.event).to.have.ownProperty('message', 'exiting early');
   });
 
   it('has the expected name', function () {
-    expect(this.event.name).to.equal('EarlyExit');
+    expect(this.event).to.have.ownProperty('name', 'EarlyExit');
   });
 });

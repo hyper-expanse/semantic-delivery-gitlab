@@ -11,19 +11,20 @@ chai.use(sinonChai);
 var expect = chai.expect;
 
 describe('semantic-release-gitlab', function () {
-  var mocks = mock.mocks;
-  var semanticRelease = mock.createSemanticRelease();
 
   before(function () {
     nock.disableNetConnect();
   });
 
   beforeEach(function () {
-    mocks.conventionalCommitsDetector.returns('angular');
-    mocks.gitlabNotifier(true);
-    mocks.gitlabReleaser.resolves(true);
-    mocks.npmUtils.setAuthToken.resolves(true);
-    mocks.npmUtils.publish.resolves(true);
+    this.mocks = mock.mocks;
+    this.semanticRelease = mock.createSemanticRelease();
+
+    this.mocks.conventionalCommitsDetector.returns('angular');
+    this.mocks.gitlabNotifier(true);
+    this.mocks.gitlabReleaser.resolves(true);
+    this.mocks.npmUtils.setAuthToken.resolves(true);
+    this.mocks.npmUtils.publish.resolves(true);
   });
 
   afterEach(function () {
@@ -33,62 +34,64 @@ describe('semantic-release-gitlab', function () {
   describe('when a tag exists', function () {
 
     beforeEach(function () {
-      mocks.gitLatestSemverTag.yields(null, '1.0.0');
+      this.mocks.gitLatestSemverTag.yields(null, '1.0.0');
     });
 
     describe('when there are commits', function () {
 
-      it('resolves with released version if there are commits to release', function (done) {
-        mocks.gitRawCommits.returns(createCommitStream());
-        mocks.childProcess.exec.yields(null);
-        mocks.bump.resolves('1.1.0');
+      it('resolves with released version if there are commits to release', function () {
+        this.mocks.gitRawCommits.returns(createCommitStream());
+        this.mocks.childProcess.exec.yields(null);
+        this.mocks.bump.resolves('1.1.0');
 
-        semanticRelease().then(function (releasedVersion) {
-          expect(releasedVersion).to.equal('1.1.0');
-          expect(mocks.childProcess.exec)
-            .to.have.been.calledOnce;
-          expect(mocks.childProcess.exec.firstCall)
-            .to.have.been.calledWith('git tag 1.1.0');
+        var promise = this.semanticRelease();
 
-          done();
-        });
+        var _this = this;
+        return expect(promise).to.be.fulfilled
+          .and.to.eventually.equal('1.1.0')
+          .then(function () {
+            expect(_this.mocks.childProcess.exec)
+              .to.have.been.calledOnce;
+            expect(_this.mocks.childProcess.exec.firstCall)
+              .to.have.been.calledWith('git tag 1.1.0');
+          });
       });
 
-      it('rejects if npm publish fails', function (done) {
-        mocks.gitRawCommits.returns(createCommitStream());
-        mocks.childProcess.exec.yields(null);
-        mocks.bump.resolves('1.1.0');
-        mocks.npmUtils.publish.rejects(new Error('Unable to publish.'));
+      it('rejects if npm publish fails', function () {
+        this.mocks.gitRawCommits.returns(createCommitStream());
+        this.mocks.childProcess.exec.yields(null);
+        this.mocks.bump.resolves('1.1.0');
+        this.mocks.npmUtils.publish.rejects(new Error('Unable to publish.'));
 
-        semanticRelease().catch(function (err) {
-          expect(err instanceof Error).to.be.true;
-          expect(err.message).to.equal('Unable to publish.');
+        var promise = this.semanticRelease();
 
-          done();
-        });
+        return expect(promise).to.be.rejectedWith(Error, 'Unable to publish.');
       });
 
-      it('resolves with a patch if there are no valid commits for release', function (done) {
-        mocks.gitRawCommits.returns(createPointlessCommitStream());
-        mocks.childProcess.exec.yields(null);
-        mocks.bump.resolves('1.0.1');
+      it('resolves with a patch if there are no valid commits for release', function () {
+        this.mocks.gitRawCommits.returns(createPointlessCommitStream());
+        this.mocks.childProcess.exec.yields(null);
+        this.mocks.bump.resolves('1.0.1');
 
-        semanticRelease().then(function (releasedVersion) {
-          expect(releasedVersion).to.equal('1.0.1');
+        var promise = this.semanticRelease();
 
-          done();
-        });
+        return expect(promise).to.be.fulfilled
+          .and.to.eventually.equal('1.0.1');
       });
     });
 
     describe('when there are no new commits', function () {
 
       it('resolves with null', function () {
-        mocks.gitRawCommits.returns(createEmptyCommitStream());
+        this.mocks.gitRawCommits.returns(createEmptyCommitStream());
 
-        return expect(semanticRelease()).to.eventually.equal(null)
+        var promise = this.semanticRelease();
+
+        var _this = this;
+        return expect(promise).to.be.fulfilled
+          .and.to.eventually.equal(null)
           .then(function () {
-            expect(mocks.bump).to.not.have.been.called;
+            expect(_this.mocks.bump).to.not.have.been.called;
           });
       });
     });
@@ -97,60 +100,52 @@ describe('semantic-release-gitlab', function () {
   describe('when a tag does not exist', function () {
 
     beforeEach(function () {
-      mocks.gitLatestSemverTag.yields(null, '');
+      this.mocks.gitLatestSemverTag.yields(null, '');
     });
 
-    it('resolves with released version if there are commits to release', function (done) {
-      mocks.gitRawCommits.returns(createCommitStream());
-      mocks.childProcess.exec.yields(null);
-      mocks.bump.resolves('1.0.0');
+    it('resolves with released version if there are commits to release', function () {
+      this.mocks.gitRawCommits.returns(createCommitStream());
+      this.mocks.childProcess.exec.yields(null);
+      this.mocks.bump.resolves('1.0.0');
 
-      semanticRelease().then(function (releasedVersion) {
-        expect(releasedVersion).to.equal('1.0.0');
+      var promise = this.semanticRelease();
 
-        done();
-      });
+      return expect(promise).to.be.fulfilled
+        .and.to.eventually.equal('1.0.0');
     });
 
-    it('rejects if npm publish fails', function (done) {
-      mocks.gitRawCommits.returns(createCommitStream());
-      mocks.childProcess.exec.yields('Unable to publish.');
-      mocks.bump.resolves('1.0.0');
+    it('rejects if npm publish fails', function () {
+      this.mocks.gitRawCommits.returns(createCommitStream());
+      this.mocks.childProcess.exec.yields('Unable to publish.');
+      this.mocks.bump.resolves('1.0.0');
 
-      semanticRelease().catch(function (err) {
-        expect(err instanceof Error).to.be.true;
-        expect(err.message).to.equal('Unable to publish.');
+      var promise = this.semanticRelease();
 
-        done();
-      });
+      return expect(promise).to.be.rejectedWith(Error, 'Unable to publish.');
     });
 
-    it('resolves with a patch if there are no valid commits for release', function (done) {
-      mocks.gitRawCommits.returns(createPointlessCommitStream());
-      mocks.childProcess.exec.yields(null);
-      mocks.bump.resolves('1.0.0');
+    it('resolves with a patch if there are no valid commits for release', function () {
+      this.mocks.gitRawCommits.returns(createPointlessCommitStream());
+      this.mocks.childProcess.exec.yields(null);
+      this.mocks.bump.resolves('1.0.0');
 
-      semanticRelease().then(function (releasedVersion) {
-        expect(releasedVersion).to.equal('1.0.0');
+      var promise = this.semanticRelease();
 
-        done();
-      });
+      return expect(promise).to.be.fulfilled
+        .and.to.eventually.equal('1.0.0');
     });
   });
 
   describe('when `git describe` fails', function () {
 
     beforeEach(function () {
-      mocks.gitLatestSemverTag.yields('Not a git repo.', '');
+      this.mocks.gitLatestSemverTag.yields('Not a git repo.', '');
     });
 
-    it('rejects', function (done) {
-      semanticRelease().catch(function (err) {
-        expect(err instanceof Error).to.be.true;
-        expect(err.message).to.equal('Not a git repo.');
+    it('rejects', function () {
+      var promise = this.semanticRelease();
 
-        done();
-      });
+      return expect(promise).to.be.rejectedWith(Error, 'Not a git repo.');
     });
   });
 });
