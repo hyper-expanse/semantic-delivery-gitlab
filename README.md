@@ -16,9 +16,9 @@ Releasing GitLab-hosted code to an npm registry may include:
 * Publishing an npm package containing those changes to an npm registry.
 * Informing people subscribed to GitLab issues or merge requests about the release.
 
-By automating these steps `semantic-release-gitlab` alleviates some of the overhead associated with managing a project, while providing consistency in how your project is published.
+By automating these steps `semantic-release-gitlab` alleviates some of the overhead in managing a project, allowing you to quickly and consistently publish enhancements that provide value to your consumers.
 
-This idea is not new. `semantic-release-gitlab` was heavily inspired by the work accomplished by [semantic-release](https://www.npmjs.com/package/semantic-release). If you have a GitHub project you're highly encouraged to check out `semantic-release`.
+This idea, however, is not new. `semantic-release-gitlab` was heavily inspired by the work of [semantic-release](https://www.npmjs.com/package/semantic-release). If you have a GitHub project you're highly encouraged to check out `semantic-release`.
 
 ## Features
 
@@ -63,11 +63,11 @@ The account associated with the GitLab private token must have _Developer_ permi
 
 ### Continuous Integration and Delivery (CID) Setup
 
-Since `semantic-release-gitlab` relies solely on a few environment variables, and a publicly accessible npm package, `semantic-release-gitlab` is compatible with all continuous integration platforms that work with GitLab.
+Since `semantic-release-gitlab` relies solely on a few environment variables, and a package published on the public npm registry, `semantic-release-gitlab` is compatible with all continuous integration platforms that work with GitLab.
 
 However, given the enormous number of CI providers available I will only cover the CI system built into GitLab.
 
-Managing GitLab CI builds is made possible through a `.gitlab-ci.yml` configuration file. To publish changes using `semantic-release-gitlab` you will need to create a dedicate build stage that happens only after all other build and test tasks are completed.
+Configuring GitLab CI builds is facilitated through a `.gitlab-ci.yml` configuration file. To publish changes using `semantic-release-gitlab` you will need to create a dedicated build stage that happens only after all other build and test tasks have completed successfully.
 
 In GitLab CI that is possible by creating a dedicated `deploy` stage and adding it as the last item under `stages`. Next, create a job called `publish` that belongs to the `deploy` stage. Within `publish` we call `semantic-release-gitlab`.
 
