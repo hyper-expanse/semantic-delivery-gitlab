@@ -87,9 +87,9 @@ node_6_yarn_0_15:
 publish:
   <<: [*node_6]
   before_script:
-    - npm install semantic-release-gitlab
+    - npm install --production
   only:
-    - master@hutson/winston-gulplog
+    - master@hutson/semantic-release-gitlab
   script:
-    - $(npm bin)/semantic-release-gitlab
+    - node ./src/cli.js
   stage: deploy
