@@ -62,6 +62,7 @@ gulp.task('test', ['clean:coverage'], function (done) {
         .pipe(mocha({
           reporter: ['progress'],
         }))
+        .on('error', done)
         .pipe(istanbul.writeReports({
           reporters: ['text', 'lcov'],
         }))
