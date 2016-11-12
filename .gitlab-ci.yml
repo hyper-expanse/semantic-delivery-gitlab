@@ -89,7 +89,7 @@ publish:
   before_script:
     - npm install --production
   only:
-    - master@hutson/semantic-release-gitlab
+    - master@hyper-expanse/semantic-release-gitlab
   script:
     - node ./src/cli.js
   stage: deploy

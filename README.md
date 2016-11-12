@@ -1,7 +1,7 @@
 # semantic-release-gitlab
 
-[![build status](https://gitlab.com/hutson/semantic-release-gitlab/badges/master/build.svg)](https://gitlab.com/hutson/semantic-release-gitlab/commits/master)
-[![codecov.io](https://codecov.io/gitlab/hutson/semantic-release-gitlab/coverage.svg?branch=master)](https://codecov.io/gitlab/hutson/semantic-release-gitlab?branch=master)
+[![build status](https://gitlab.com/hyper-expanse/semantic-release-gitlab/badges/master/build.svg)](https://gitlab.com/hyper-expanse/semantic-release-gitlab/commits/master)
+[![codecov.io](https://codecov.io/gitlab/hyper-expanse/semantic-release-gitlab/coverage.svg?branch=master)](https://codecov.io/gitlab/hyper-expanse/semantic-release-gitlab?branch=master)
 [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.gitlab.io/cz-cli/)
 
 > Automatically publish packages to the npm registry for source code hosted on GitLab.
@@ -91,7 +91,7 @@ publish:
 
 Full documentation for GitLab CI is available on the [GitLab CI](http://docs.gitlab.com/ce/ci/yaml/README.html) website.
 
-You may also take a look at our [.gitlab-ci.yml](https://gitlab.com/hutson/semantic-release-gitlab/blob/master/.gitlab-ci.yml) file as an example.
+You may also take a look at our [.gitlab-ci.yml](https://gitlab.com/hyper-expanse/semantic-release-gitlab/blob/master/.gitlab-ci.yml) file as an example.
 
 ## Publishing Elsewhere Besides Public npm Registry
 
@@ -138,4 +138,4 @@ You may also print debug messages for the underlying HTTP request library, [requ
 
 ## Contributing
 
-Please read our [contributing](https://gitlab.com/hutson/semantic-release-gitlab/blob/master/CONTRIBUTING.md) guide on how you can help improve this project.
+Please read our [contributing](https://gitlab.com/hyper-expanse/semantic-release-gitlab/blob/master/CONTRIBUTING.md) guide on how you can help improve this project.
