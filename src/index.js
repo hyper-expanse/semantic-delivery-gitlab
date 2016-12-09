@@ -55,6 +55,7 @@ function processLastTag(lastTag) {
           config.data.commits = commits;
           config.options.debug = false;
           config.options.scmToken = process.env.GITLAB_AUTH_TOKEN;
+          config.options.insecureApi = process.env.GITLAB_INSECURE_API === 'yes';
           config.options.preset = conventionalCommitsDetector(commits);
 
           debug('detected %s commit convention', config.options.preset);

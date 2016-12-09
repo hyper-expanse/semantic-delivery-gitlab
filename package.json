@@ -51,7 +51,7 @@
     "lodash": "^4.7.0",
     "npm-utils": "^1.8.0",
     "semantic-release-gitlab-notifier": "^3.0.0",
-    "semantic-release-gitlab-releaser": "^2.0.1",
+    "semantic-release-gitlab-releaser": "^2.4.0",
     "semver": "^5.1.0",
     "through2": "^2.0.1"
   },
