@@ -61,6 +61,10 @@ For `semantic-release-gitlab` to publish packages to the npm registry, and a cha
 
 The account associated with the GitLab private token must have _Developer_ permissions on the project to be released to meet the requirements of `semantic-release-gitlab-releaser`. GitLab permissions are documented on the [GitLab Permissions](http://docs.gitlab.com/ce/user/permissions.html) site.
 
+#### Gitlab http/https api
+
+By default API calls to gitlab are made with https. If for some reason that is impossible, they can be made with http instead by setting the environment variable `GITLAB_INSECURE_API` to "yes". Any other value including not set, "true" and "Yes" and the api calls are made with https.
+
 ### Continuous Integration and Delivery (CID) Setup
 
 Since `semantic-release-gitlab` relies solely on a few environment variables, and a package published on the public npm registry, `semantic-release-gitlab` is compatible with all continuous integration platforms that work with GitLab.
