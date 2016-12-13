@@ -63,7 +63,7 @@ The account associated with the GitLab private token must have _Developer_ permi
 
 #### Gitlab http/https api
 
-By default API calls to gitlab are made with https. If for some reason that is impossible, they can be made with http instead by setting the environment variable `GITLAB_INSECURE_API` to "yes". Any other value including not set, "true" and "Yes" and the api calls are made with https.
+By default API calls to gitlab are made with https. If for some reason that is impossible, they can be made with http instead by setting the environment variable `GITLAB_INSECURE_API` to "true". Any other value including not set, "True" and "yes" and the api calls are made with https.
 
 ### Continuous Integration and Delivery (CID) Setup
 
