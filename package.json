@@ -13,8 +13,8 @@
   },
   "description": "Automatically publish packages to the npm registry for source code hosted on GitLab.",
   "engines": {
-    "node": "^4.1.0 || ^0.12.0",
-    "npm": "^3.0.0 || ^2.1.9"
+    "node": "^6.9.0 || ^4.1.0 || ^0.12.0",
+    "npm": "^4.0.0 || ^3.0.0 || ^2.1.9"
   },
   "files": [
     "src/"
