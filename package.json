@@ -13,7 +13,7 @@
   },
   "description": "Automatically publish packages to the npm registry for source code hosted on GitLab.",
   "engines": {
-    "node": "^6.9.0 || ^4.1.0 || ^0.12.0",
+    "node": "^6.9.0 || ^4.1.0",
     "npm": "^4.0.0 || ^3.0.0 || ^2.1.9"
   },
   "files": [
@@ -50,7 +50,7 @@
     "git-raw-commits": "^1.1.0",
     "lodash": "^4.7.0",
     "npm-utils": "^1.8.0",
-    "semantic-release-gitlab-notifier": "^3.0.0",
+    "semantic-release-gitlab-notifier": "^5.0.0",
     "semantic-release-gitlab-releaser": "^2.4.0",
     "semver": "^5.1.0",
     "through2": "^2.0.1"
@@ -70,12 +70,12 @@
     "gulp-watch": "^4.3.5",
     "jshint": "^2.8.0",
     "jshint-stylish": "^2.0.1",
-    "nock": "^8.0.0",
+    "nock": "^9.0.0",
     "proxyquire": "^1.7.4",
     "shelljs": "^0.7.0",
     "sinon": "^1.17.3",
     "sinon-as-promised": "^4.0.0",
     "sinon-chai": "^2.8.0",
-    "tmp": "0.0.29"
+    "tmp": "^0.0.31"
   }
 }
