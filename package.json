@@ -36,7 +36,6 @@
     "url": "https://gitlab.com/hyper-expanse/semantic-release-gitlab.git"
   },
   "scripts": {
-    "docs": "gulp docs",
     "test": "gulp"
   },
   "version": "1.0.0",
@@ -64,7 +63,6 @@
     "gulp": "^3.4.0",
     "gulp-istanbul": "^1.1.1",
     "gulp-jscs": "^4.0.0",
-    "gulp-jsdoc3": "^1.0.0",
     "gulp-jshint": "^2.0.0",
     "gulp-mocha": "^3.0.1",
     "gulp-watch": "^4.3.5",

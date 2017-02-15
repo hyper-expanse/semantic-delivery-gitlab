@@ -8,12 +8,6 @@ var paths = {
     'src/**/*.js',
   ],
 
-  documentationFiles: [
-    'README.md',
-    'src/**/*.js',
-    '!src/**/*.spec.js',
-  ],
-
   sourceFiles: [
     'src/**/*.js',
     '!src/**/*.spec.js',
@@ -33,17 +27,6 @@ gulp.task('clean:coverage', function () {
 
   return del([
     'coverage/',
-  ]);
-});
-
-/*
- * Clean up docs directory.
- */
-gulp.task('clean:docs', function () {
-  var del = require('del');
-
-  return del([
-    'docs/',
   ]);
 });
 
@@ -85,18 +68,6 @@ gulp.task('jscs', function () {
 });
 
 /*
- * Generate source documentation.
- */
-gulp.task('docs', ['clean:docs'], function (done) {
-  var jsdoc = require('gulp-jsdoc3');
-  var config = JSON.parse(require('fs').readFileSync('./.jsdocrc'));
-
-  gulp.src(paths.documentationFiles, { read: false })
-    .pipe(jsdoc(config, done))
-  ;
-});
-
-/*
  * Run source files through JSHint lint checks.
  */
 gulp.task('jshint', function () {
@@ -116,10 +87,6 @@ gulp.task('jshint', function () {
 gulp.task('serve', ['default'], function () {
   var watch = require('gulp-watch');
 
-  watch(paths.documentationFiles, function () {
-    gulp.start('docs');
-  });
-
   watch(paths.lintFiles, function () {
     gulp.start('jshint');
     gulp.start('jscs');
@@ -130,4 +97,4 @@ gulp.task('serve', ['default'], function () {
   });
 });
 
-gulp.task('default', ['jscs', 'jshint', 'test', 'docs']);
+gulp.task('default', ['jscs', 'jshint', 'test']);
