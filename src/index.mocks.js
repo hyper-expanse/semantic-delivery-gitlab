@@ -30,7 +30,7 @@ function createSemanticRelease() {
   // jscs: disable
   return proxyquire('./index', {
     './bump': mocks.bump,
-    'child_process': mocks.childProcess,
+    child_process: mocks.childProcess,
     'conventional-commits-detector': mocks.conventionalCommitsDetector,
     'git-latest-semver-tag': mocks.gitLatestSemverTag,
     'git-raw-commits': mocks.gitRawCommits,

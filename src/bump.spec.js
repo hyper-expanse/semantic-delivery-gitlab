@@ -1,7 +1,10 @@
 'use strict';
 
+/* eslint-disable no-unused-expressions */
+
 var chai = require('chai');
 var EarlyExit = require('./early-exit');
+var mocha = require('mocha');
 var path = require('path');
 var proxyquire = require('proxyquire');
 var sinon = require('sinon');
@@ -10,8 +13,13 @@ var sinonChai = require('sinon-chai');
 chai.use(sinonChai);
 var expect = chai.expect;
 
-describe('bumping a package version', function () {
+var afterEach = mocha.afterEach;
+var before = mocha.before;
+var beforeEach = mocha.beforeEach;
+var describe = mocha.describe;
+var it = mocha.it;
 
+describe('bumping a package version', function () {
   before(function () {
     this.mocks = {
       fs: {
@@ -50,7 +58,7 @@ describe('bumping a package version', function () {
       .and.to.eventually.equal('1.3.0')
       .then(function () {
         expect(_this.mocks.recommendedBump).to.have.been.calledOnce
-          .and.to.have.been.calledWith({ ignoreReverted: false, preset: 'angular' });
+          .and.to.have.been.calledWith({ignoreReverted: false, preset: 'angular'});
         expect(_this.mocks.fs.writeFileSync).to.have.been.calledOnce
           .and.to.have.been.calledWith(
             path.join(process.cwd(), 'package.json'),
@@ -67,7 +75,7 @@ describe('bumping a package version', function () {
       .and.to.eventually.equal('1.0.0')
       .then(function () {
         expect(_this.mocks.recommendedBump).to.have.been.calledOnce
-          .and.to.have.been.calledWith({ ignoreReverted: false, preset: 'angular' });
+          .and.to.have.been.calledWith({ignoreReverted: false, preset: 'angular'});
         expect(_this.mocks.fs.writeFileSync).to.have.been.calledOnce
           .and.to.have.been.calledWith(
             path.join(process.cwd(), 'package.json'),
@@ -86,7 +94,7 @@ describe('bumping a package version', function () {
       expect(error).to.be.an.instanceOf(EarlyExit)
         .and.to.have.ownProperty('message', 'No changes are available to release.');
       expect(_this.mocks.recommendedBump).to.have.been.calledOnce
-        .and.to.have.been.calledWith({ ignoreReverted: false, preset: 'angular' });
+        .and.to.have.been.calledWith({ignoreReverted: false, preset: 'angular'});
       expect(_this.mocks.fs.writeFileSync).to.not.have.been.called;
     });
   });

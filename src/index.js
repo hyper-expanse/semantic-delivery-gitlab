@@ -15,7 +15,7 @@ var debug = require('debug')('semantic-release-gitlab');
 
 module.exports = semanticRelease;
 
-var config = { data: {}, options: {} };
+var config = {data: {}, options: {}};
 
 function semanticRelease() {
   return gitLatestSemverTag()
@@ -33,10 +33,9 @@ function semanticRelease() {
 
 function processLastTag(lastTag) {
   return new Bluebird(function (resolve, reject) {
-
     // If a tag exists get commits since the latest tag. If no tag exists then get all commits.
     var commits = [];
-    gitRawCommits({ from: lastTag.length === 0 ? '' : lastTag })
+    gitRawCommits({from: lastTag.length === 0 ? '' : lastTag})
       .pipe(through(
         function (buffer, enc, cb) {
           commits.push(buffer.toString());

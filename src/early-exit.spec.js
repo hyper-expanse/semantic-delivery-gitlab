@@ -2,11 +2,15 @@
 
 var chai = require('chai');
 var EarlyExit = require('./early-exit');
+var mocha = require('mocha');
 
 var expect = chai.expect;
 
-describe('early-exit', function () {
+var beforeEach = mocha.beforeEach;
+var describe = mocha.describe;
+var it = mocha.it;
 
+describe('early-exit', function () {
   beforeEach(function () {
     this.event = new EarlyExit('exiting early');
   });

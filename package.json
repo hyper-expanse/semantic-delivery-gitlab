@@ -6,14 +6,9 @@
   },
   "bin": "./src/cli.js",
   "bugs": "https://gitlab.com/hyper-expanse/semantic-release-gitlab/issues",
-  "config": {
-    "commitizen": {
-      "path": "./node_modules/cz-conventional-changelog"
-    }
-  },
   "description": "Automatically publish packages to the npm registry for source code hosted on GitLab.",
   "engines": {
-    "node": "^6.9.0 || ^4.1.0",
+    "node": "^6.9.0 || ^4.2.0",
     "npm": "^4.0.0 || ^3.0.0 || ^2.1.9"
   },
   "files": [
@@ -36,39 +31,33 @@
     "url": "https://gitlab.com/hyper-expanse/semantic-release-gitlab.git"
   },
   "scripts": {
-    "test": "gulp"
+    "test": "eslint src/ && nyc --all --cache --exclude=src/**/*.mocks.js --exclude=src/**/*.spec.js --include=src/ --reporter=lcov --reporter=text mocha --check-leaks --full-trace --inline-diffs --no-exit --recursive --reporter=progress --retries 1 src/"
   },
   "version": "1.0.0",
   "dependencies": {
     "bluebird": "^3.3.4",
     "commander": "^2.9.0",
     "conventional-commits-detector": "^0.1.1",
-    "conventional-recommended-bump": "^0.3.0",
+    "conventional-recommended-bump": "^1.0.0",
     "debug": "^2.2.0",
     "git-latest-semver-tag": "^1.0.1",
     "git-raw-commits": "^1.1.0",
     "lodash": "^4.7.0",
     "npm-utils": "^1.8.0",
     "semantic-release-gitlab-notifier": "^5.0.0",
-    "semantic-release-gitlab-releaser": "^2.4.0",
+    "semantic-release-gitlab-releaser": "^3.0.3",
     "semver": "^5.1.0",
     "through2": "^2.0.1"
   },
   "devDependencies": {
     "chai": "^3.4.0",
     "chai-as-promised": "^6.0.0",
-    "codecov": "^1.0.1",
-    "cz-conventional-changelog": "^1.1.4",
-    "del": "^2.0.2",
-    "gulp": "^3.4.0",
-    "gulp-istanbul": "^1.1.1",
-    "gulp-jscs": "^4.0.0",
-    "gulp-jshint": "^2.0.0",
-    "gulp-mocha": "^3.0.1",
-    "gulp-watch": "^4.3.5",
-    "jshint": "^2.8.0",
-    "jshint-stylish": "^2.0.1",
+    "codecov": "^2.0.2",
+    "eslint": "^3.16.1",
+    "eslint-config-xo-space": "^0.15.0",
+    "mocha": "^3.2.0",
     "nock": "^9.0.0",
+    "nyc": "^10.1.2",
     "proxyquire": "^1.7.4",
     "shelljs": "^0.7.0",
     "sinon": "^1.17.3",

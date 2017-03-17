@@ -1,7 +1,10 @@
 'use strict';
 
+/* eslint-disable no-unused-expressions */
+
 var chai = require('chai');
 var chaiAsPromised = require('chai-as-promised');
+var mocha = require('mocha');
 var mock = require('./index.mocks');
 var nock = require('nock');
 var sinonChai = require('sinon-chai');
@@ -10,8 +13,13 @@ chai.use(chaiAsPromised);
 chai.use(sinonChai);
 var expect = chai.expect;
 
-describe('semantic-release-gitlab', function () {
+var afterEach = mocha.afterEach;
+var before = mocha.before;
+var beforeEach = mocha.beforeEach;
+var describe = mocha.describe;
+var it = mocha.it;
 
+describe('semantic-release-gitlab', function () {
   before(function () {
     nock.disableNetConnect();
   });
@@ -32,13 +40,11 @@ describe('semantic-release-gitlab', function () {
   });
 
   describe('when a tag exists', function () {
-
     beforeEach(function () {
       this.mocks.gitLatestSemverTag.yields(null, '1.0.0');
     });
 
     describe('when there are commits', function () {
-
       it('resolves with released version if there are commits to release', function () {
         this.mocks.gitRawCommits.returns(createCommitStream());
         this.mocks.childProcess.exec.yields(null);
@@ -47,8 +53,10 @@ describe('semantic-release-gitlab', function () {
         var promise = this.semanticRelease();
 
         var _this = this;
+
         return expect(promise).to.be.fulfilled
           .and.to.eventually.equal('1.1.0')
+          // eslint-disable-next-line max-nested-callbacks
           .then(function () {
             expect(_this.mocks.childProcess.exec)
               .to.have.been.calledOnce;
@@ -81,7 +89,6 @@ describe('semantic-release-gitlab', function () {
     });
 
     describe('when there are no new commits', function () {
-
       it('resolves with null', function () {
         this.mocks.gitRawCommits.returns(createEmptyCommitStream());
 
@@ -90,6 +97,7 @@ describe('semantic-release-gitlab', function () {
         var _this = this;
         return expect(promise).to.be.fulfilled
           .and.to.eventually.equal(null)
+          // eslint-disable-next-line max-nested-callbacks
           .then(function () {
             expect(_this.mocks.bump).to.not.have.been.called;
           });
@@ -98,7 +106,6 @@ describe('semantic-release-gitlab', function () {
   });
 
   describe('when a tag does not exist', function () {
-
     beforeEach(function () {
       this.mocks.gitLatestSemverTag.yields(null, '');
     });
@@ -137,7 +144,6 @@ describe('semantic-release-gitlab', function () {
   });
 
   describe('when `git describe` fails', function () {
-
     beforeEach(function () {
       this.mocks.gitLatestSemverTag.yields('Not a git repo.', '');
     });
