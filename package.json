@@ -6,7 +6,7 @@
   },
   "bin": "./src/cli.js",
   "bugs": "https://gitlab.com/hyper-expanse/semantic-release-gitlab/issues",
-  "description": "Automatically publish packages to the npm registry for source code hosted on GitLab.",
+  "description": "Automatically generate a release, along with Git tag, on GitLab for source code hosted on GitLab.",
   "engines": {
     "node": "^6.9.0 || ^4.2.0",
     "npm": "^4.0.0 || ^3.0.0 || ^2.1.9"

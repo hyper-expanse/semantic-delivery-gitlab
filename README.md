@@ -3,7 +3,7 @@
 [![build status](https://gitlab.com/hyper-expanse/semantic-release-gitlab/badges/master/build.svg)](https://gitlab.com/hyper-expanse/semantic-release-gitlab/commits/master)
 [![codecov.io](https://codecov.io/gitlab/hyper-expanse/semantic-release-gitlab/coverage.svg?branch=master)](https://codecov.io/gitlab/hyper-expanse/semantic-release-gitlab?branch=master)
 
-> Automatically publish packages to the npm registry for source code hosted on GitLab.
+> Automatically generate a release, along with Git tag, on GitLab for source code hosted on GitLab.
 
 `semantic-release-gitlab` is designed to automate the process of releasing GitLab-hosted code to an npm registry.
 
