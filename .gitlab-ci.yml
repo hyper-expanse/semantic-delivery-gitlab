@@ -1,6 +1,6 @@
 stages:
     - test
-    - deploy
+    - release
 
 cache:
   paths:
@@ -25,7 +25,7 @@ cache:
 .yarn: &yarn
   script:
     - source ${HOME}/.bashrc
-    - yarn install && yarn test && $(yarn bin)/codecov
+    - yarn install --ignore-engines && yarn test && $(yarn bin)/codecov
 
 .npm: &npm
   script:
@@ -35,6 +35,11 @@ cache:
   <<: [*yarn]
   before_script:
     - curl -o- -L https://yarnpkg.com/install.sh | bash
+
+.yarn_latest_rc: &yarn_latest_rc
+  <<: [*yarn]
+  before_script:
+    - curl -o- -L https://yarnpkg.com/install.sh | bash -s -- --rc
 
 .npm_2: &npm_2
   <<: [*npm]
@@ -71,11 +76,12 @@ node_4_npm_4:
 
 node_4_npm_next:
   <<: [*common, *node_4, *npm_next]
-  allow_failure: true
 
 node_4_yarn_latest:
   <<: [*common, *node_4, *yarn_latest]
-  allow_failure: true
+
+node_4_yarn_latest_rc:
+  <<: [*common, *node_4, *yarn_latest_rc]
 
 node_6_npm_2:
   <<: [*common, *node_6, *npm_2]
@@ -95,7 +101,9 @@ node_6_npm_next:
 
 node_6_yarn_latest:
   <<: [*common, *node_6, *yarn_latest]
-  allow_failure: true
+
+node_6_yarn_latest_rc:
+  <<: [*common, *node_6, *yarn_latest_rc]
 
 node_next_npm_2:
   <<: [*common, *node_next, *npm_2]
@@ -115,14 +123,26 @@ node_next_npm_next:
 
 node_next_yarn_latest:
   <<: [*common, *node_next, *yarn_latest]
-  allow_failure: true
+
+node_next_yarn_latest_rc:
+  <<: [*common, *node_next, *yarn_latest_rc]
+
+release:
+  <<: [*node_6]
+  before_script:
+    - yarn install
+  only:
+    - master@hyper-expanse/semantic-release-gitlab
+  script:
+    - node ./src/cli.js
+  stage: release
 
 publish:
   <<: [*node_6]
   before_script:
-    - npm install --production
+    - yarn install
   only:
-    - master
+    - tags
+    - triggers
   script:
-    - node ./src/cli.js
-  stage: deploy
+    - $(yarn bin)/npm-publish-tag
