@@ -145,4 +145,4 @@ publish:
     - tags
     - triggers
   script:
-    - $(yarn bin)/npm-publish-tag
+    - $(yarn bin)/npm-publish-git-tag
