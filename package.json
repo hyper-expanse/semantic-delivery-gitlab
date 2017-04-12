@@ -60,7 +60,6 @@
     "nyc": "^10.1.2",
     "proxyquire": "^1.7.4",
     "sinon": "^2.1.0",
-    "sinon-as-promised": "^4.0.0",
     "sinon-chai": "^2.8.0"
   }
 }
