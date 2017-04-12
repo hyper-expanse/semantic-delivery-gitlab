@@ -2,7 +2,6 @@
 
 var proxyquire = require('proxyquire').noCallThru();
 var sinon = require('sinon');
-require('sinon-as-promised');
 
 var mocks = {
   bump: sinon.stub(),
