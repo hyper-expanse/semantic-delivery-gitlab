@@ -31,7 +31,7 @@
     "url": "https://gitlab.com/hyper-expanse/semantic-release-gitlab.git"
   },
   "scripts": {
-    "test": "eslint src/ && nyc --all --cache --exclude=src/**/*.mocks.js --exclude=src/**/*.spec.js --include=src/ --reporter=lcov --reporter=text mocha --check-leaks --full-trace --inline-diffs --no-exit --recursive --reporter=progress --retries 1 src/"
+    "test": "eslint src/ && nyc --all --cache --include=src/ --exclude=src/cli.js --exclude=src/**/*.spec.js --exclude=src/**/*.mocks.js --reporter=lcov --reporter=text mocha --check-leaks --full-trace --globals __core-js_shared__,__coverage__ --inline-diffs --no-exit --recursive --reporter=progress --retries 1 src/**/*.spec.js"
   },
   "version": "1.0.0",
   "dependencies": {
