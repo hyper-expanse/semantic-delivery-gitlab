@@ -3,35 +3,41 @@
 [![build status](https://gitlab.com/hyper-expanse/semantic-release-gitlab/badges/master/build.svg)](https://gitlab.com/hyper-expanse/semantic-release-gitlab/commits/master)
 [![codecov.io](https://codecov.io/gitlab/hyper-expanse/semantic-release-gitlab/coverage.svg?branch=master)](https://codecov.io/gitlab/hyper-expanse/semantic-release-gitlab?branch=master)
 
-> Automatically generate a release, along with Git tag, on GitLab for source code hosted on GitLab.
+> Automatically generate a release, along with a corresponding git tag, for GitLab-hosted source code.
 
-`semantic-release-gitlab` is designed to automate the process of releasing GitLab-hosted code to an npm registry.
+`semantic-release-gitlab` is designed to automate the process of releasing GitLab-hosted source code.
 
-Releasing GitLab-hosted code to an npm registry may include:
-* Getting a list of all commits to a project that have not been published.
+Releasing GitLab-hosted source code may include:
+* Getting a list of all commits to a project that have not been formally released.
 * Determining the appropriate [semantic version](http://semver.org/) to release.
 * Generating a git tag for the repository on GitLab with that version.
-* Publishing a list of changes included in that version.
-* Publishing an npm package containing those changes to an npm registry.
-* Informing people subscribed to GitLab issues or merge requests about the release.
+* Publishing a [GitLab release page](https://docs.gitlab.com/ce/workflow/releases.html) containing a list of changes included in that version.
+* Informing people subscribed to GitLab issues, or merge requests, about the release.
+
+While `semantic-release-gitlab` can be used locally on your command line, we strongly recommend using `semantic-release-gitlab` within a continuous integration job on platforms such as _GitLab CI_, or others.
 
 By automating these steps `semantic-release-gitlab` alleviates some of the overhead in managing a project, allowing you to quickly and consistently publish enhancements that provide value to your consumers.
 
-This idea, however, is not new. `semantic-release-gitlab` was heavily inspired by the work of [semantic-release](https://www.npmjs.com/package/semantic-release). If you have a GitHub project you're highly encouraged to check out `semantic-release`.
+This idea, however, is not new. `semantic-release-gitlab` was heavily inspired by the work of [semantic-release](https://www.npmjs.com/package/semantic-release).
 
 ## Features
 
-* [&#x2713;] Get a list of unpublished commits using [git-raw-commits](https://www.npmjs.com/package/git-raw-commits).
+* [&#x2713;] Get a list of unreleased commits using [ggit](https://www.npmjs.com/package/ggit).
 * [&#x2713;] Detect commit message convention used by a project with [conventional-commits-detector](https://www.npmjs.com/package/conventional-commits-detector).
-* [&#x2713;] Determine appropriate version to publish with [conventional-recommended-bump](https://www.npmjs.com/package/conventional-recommended-bump).
-* [&#x2713;] Publish package to the npm registry.
+* [&#x2713;] Determine appropriate version to release with [conventional-recommended-bump](https://www.npmjs.com/package/conventional-recommended-bump).
 * [&#x2713;] Publish a [GitLab release](http://docs.gitlab.com/ce/workflow/releases.html) using [conventional-gitlab-releaser](https://www.npmjs.com/package/conventional-gitlab-releaser) through the [semantic-release-gitlab-releaser](https://www.npmjs.com/package/semantic-release-gitlab-releaser) plugin.
-* [&#x2713;] Create an annotated [git tag](https://git-scm.com/book/en/v2/Git-Basics-Tagging) that can be fetched from GitLab.
-* [&#x2713;] Post a comment to GitLab issues closed by changes included in a package release through [semantic-release-gitlab-notifier](https://www.npmjs.com/package/semantic-release-gitlab-notifier) plugin.
+* [&#x2713;] Create an annotated [git tag](https://git-scm.com/book/en/v2/Git-Basics-Tagging) on GitLab.
+* [&#x2713;] Post a comment to GitLab issues closed by changes included in a release through [semantic-release-gitlab-notifier](https://www.npmjs.com/package/semantic-release-gitlab-notifier) plugin.
 
 ## Installation
 
-To install the `semantic-release-gitlab` tool for use in your project's release process please run the following command:
+To install the `semantic-release-gitlab` tool for use in your project's release process, please run the following command:
+
+```bash
+yarn add --dev semantic-release-gitlab
+```
+
+If you are using `npm`, then:
 
 ```bash
 npm install --save-dev semantic-release-gitlab
@@ -39,76 +45,74 @@ npm install --save-dev semantic-release-gitlab
 
 ## Usage
 
-Once installed `semantic-release-gitlab` may be invoked by executing the CLI tool exported by the package. Installed into your project's `node_modules` `bin` directory is the `semantic-release-gitlab` executable. It can be invoked directly by calling `$(npm bin)/semantic-release-gitlab`. To learn how `semantic-release-gitlab` can be used as part of your project's release process please see the _Continuous Integration and Delivery (CID) Setup_ section below.
+Once installed `semantic-release-gitlab` may be invoked by executing the CLI tool exported by its package. Installed into your project's `node_modules` binary directory is the `semantic-release-gitlab` executable. It can be invoked directly by calling `$(yarn bin)/semantic-release-gitlab` (`$(npm bin)` if using the `npm` package manager). To learn how `semantic-release-gitlab` can be used as part of your project's release process please see the _Continuous Integration and Delivery (CID) Setup_ section below.
 
-First step of `semantic-release-gitlab` is to get a list of commits made to your project after the latest semantic version tag. If no commits are found, which typically occurs if the latest commit in your project is pointed to by a semantic version tag, then `semantic-release-gitlab` will exit cleanly, and indicate that no changes can be released. This ensures you can run the release process multiple times only releasing new versions if there are unreleased commits. If commits are available, `semantic-release-gitlab` will proceed onto the next step.
+First step of `semantic-release-gitlab` is to get a list of commits made to your project after the latest semantic version tag. If no commits are found, which typically occurs if the latest commit in your project is pointed to by a semantic version tag, then `semantic-release-gitlab` will exit cleanly, and indicate that no changes can be released. This ensures you can run the release process multiple times, only releasing new versions if there are unreleased commits. If commits are available, `semantic-release-gitlab` will proceed to the next step.
 
-As noted under _Features_ we determine the commit convention used by your project with `conventional-commits-detector`. Once we have determined your commit message convention we pass that information on to `conventional-recommended-bump` to determine the appropriate version to publish.
+As noted under _Features_ we determine the commit convention used by your project with `conventional-commits-detector`. Once we have determined your commit message convention we pass that information on to `conventional-recommended-bump` to determine the appropriate version to release. For more information on how versions are determined, please see the _Version Selection_ section below.
 
-By default `conventional-recommended-bump` will recommend at least a `patch` release. Depending on the commit convention you follow, commits may be released as a `major` or `minor` release instead. For more information on how versions are determined, please see the _Version Selection_ section below.
+Once a version has been determined by `conventional-recommended-bump`, we generate a new [GitLab release page](http://docs.gitlab.com/ce/workflow/releases.html), with a list of all the changes made since the last version. Creating a GitLab release also creates an annotated git tag.
 
-For more on the meanings of `patch`, `minor`, and `major`, please see [Semantic Versioning](http://semver.org/).
+Lastly, a comment will be posted to every issue that is referenced in a released commit, informing subscribers to that issue of the recent release, including version number.
 
 ### Required Environment Settings
 
-For `semantic-release-gitlab` to publish packages to the npm registry, and a changelog to GitLab, several environment variables must be setup within your continuous integration job.
+For `semantic-release-gitlab` to publish a release to GitLab, an environment variable must be setup within your continuous integration job.
 
 | **Required Token** | **Environment Variable Name** |
 | ------------------ | ----------------------------- |
-| [npm token](http://blog.npmjs.org/post/118393368555/deploying-with-npm-private-modules) | `NPM_TOKEN` |
 | [GitLab Private Token](https://gitlab.com/profile/account) | `GITLAB_AUTH_TOKEN` |
 
-The account associated with the GitLab private token must have _Developer_ permissions on the project to be released to meet the requirements of `semantic-release-gitlab-releaser`. GitLab permissions are documented on the [GitLab Permissions](http://docs.gitlab.com/ce/user/permissions.html) site.
+The account associated with the GitLab private token must have _Developer_ permissions. Those permissions must be on the project to be released to meet the requirements of the `semantic-release-gitlab-releaser` plugin. GitLab permissions are documented on the [GitLab Permissions](http://docs.gitlab.com/ce/user/permissions.html) site.
 
 #### Setting HTTP Protocol for GitLab Integration
 
-By default all API calls to GitLab are made over HTTPS. If, for some reason, that's impossible, those API calls can be made over HTTP instead. To use HTTP set the environment variable `GITLAB_INSECURE_API` to `true`. Other values, including not setting the environment variable, will cause `semantic-release-gitlab` to use HTTPS.
+By default all API calls to GitLab are made over HTTPS. To use HTTP set the environment variable `GITLAB_INSECURE_API` to `true`. Other values, including not setting the environment variable, will cause `semantic-release-gitlab` to use HTTPS.
 
 > We strongly advise against communicating with GitLab over HTTP, but this option is supported for those cases where configuring SSL for GitLab is not feasible.
 
 ### Continuous Integration and Delivery (CID) Setup
 
-Since `semantic-release-gitlab` relies solely on a few environment variables, and a package published on the public npm registry, `semantic-release-gitlab` is compatible with all continuous integration platforms that work with GitLab.
+Since `semantic-release-gitlab` relies on a GitLab token, and a package published to the public npm registry, `semantic-release-gitlab` works on any GitLab-compatible continuous integration platform.
 
-However, given the enormous number of CI providers available I will only cover the CI system built into GitLab.
+However, given the enormous number of CI providers available, we will only cover the CI system built into GitLab.
 
-Configuring GitLab CI builds is facilitated through a `.gitlab-ci.yml` configuration file. To publish changes using `semantic-release-gitlab` you will need to create a dedicated build stage that happens only after all other build and test tasks have completed successfully.
+Configuring a GitLab CI job is facilitated through a `.gitlab-ci.yml` configuration file kept at the root of your project. To publish changes using `semantic-release-gitlab` you will need to create a dedicated build stage that executes only after all other builds and tests have completed successfully.
 
-In GitLab CI that is possible by creating a dedicated `deploy` stage and adding it as the last item under `stages`. Next, create a job called `publish` that belongs to the `deploy` stage. Within `publish` we call `semantic-release-gitlab`.
+That can be done with GitLab CI by creating a dedicated `release` stage and adding it as the last item under `stages`. Next, create a job called `release` add it to the `release` stage. Within `release` call `semantic-release-gitlab`.
 
-You can see a snippet of a `.gitlab-ci.yml` file with this setup below:
+You can see a snippet of a `.gitlab-ci.yml` file below with this setup:
 
 ```yaml
 stages:
   - build
   - test
-  - deploy
+  - release
 
-publish:
+release:
   before_script:
-    - npm install semantic-release-gitlab
+    - yarn install
+  image: node:6
   only:
     - master@<GROUP>/<PROJECT>
   script:
-    - $(npm bin)/semantic-release-gitlab
-  stage: deploy
+    - $(yarn bin)/semantic-release-gitlab
+  stage: release
 ```
 
 Full documentation for GitLab CI is available on the [GitLab CI](http://docs.gitlab.com/ce/ci/yaml/README.html) website.
 
 You may also take a look at our [.gitlab-ci.yml](https://gitlab.com/hyper-expanse/semantic-release-gitlab/blob/master/.gitlab-ci.yml) file as an example.
 
-## Publishing Elsewhere Besides Public npm Registry
+## How to Publish Project to an npm Registry
 
-It's possible to publish your package to any npm registry, not just the official public registry. When publishing a package `semantic-release-gitlab` uses the built-in `publish` command of npm. Any features supported by `npm publish` are available. For example, you may specify, on a per-project basis, which registry to publish your package to by setting the [publishConfig](https://docs.npmjs.com/misc/registry#i-dont-want-my-package-published-in-the-official-registry-its-private) property in your project's `package.json` file.
-
-Alternative registries may include on-premise solutions such as [Artifactory](https://www.jfrog.com/artifactory/) and [npm enterprise](https://www.npmjs.com/enterprise).
+Once `semantic-release-gitlab` has created a release on GitLab, the next step for an `npm` package is to publish that package to an `npm`-compatible repository. To publish your project to an `npm`-compatible registry, please use [npm-publish-git-tag](https://www.npmjs.com/package/npm-publish-git-tag).
 
 ## Version Selection
 
-As noted earlier `semantic-release-gitlab` uses [conventional-recommended-bump](https://www.npmjs.com/package/conventional-recommended-bump) to determine the version to use when publishing a package. If `conventional-recommended-bump` indicates that no valid version could be determined, typically because it believes no new version should be released, then `semantic-release-gitlab` will **not** publish the package.
+As noted earlier `semantic-release-gitlab` uses [conventional-recommended-bump](https://www.npmjs.com/package/conventional-recommended-bump) to determine the version to use when releasing. If `conventional-recommended-bump` indicates that no new release should be made then `semantic-release-gitlab` will **not** release a new version of the project.
 
-Rules used by `conventional-recommended-bump` are housed in it's repository. If you have any questions or concerns regarding those rules, or the version provided by `conventional-recommended-bump`, please reach out to their project on GitHub.
+Rules used by `conventional-recommended-bump` are housed in it's repository. If you have any questions or concerns regarding those rules, or the version recommended by `conventional-recommended-bump`, please reach out to their project.
 
 ## Debugging
 
@@ -133,14 +137,28 @@ All `semantic-release-gitlab` plugins use `debug` to print information to the co
 DEBUG=semantic-release-gitlab* semantic-release-gitlab
 ```
 
-`semantic-release-gitlab` uses numerous other npm packages and many of those use the `debug` utility package as well. For example to print the debug messages from [npm-utils](https://www.npmjs.com/package/npm-utils) you may assign `semantic-relesae-gitlab` and `npm-utils` to the `DEBUG` environment variable like so:
+You may also print debug messages for the underlying HTTP request library, [request](https://www.npmjs.com/package/request), by setting the `NODE_DEBUG` environment variable to `request`, as [shown in their documentation](https://www.npmjs.com/package/request#debugging).
+
+As an example:
 
 ```bash
-DEBUG=semantic-release-gitlab,npm-utils semantic-release-gitlab
+NODE_DEBUG=request npm-publish-git-tag
 ```
 
-You may also print debug messages for the underlying HTTP request library, [request](https://www.npmjs.com/package/request), by setting the `NODE_DEBUG` environment variable to `request`, as [shown in their documentation](https://www.npmjs.com/package/request#debugging).
+## Node Support Policy
+
+We only support [Long-Term Support](https://github.com/nodejs/LTS) versions of Node.
+
+We specifically limit our support to LTS versions of Node, not because this package won't work on other versions, but because we have a limited amount of time, and supporting LTS offers the greatest return on that investment.
+
+It's possible this package will work correctly on newer versions of Node. It may even be possible to use this package on older versions of Node, though that's more unlikely as we'll make every effort to take advantage of features available in the oldest LTS version we support.
+
+As each Node LTS version reaches its end-of-life we will remove that version from the `node` `engines` property of our package's `package.json` file. Removing a Node version is considered a breaking change and will entail the publishing of a new major version of this package. We will not accept any requests to support an end-of-life version of Node. Any merge requests or issues supporting an end-of-life version of Node will be closed.
+
+We will accept code that allows this package to run on newer, non-LTS, versions of Node. Furthermore, we will attempt to ensure our own changes work on the latest version of Node. To help in that commitment, our continuous integration setup runs against all LTS versions of Node in addition the most recent Node release; called _current_.
+
+JavaScript package managers should allow you to install this package with any version of Node, with, at most, a warning if your version of Node does not fall within the range specified by our `node` `engines` property. If you encounter issues installing this package, please report the issue to your package manager.
 
 ## Contributing
 
-Please read our [contributing](https://gitlab.com/hyper-expanse/semantic-release-gitlab/blob/master/CONTRIBUTING.md) guide on how you can help improve this project.
+Please read our [contributing guide](https://gitlab.com/hyper-expanse/semantic-release-gitlab/blob/master/CONTRIBUTING.md) to see how you may contribute to this project.

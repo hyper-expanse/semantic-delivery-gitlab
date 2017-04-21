@@ -6,7 +6,7 @@
   },
   "bin": "./src/cli.js",
   "bugs": "https://gitlab.com/hyper-expanse/semantic-release-gitlab/issues",
-  "description": "Automatically generate a release, along with Git tag, on GitLab for source code hosted on GitLab.",
+  "description": "Automatically generate a release, along with a corresponding git tag, for GitLab-hosted source code.",
   "engines": {
     "node": "^6.9.0 || ^4.2.0",
     "npm": "^4.0.0 || ^3.0.0 || ^2.1.9"
@@ -31,7 +31,7 @@
     "url": "https://gitlab.com/hyper-expanse/semantic-release-gitlab.git"
   },
   "scripts": {
-    "test": "eslint src/ && nyc --all --cache --include=src/ --exclude=src/cli.js --exclude=src/**/*.spec.js --exclude=src/**/*.mocks.js --reporter=lcov --reporter=text mocha --check-leaks --full-trace --globals __core-js_shared__,__coverage__ --inline-diffs --no-exit --recursive --reporter=progress --retries 1 src/**/*.spec.js"
+    "test": "eslint src/ && nyc --all --cache --include=src/ --exclude=src/cli.js --exclude=src/**/*.spec.js --exclude=src/**/*.mocks.js --reporter=lcov --reporter=text mocha --check-leaks --full-trace --globals __core-js_shared__,__coverage__,YamlEscaper --inline-diffs --no-exit --recursive --reporter=progress --retries 0 src/**/*.spec.js"
   },
   "version": "1.0.0",
   "dependencies": {
@@ -40,14 +40,12 @@
     "conventional-commits-detector": "^0.1.1",
     "conventional-recommended-bump": "^1.0.0",
     "debug": "^2.2.0",
-    "git-latest-semver-tag": "^1.0.1",
-    "git-raw-commits": "^1.1.0",
+    "ggit": "^1.13.7",
     "lodash": "^4.7.0",
-    "npm-utils": "^1.8.0",
     "semantic-release-gitlab-notifier": "^5.0.0",
     "semantic-release-gitlab-releaser": "^3.0.3",
     "semver": "^5.1.0",
-    "through2": "^2.0.1"
+    "shelljs": "^0.7.7"
   },
   "devDependencies": {
     "chai": "^3.4.0",
@@ -58,8 +56,6 @@
     "mocha": "^3.2.0",
     "nock": "^9.0.0",
     "nyc": "^10.1.2",
-    "proxyquire": "^1.7.4",
-    "sinon": "^2.1.0",
-    "sinon-chai": "^2.8.0"
+    "tmp": "^0.0.31"
   }
 }

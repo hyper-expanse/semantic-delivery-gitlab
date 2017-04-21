@@ -2,26 +2,21 @@
 
 'use strict';
 
-var program = require('commander');
-var semanticRelease = require('./index.js');
+const pkg = require(`../package.json`);
+var program = require(`commander`);
+var semanticRelease = require(`./index.js`);
 
 program
-  .version(require('../package.json').version)
+  .description(pkg.description)
+  .version(pkg.version)
   .parse(process.argv)
 ;
 
 semanticRelease()
   .then(function (releasedVersion) {
-    if (releasedVersion === null) {
-      console.log('No changes are available to release.');
-    } else {
-      console.log('Released version ' + releasedVersion);
-    }
-
-    process.exit(0);
+    const message = releasedVersion ?
+      `Released version ${releasedVersion}` :
+      `No changes are available to release.`;
+    console.log(message);
   })
-  .catch(function (err) {
-    console.error(err.message);
-
-    process.exit(1);
-  });
+;

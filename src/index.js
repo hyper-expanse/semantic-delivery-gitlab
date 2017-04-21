@@ -1,104 +1,78 @@
 'use strict';
 
-var Bluebird = require('bluebird');
-var bump = require('./bump');
-var conventionalCommitsDetector = require('conventional-commits-detector');
-var exec = Bluebird.promisify(require('child_process').exec);
-var gitlabNotifier = require('semantic-release-gitlab-notifier');
-var gitlabReleaser = require('semantic-release-gitlab-releaser');
-var gitRawCommits = require('git-raw-commits');
-var gitLatestSemverTag = Bluebird.promisify(require('git-latest-semver-tag'));
-var npmUtils = require('npm-utils');
-var path = require('path');
-var through = require('through2');
-var debug = require('debug')('semantic-release-gitlab');
+const _ = require(`lodash`);
+const Bluebird = require(`bluebird`);
+const commits = require(`ggit`).commits;
+const conventionalCommitsDetector = require(`conventional-commits-detector`);
+const debug = require(`debug`)(`semantic-release-gitlab`);
+const fs = require(`fs`);
+const gitlabNotifier = require(`semantic-release-gitlab-notifier`);
+const gitlabReleaser = require(`semantic-release-gitlab-releaser`);
+const recommendedBump = Bluebird.promisify(require(`conventional-recommended-bump`));
+const path = require(`path`);
+const semver = require(`semver`);
+const shell = require(`shelljs`);
+const tags = require(`ggit`).tags;
 
 module.exports = semanticRelease;
 
-var config = {data: {}, options: {}};
-
 function semanticRelease() {
-  return gitLatestSemverTag()
-    .then(function (lastTag) {
-      if (lastTag) {
-        debug('%s is latest version of project', lastTag);
-      } else {
-        debug('no previous version found for this project');
+  return commits.afterLastTag(false)
+    .then(_.partial(_.map, _, `message`))
+    .then(function (commits) {
+      debug(`commit messages - %O`, commits);
+
+      if (commits.length === 0) {
+        return debug(`no commits to release so skipping the other release steps`);
       }
 
-      return lastTag;
-    })
-    .then(processLastTag);
-}
-
-function processLastTag(lastTag) {
-  return new Bluebird(function (resolve, reject) {
-    // If a tag exists get commits since the latest tag. If no tag exists then get all commits.
-    var commits = [];
-    gitRawCommits({from: lastTag.length === 0 ? '' : lastTag})
-      .pipe(through(
-        function (buffer, enc, cb) {
-          commits.push(buffer.toString());
-          cb();
+      const config = {
+        data: {
+          commits: commits,
         },
+        pkg: JSON.parse(fs.readFileSync(path.join(process.cwd(), `package.json`))),
+        options: {
+          scmToken: process.env.GITLAB_AUTH_TOKEN,
+          insecureApi: process.env.GITLAB_INSECURE_API === `true`,
+          preset: conventionalCommitsDetector(commits),
+        },
+      };
 
-        function (cb) {
-          debug('fetched %d commits', commits.length);
+      debug(`detected ${config.options.preset} commit convention`);
 
-          if (commits.length === 0) {
-            debug('no commits to release so terminating release process now');
+      config.options.preset = config.options.preset === `unknown` ?
+        `angular` : config.options.preset;
 
-            return resolve(null);
+      debug(`using ${config.options.preset} commit convention`);
+
+      return recommendedBump({ignoreReverted: false, preset: config.options.preset})
+        .then(function (recommendation) {
+          debug(`recommended version bump is - %O`, recommendation);
+
+          if (recommendation.releaseType === undefined) {
+            return debug(`no recommended release so skipping the other release steps`);
           }
 
-          config.data.commits = commits;
-          config.options.debug = false;
-          config.options.scmToken = process.env.GITLAB_AUTH_TOKEN;
-          config.options.insecureApi = process.env.GITLAB_INSECURE_API === 'true';
-          config.options.preset = conventionalCommitsDetector(commits);
+          return tags()
+            .then(_.partial(debugAndReturn, `tags`, _))
+            .then(_.last)
+            .then(_.partial(_.get, _, `tag`))
+            .then(_.partial(debugAndReturn, `last tag`, _))
+            .then(latestTag => latestTag === undefined ? `1.0.0` : semver.inc(latestTag, recommendation.releaseType))
+            .then(_.partial(debugAndReturn, `version to be released`, _))
+            .then(_.partial(_.set, config, `data.version`, _))
+            .then(config => shell.exec(`git tag ${config.data.version}`))
+            .then(_.partial(gitlabReleaser, config))
+            .then(_.partial(gitlabNotifier, config))
+            .then(() => config.data.version)
+          ;
+        })
+      ;
+    })
+  ;
+}
 
-          debug('detected %s commit convention', config.options.preset);
-
-          config.options.preset = config.options.preset === 'unknown' ?
-            'angular' : config.options.preset;
-
-          debug('using %s commit convention', config.options.preset);
-
-          config.pkg = require(path.join(process.cwd(), 'package.json'));
-
-          bump(lastTag, config.options.preset)
-            .then(function (toBeReleasedVersion) {
-              config.data.version = toBeReleasedVersion;
-            })
-            .then(npmUtils.setAuthToken)
-            .then(function () {
-              debug('publishing to npm');
-            })
-            .then(npmUtils.publish)
-            .then(function () {
-              debug('tagging git commit');
-
-              return exec('git tag ' + config.data.version);
-            })
-            .then(function () {
-              debug('running semantic-release-gitlab-releaser plugin');
-
-              return gitlabReleaser(config);
-            })
-            .then(function () {
-              debug('running semantic-release-gitlab-notifier plugin');
-
-              return gitlabNotifier(config);
-            })
-            .then(function () {
-              debug('finished releasing version %s', config.data.version);
-
-              resolve(config.data.version);
-            })
-            .catch(reject);
-
-          cb();
-        }
-    ));
-  });
+function debugAndReturn(message, value) {
+  debug(message, value);
+  return value;
 }
