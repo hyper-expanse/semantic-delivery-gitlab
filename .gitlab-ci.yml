@@ -25,11 +25,11 @@ cache:
 .yarn: &yarn
   script:
     - source ${HOME}/.bashrc
-    - yarn install --ignore-engines && yarn test && $(yarn bin)/codecov
+    - yarn install --ignore-engines && yarn test && ($(yarn bin)/codecov || echo "Codecov did not collect coverage reports")
 
 .npm: &npm
   script:
-    - npm update && npm test && $(npm bin)/codecov
+    - npm update && npm test && ($(npm bin)/codecov || echo "Codecov did not collect coverage reports")
 
 .yarn_latest: &yarn_latest
   <<: [*yarn]
