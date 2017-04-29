@@ -130,7 +130,6 @@ node_next_yarn_latest_rc:
 release:
   <<: [*node_6]
   before_script:
-    - rm -rf node_modules
     - yarn install
   only:
     - master@hyper-expanse/semantic-release-gitlab
