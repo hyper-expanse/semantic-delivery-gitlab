@@ -134,7 +134,7 @@ release:
   only:
     - master@hyper-expanse/semantic-release-gitlab
   script:
-    - node ./src/cli.js
+    - DEBUG=semantic-release-gitlab node ./src/cli.js
   stage: release
 
 publish:
