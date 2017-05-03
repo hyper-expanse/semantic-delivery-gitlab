@@ -5,16 +5,12 @@
 
 > Automatically generate a release, along with a corresponding git tag, for GitLab-hosted source code.
 
-`semantic-release-gitlab` is designed to automate the process of releasing GitLab-hosted source code.
-
 Releasing GitLab-hosted source code may include:
 * Getting a list of all commits to a project that have not been formally released.
 * Determining the appropriate [semantic version](http://semver.org/) to release.
 * Generating a git tag for the repository on GitLab with that version.
 * Publishing a [GitLab release page](https://docs.gitlab.com/ce/workflow/releases.html) containing a list of changes included in that version.
 * Informing people subscribed to GitLab issues, or merge requests, about the release.
-
-While `semantic-release-gitlab` can be used locally on your command line, we strongly recommend using `semantic-release-gitlab` within a continuous integration job on platforms such as _GitLab CI_, or others.
 
 By automating these steps `semantic-release-gitlab` alleviates some of the overhead in managing a project, allowing you to quickly and consistently publish enhancements that provide value to your consumers.
 
@@ -37,7 +33,7 @@ To install the `semantic-release-gitlab` tool for use in your project's release 
 yarn add --dev semantic-release-gitlab
 ```
 
-If you are using `npm`, then:
+If you are using the `npm` package manager:
 
 ```bash
 npm install --save-dev semantic-release-gitlab
@@ -45,25 +41,39 @@ npm install --save-dev semantic-release-gitlab
 
 ## Usage
 
-Once installed `semantic-release-gitlab` may be invoked by executing the CLI tool exported by its package. Installed into your project's `node_modules` binary directory is the `semantic-release-gitlab` executable. It can be invoked directly by calling `$(yarn bin)/semantic-release-gitlab` (`$(npm bin)` if using the `npm` package manager). To learn how `semantic-release-gitlab` can be used as part of your project's release process please see the _Continuous Integration and Delivery (CID) Setup_ section below.
+Setup the environment variable described in the _Required Environment Variable_ section.
+
+Then call `semantic-release-gitlab`:
+
+```bash
+$(yarn bin)/semantic-release-gitlab
+```
+
+If you're using the `npm` package manager:
+
+```bash
+$(npm bin)/semantic-release-gitlab
+```
+
+To learn how `semantic-release-gitlab` can be used to automate your project's release process, which we highly recommend, please see the _Continuous Integration and Delivery (CID) Setup_ section below.
+
+### How the Release Happens
 
 First step of `semantic-release-gitlab` is to get a list of commits made to your project after the latest semantic version tag. If no commits are found, which typically occurs if the latest commit in your project is pointed to by a semantic version tag, then `semantic-release-gitlab` will exit cleanly, and indicate that no changes can be released. This ensures you can run the release process multiple times, only releasing new versions if there are unreleased commits. If commits are available, `semantic-release-gitlab` will proceed to the next step.
 
-As noted under _Features_ we determine the commit convention used by your project with `conventional-commits-detector`. Once we have determined your commit message convention we pass that information on to `conventional-recommended-bump` to determine the appropriate version to release. For more information on how versions are determined, please see the _Version Selection_ section below.
+We then determine the commit convention used by your project with `conventional-commits-detector`. Once we have determined your commit message convention we pass that information on to `conventional-recommended-bump` to determine the appropriate version to release. For more information on how versions are determined, please see the _Version Selection_ section below.
 
-Once a version has been determined by `conventional-recommended-bump`, we generate a new [GitLab release page](http://docs.gitlab.com/ce/workflow/releases.html), with a list of all the changes made since the last version. Creating a GitLab release also creates an annotated git tag.
+Once a version has been determined by `conventional-recommended-bump`, we generate a new [GitLab release page](http://docs.gitlab.com/ce/workflow/releases.html), with a list of all the changes made since the last version. Creating a GitLab release also creates an annotated git tag (Which you can then `git fetch`).
 
 Lastly, a comment will be posted to every issue that is referenced in a released commit, informing subscribers to that issue of the recent release, including version number.
 
-### Required Environment Settings
+### Required Environment Variable
 
-For `semantic-release-gitlab` to publish a release to GitLab, an environment variable must be setup within your continuous integration job.
+For `semantic-release-gitlab` to publish a release to GitLab a [GitLab Private Token](https://gitlab.com/profile/account) must be setup within your environment.
 
-| **Required Token** | **Environment Variable Name** |
-| ------------------ | ----------------------------- |
-| [GitLab Private Token](https://gitlab.com/profile/account) | `GITLAB_AUTH_TOKEN` |
+**Environment variable name** - `GITLAB_AUTH_TOKEN`
 
-The account associated with the GitLab private token must have _Developer_ permissions. Those permissions must be on the project to be released to meet the requirements of the `semantic-release-gitlab-releaser` plugin. GitLab permissions are documented on the [GitLab Permissions](http://docs.gitlab.com/ce/user/permissions.html) site.
+The account associated with the GitLab private token must have _Developer_ permissions. Those permissions must exist on the project to be released to meet the requirements of the `semantic-release-gitlab-releaser` plugin. GitLab permissions are documented on the [GitLab Permissions](http://docs.gitlab.com/ce/user/permissions.html) site.
 
 #### Setting HTTP Protocol for GitLab Integration
 
@@ -100,7 +110,7 @@ release:
   stage: release
 ```
 
-Full documentation for GitLab CI is available on the [GitLab CI](http://docs.gitlab.com/ce/ci/yaml/README.html) website.
+Full documentation for GitLab CI is available on the [GitLab CI](http://docs.gitlab.com/ce/ci/yaml/README.html) site.
 
 You may also take a look at our [.gitlab-ci.yml](https://gitlab.com/hyper-expanse/semantic-release-gitlab/blob/master/.gitlab-ci.yml) file as an example.
 
