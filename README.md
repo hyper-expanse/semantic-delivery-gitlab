@@ -23,7 +23,7 @@ This idea, however, is not new. `semantic-release-gitlab` was heavily inspired b
 * [&#x2713;] Determine appropriate version to release with [conventional-recommended-bump](https://www.npmjs.com/package/conventional-recommended-bump).
 * [&#x2713;] Publish a [GitLab release](http://docs.gitlab.com/ce/workflow/releases.html) using [conventional-gitlab-releaser](https://www.npmjs.com/package/conventional-gitlab-releaser) through the [semantic-release-gitlab-releaser](https://www.npmjs.com/package/semantic-release-gitlab-releaser) plugin.
 * [&#x2713;] Create an annotated [git tag](https://git-scm.com/book/en/v2/Git-Basics-Tagging) on GitLab.
-* [&#x2713;] Post a comment to GitLab issues closed by changes included in a release through [semantic-release-gitlab-notifier](https://www.npmjs.com/package/semantic-release-gitlab-notifier) plugin.
+* [&#x2713;] Post a comment to GitLab issues closed by changes included in a release through the [semantic-release-gitlab-notifier](https://www.npmjs.com/package/semantic-release-gitlab-notifier) plugin.
 
 ## Installation
 
@@ -43,7 +43,7 @@ npm install --save-dev semantic-release-gitlab
 
 Setup the environment variable described in the _Required Environment Variable_ section.
 
-Then call `semantic-release-gitlab`:
+Then call `semantic-release-gitlab` from within your project's folder:
 
 ```bash
 $(yarn bin)/semantic-release-gitlab
