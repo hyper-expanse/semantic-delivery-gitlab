@@ -27,7 +27,7 @@ This idea, however, is not new. `semantic-release-gitlab` was heavily inspired b
 
 ## Installation
 
-To install the `semantic-release-gitlab` tool for use in your project's release process, please run the following command:
+To install the `semantic-release-gitlab` tool for use in your project's release process please run the following command:
 
 ```bash
 yarn add --dev semantic-release-gitlab
@@ -43,7 +43,7 @@ npm install --save-dev semantic-release-gitlab
 
 Setup the environment variable described in the _Required Environment Variable_ section.
 
-Then call `semantic-release-gitlab` from within your project's folder:
+Then call `semantic-release-gitlab` from within your project's top folder:
 
 ```bash
 $(yarn bin)/semantic-release-gitlab
@@ -55,13 +55,13 @@ If you're using the `npm` package manager:
 $(npm bin)/semantic-release-gitlab
 ```
 
-To learn how `semantic-release-gitlab` can be used to automate your project's release process, which we highly recommend, please see the _Continuous Integration and Delivery (CID) Setup_ section below.
+To learn how `semantic-release-gitlab` can be used to automatically release your project when new changes are pushed to your repository, which we highly recommend, please see the _Continuous Integration and Delivery (CID) Setup_ section below.
 
 ### How the Release Happens
 
-First step of `semantic-release-gitlab` is to get a list of commits made to your project after the latest semantic version tag. If no commits are found, which typically occurs if the latest commit in your project is pointed to by a semantic version tag, then `semantic-release-gitlab` will exit cleanly, and indicate that no changes can be released. This ensures you can run the release process multiple times, only releasing new versions if there are unreleased commits. If commits are available, `semantic-release-gitlab` will proceed to the next step.
+First step of `semantic-release-gitlab` is to get a list of commits made to your project after the latest semantic version tag. If no commits are found, which typically occurs if the latest commit in your project is pointed to by a semantic version tag, then `semantic-release-gitlab` will exit cleanly and indicate that no changes can be released. This ensures you can run the release process multiple times, only releasing new versions if there are unreleased commits. If commits are available, `semantic-release-gitlab` will proceed to the next step.
 
-We then determine the commit convention used by your project with `conventional-commits-detector`. Once we have determined your commit message convention we pass that information on to `conventional-recommended-bump` to determine the appropriate version to release. For more information on how versions are determined, please see the _Version Selection_ section below.
+Then `semantic-release-gitlab` determines the commit convention used by your project with `conventional-commits-detector`. Once we have determined your commit message convention we pass that information on to `conventional-recommended-bump` to determine the appropriate version to release. For more information on how versions are determined, please see the _Version Selection_ section below.
 
 Once a version has been determined by `conventional-recommended-bump`, we generate a new [GitLab release page](http://docs.gitlab.com/ce/workflow/releases.html), with a list of all the changes made since the last version. Creating a GitLab release also creates an annotated git tag (Which you can then `git fetch`).
 
@@ -73,7 +73,11 @@ For `semantic-release-gitlab` to publish a release to GitLab a [GitLab Private T
 
 **Environment variable name** - `GITLAB_AUTH_TOKEN`
 
-The account associated with the GitLab private token must have _Developer_ permissions. Those permissions must exist on the project to be released to meet the requirements of the `semantic-release-gitlab-releaser` plugin. GitLab permissions are documented on the [GitLab Permissions](http://docs.gitlab.com/ce/user/permissions.html) site.
+The account associated with the GitLab private token must have _Developer_ permissions. That account must be a member of the project you're wanting to automatically release.
+
+> The permissions are required by the `semantic-release-gitlab-releaser` plugin.
+
+> GitLab permissions are documented on the [GitLab Permissions](http://docs.gitlab.com/ce/user/permissions.html) site.
 
 #### Setting HTTP Protocol for GitLab Integration
 
@@ -120,7 +124,7 @@ Once `semantic-release-gitlab` has created a release on GitLab, the next step fo
 
 ## Version Selection
 
-As noted earlier `semantic-release-gitlab` uses [conventional-recommended-bump](https://www.npmjs.com/package/conventional-recommended-bump) to determine the version to use when releasing. If `conventional-recommended-bump` indicates that no new release should be made then `semantic-release-gitlab` will **not** release a new version of the project.
+As noted earlier `semantic-release-gitlab` uses [conventional-recommended-bump](https://www.npmjs.com/package/conventional-recommended-bump) to determine the version to use when releasing. If `conventional-recommended-bump` indicates that no new release should be made then `semantic-release-gitlab` will **not** release a new version of your project.
 
 Rules used by `conventional-recommended-bump` are housed in it's repository. If you have any questions or concerns regarding those rules, or the version recommended by `conventional-recommended-bump`, please reach out to their project.
 
