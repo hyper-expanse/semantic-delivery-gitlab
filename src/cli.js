@@ -19,4 +19,8 @@ semanticRelease()
       `No changes are available to release.`;
     console.log(message);
   })
+  .catch((error) => {
+    console.error(`semantic-release-gitlab failed for the following reason - ${error}`);
+    process.exit(1);
+  })
 ;
