@@ -143,6 +143,5 @@ publish:
     - yarn install
   only:
     - tags
-    - triggers
   script:
     - $(yarn bin)/npm-publish-git-tag
