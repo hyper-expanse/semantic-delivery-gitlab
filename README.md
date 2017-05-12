@@ -12,7 +12,7 @@ Releasing GitLab-hosted source code may include:
 * Publishing a [GitLab release page](https://docs.gitlab.com/ce/workflow/releases.html) containing a list of changes included in that version.
 * Informing people subscribed to GitLab issues, or merge requests, about the release.
 
-By automating these steps `semantic-release-gitlab` alleviates some of the overhead in managing a project, allowing you to quickly and consistently publish enhancements that provide value to your consumers.
+By automating these steps `semantic-release-gitlab` alleviates some of the overhead in managing a project, allowing you to quickly and consistently release enhancements that provide value to your consumers.
 
 This idea, however, is not new. `semantic-release-gitlab` was heavily inspired by the work of [semantic-release](https://www.npmjs.com/package/semantic-release).
 
@@ -93,7 +93,7 @@ However, given the enormous number of CI providers available, we will only cover
 
 Configuring a GitLab CI job is facilitated through a `.gitlab-ci.yml` configuration file kept at the root of your project. To publish changes using `semantic-release-gitlab` you will need to create a dedicated build stage that executes only after all other builds and tests have completed successfully.
 
-That can be done with GitLab CI by creating a dedicated `release` stage and adding it as the last item under `stages`. Next, create a job called `release` add it to the `release` stage. Within `release` call `semantic-release-gitlab`.
+That can be done with GitLab CI by creating a dedicated `release` stage and adding it as the last item under `stages`. Next, create a job called `release` and add it to the `release` stage. Within `release` call `semantic-release-gitlab`.
 
 You can see a snippet of a `.gitlab-ci.yml` file below with this setup:
 
@@ -105,7 +105,7 @@ stages:
 
 release:
   before_script:
-    - yarn install
+    - yarn install --freeze-lockfile
   image: node:6
   only:
     - master@<GROUP>/<PROJECT>
@@ -120,7 +120,7 @@ You may also take a look at our [.gitlab-ci.yml](https://gitlab.com/hyper-expans
 
 ## How to Publish Project to an npm Registry
 
-Once `semantic-release-gitlab` has created a release on GitLab, the next step for an `npm` package is to publish that package to an `npm`-compatible repository. To publish your project to an `npm`-compatible registry, please use [npm-publish-git-tag](https://www.npmjs.com/package/npm-publish-git-tag).
+Once `semantic-release-gitlab` has created a release on GitLab, the next step for an `npm` package is to publish that package to an `npm`-compatible registry. To publish your project to an `npm`-compatible registry, please use [npm-publish-git-tag](https://www.npmjs.com/package/npm-publish-git-tag).
 
 ## Version Selection
 
@@ -156,7 +156,7 @@ You may also print debug messages for the underlying HTTP request library, [requ
 As an example:
 
 ```bash
-NODE_DEBUG=request npm-publish-git-tag
+NODE_DEBUG=request semantic-release-gitlab
 ```
 
 ## Node Support Policy
