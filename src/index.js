@@ -9,10 +9,10 @@ const fs = require(`fs`);
 const gitlabNotifier = require(`semantic-release-gitlab-notifier`);
 const gitlabReleaser = require(`semantic-release-gitlab-releaser`);
 const recommendedBump = Bluebird.promisify(require(`conventional-recommended-bump`));
+const latestSemverTag = Bluebird.promisify(require(`git-latest-semver-tag`));
 const path = require(`path`);
 const semver = require(`semver`);
 const shell = require(`shelljs`);
-const tags = require(`ggit`).tags;
 
 module.exports = semanticRelease;
 
@@ -53,12 +53,9 @@ function semanticRelease() {
             return debug(`no recommended release so skipping the other release steps`);
           }
 
-          return tags()
-            .then(_.partial(debugAndReturn, `tags`, _))
-            .then(_.last)
-            .then(_.partial(_.get, _, `tag`))
+          return latestSemverTag()
             .then(_.partial(debugAndReturn, `last tag`, _))
-            .then(latestTag => latestTag === undefined ? `1.0.0` : semver.inc(latestTag, recommendation.releaseType))
+            .then(latestTag => latestTag === '' ? `1.0.0` : semver.inc(latestTag, recommendation.releaseType))
             .then(_.partial(debugAndReturn, `version to be released`, _))
             .then(_.partial(_.set, config, `data.version`, _))
             .then(config => shell.exec(`git tag ${config.data.version}`))
