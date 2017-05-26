@@ -87,6 +87,8 @@ Core features used:
 * [GitLab release page](http://docs.gitlab.com/ce/workflow/releases.html)
 * [API v3](https://gitlab.com/gitlab-org/gitlab-ce/blob/8-16-stable/doc/api/README.md)
 
+> This only applies to you if you're running your own instance of GitLab. GitLab.com is always the latest version of the GitLab application.
+
 #### Setting HTTP Protocol for GitLab Integration
 
 By default all API calls to GitLab are made over HTTPS. To use HTTP set the environment variable `GITLAB_INSECURE_API` to `true`. Other values, including not setting the environment variable, will cause `semantic-release-gitlab` to use HTTPS.
