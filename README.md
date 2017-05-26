@@ -79,6 +79,14 @@ The account associated with the GitLab private token must have _Developer_ permi
 
 > GitLab permissions are documented on the [GitLab Permissions](http://docs.gitlab.com/ce/user/permissions.html) site.
 
+### Required GitLab CE/EE Edition
+
+Version [8.2](https://about.gitlab.com/2015/11/22/gitlab-8-2-released/), or higher, of GitLab CE/EE is required for `semantic-release-gitlab`.
+
+Core features used:
+* [GitLab release page](http://docs.gitlab.com/ce/workflow/releases.html)
+* [API v3](https://gitlab.com/gitlab-org/gitlab-ce/blob/8-16-stable/doc/api/README.md)
+
 #### Setting HTTP Protocol for GitLab Integration
 
 By default all API calls to GitLab are made over HTTPS. To use HTTP set the environment variable `GITLAB_INSECURE_API` to `true`. Other values, including not setting the environment variable, will cause `semantic-release-gitlab` to use HTTPS.
