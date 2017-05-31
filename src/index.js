@@ -2,14 +2,15 @@
 
 const _ = require(`lodash`);
 const Bluebird = require(`bluebird`);
-const commits = require(`ggit`).commits;
 const conventionalCommitsDetector = require(`conventional-commits-detector`);
 const debug = require(`debug`)(`semantic-release-gitlab`);
 const fs = require(`fs`);
 const gitlabNotifier = require(`semantic-release-gitlab-notifier`);
 const gitlabReleaser = require(`semantic-release-gitlab-releaser`);
-const recommendedBump = Bluebird.promisify(require(`conventional-recommended-bump`));
 const latestSemverTag = Bluebird.promisify(require(`git-latest-semver-tag`));
+const rawCommitsStream = require(`git-raw-commits`);
+const recommendedBump = Bluebird.promisify(require(`conventional-recommended-bump`));
+const streamToArray = require(`stream-to-array`);
 const path = require(`path`);
 const semver = require(`semver`);
 const shell = require(`shelljs`);
@@ -17,18 +18,19 @@ const shell = require(`shelljs`);
 module.exports = semanticRelease;
 
 function semanticRelease() {
-  return commits.afterLastTag(false)
-    .then(_.partial(_.map, _, `message`))
-    .then(function (commits) {
-      debug(`commit messages - %O`, commits);
-
+  return latestSemverTag()
+    .then(_.partial(debugAndReturn, `last tag`, _))
+    .then(latestTag => streamToArray(rawCommitsStream({from: latestTag})))
+    .then(_.partial(_.map, _, value => value.toString()))
+    .then(_.partial(debugAndReturn, `commit messages - %O`, _))
+    .then(commits => {
       if (commits.length === 0) {
         return debug(`no commits to release so skipping the other release steps`);
       }
 
       const config = {
         data: {
-          commits: commits,
+          commits,
         },
         pkg: JSON.parse(fs.readFileSync(path.join(process.cwd(), `package.json`))),
         options: {
@@ -46,7 +48,7 @@ function semanticRelease() {
       debug(`using ${config.options.preset} commit convention`);
 
       return recommendedBump({ignoreReverted: false, preset: config.options.preset})
-        .then(function (recommendation) {
+        .then(recommendation => {
           debug(`recommended version bump is - %O`, recommendation);
 
           if (recommendation.releaseType === undefined) {
