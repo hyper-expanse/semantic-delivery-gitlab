@@ -107,4 +107,49 @@ describe('semantic-release-gitlab', function () {
       ;
     });
   });
+
+  describe(`releasing patches and minor versions off of a branch`, function () {
+    // We want to test the ability to run `semantic-release-gitlab` off of a branch.
+
+    // Occasionally people will encounter the following scenario:
+
+    // Someone has released a new major version of their project. A consumer of that project reports a bug in the
+    // earlier major version, and can't, for whatever reason, upgrade to the latest major version at this time. That
+    // consumer would greatly benefit if the project could quickly submit a patch against the earlier major version
+    // and have `semantic-release-gitlab` automatically release that version to GitLab.
+
+    // The owner of the project should be able to create a dedicated branch off of the latest code for the previous
+    // major version, push a bug fix to that branch, and have `semantic-release-gitlab` automatically release a new
+    // patch version.
+
+    beforeEach(function () {
+      shell.exec(`git tag 1.0.1`);
+      shell.exec(`git commit --allow-empty -m "feat(index): major change\n\nBREAKING CHANGE: change" --no-gpg-sign`);
+
+      // Tag a new major version for this test package.
+      shell.exec(`git tag 2.0.0`);
+
+      // Checkout the package at an earlier version so that we can release a patch, or bug fix, on top of the code
+      // released as part of the version 1.x.x range.
+      shell.exec(`git checkout -b fix/package 1.0.1`);
+    });
+
+    it(`should release patch version within 1.x.x range instead of on the recent 2.x.x version range`, function () {
+      const scope = nock(`https://gitlab.com`, {encodedQueryParams: true})
+        .post(`/api/v3/projects/hyper-expanse%2Fsemantic-release-gitlab/repository/tags`, {
+          id: `hyper-expanse/semantic-release-gitlab`,
+          tag_name: `1.0.2`,
+          message: `Release 1.0.2`,
+        })
+        .reply(200)
+      ;
+
+      shell.exec(`git commit --allow-empty -m "fix(index): remove bug" --no-gpg-sign`);
+
+      return expect(semanticReleaseGitlab()).to.be.fulfilled
+        .and.to.eventually.equal(`1.0.2`)
+        .then(() => scope.isDone())
+      ;
+    });
+  });
 });

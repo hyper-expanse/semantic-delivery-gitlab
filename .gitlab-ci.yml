@@ -76,6 +76,7 @@ node_4_npm_4:
 
 node_4_npm_next:
   <<: [*common, *node_4, *npm_next]
+  allow_failure: true
 
 node_4_yarn_latest:
   <<: [*common, *node_4, *yarn_latest]
