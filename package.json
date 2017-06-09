@@ -8,8 +8,8 @@
   "bugs": "https://gitlab.com/hyper-expanse/semantic-release-gitlab/issues",
   "description": "Automatically generate a release, along with a corresponding git tag, for GitLab-hosted source code.",
   "engines": {
-    "node": "^6.9.0 || ^4.2.0",
-    "npm": "^4.0.0 || ^3.0.0 || ^2.1.9"
+    "node": ">=4.2.0",
+    "npm": ">=2.1.9"
   },
   "files": [
     "src/"
