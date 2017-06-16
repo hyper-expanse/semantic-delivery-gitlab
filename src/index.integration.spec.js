@@ -41,8 +41,7 @@ describe('semantic-release-gitlab', function () {
 
     // Empty `package.json` file for our publish pipeline to write a version into.
     fs.writeFileSync(`package.json`, `{ "name": "test",
-      "repository": { "type": "git", "url": "https://gitlab.com/hyper-expanse/semantic-release-gitlab.git" },
-      "version": "1.0.0" }`);
+      "repository": { "type": "git", "url": "https://gitlab.com/hyper-expanse/semantic-release-gitlab.git" }}`);
 
     // Do not console print output from tools invoked by `shelljs`.
     shell.config.silent = true;
@@ -78,9 +77,92 @@ describe('semantic-release-gitlab', function () {
     });
   });
 
+  describe(`existing major zero tag`, function () {
+    // Some project owners prefer to start their project using a _Major Version Zero_ release, where the leading
+    // zero of a Semantic Version number is the value _zero_. According to the Semantic Version (http://semver.org/)
+    // standard: "Major version zero (0.y.z) is for initial development. Anything may change at any time. The public
+    // API should not be considered stable."
+
+    // By starting with major version zero, a project owner can prototype the functionality of their package, quickly
+    // changing their API as they flush out the purpose and goals of their project, without committing to a publicly
+    // accessible stable interface.
+
+    // TODO: Work with upstream packages to allow `semantic-release-gitlab` to support major version zero releases.
+
+    // At this time `semantic-release-gitlab` cannot support major version zero releases because `semver` will bump
+    // a version from `0.1.0` to `1.0.0` for a `major` release which is not typically expected when using major version
+    // zero. Instead, most would expect the version to increment to `0.2.0`.
+    // Fixing this should happen upstream.
+    // `conventional-recommended-bump` issue
+    //   - https://github.com/conventional-changelog-archived-repos/conventional-recommended-bump/issues/24
+    // `semver` issue
+    //   - https://github.com/npm/node-semver/issues/177
+
+    // Example:
+    //   > semver.inc(`0.1.0`, `major`)
+    //   '1.0.0'
+
+    it(`should increment last tag with a patch for a fix (patch-worthy)`, function () {
+      const scope = nock(`https://gitlab.com`, {encodedQueryParams: true})
+        .post(`/api/v3/projects/hyper-expanse%2Fsemantic-release-gitlab/repository/tags`, {
+          id: `hyper-expanse/semantic-release-gitlab`,
+          tag_name: `0.1.1`,
+          message: `Release 0.1.1`,
+        })
+        .reply(200)
+      ;
+
+      shell.exec(`git tag 0.1.0`);
+      shell.exec(`git commit --allow-empty -m "fix(index): remove bug" --no-gpg-sign`);
+
+      return expect(semanticReleaseGitlab()).to.be.fulfilled
+        .and.to.eventually.equal(`0.1.1`)
+        .then(() => scope.isDone())
+      ;
+    });
+
+    it.skip(`should increment last tag with a patch for a feature (minor-worthy)`, function () {
+      const scope = nock(`https://gitlab.com`, {encodedQueryParams: true})
+        .post(`/api/v3/projects/hyper-expanse%2Fsemantic-release-gitlab/repository/tags`, {
+          id: `hyper-expanse/semantic-release-gitlab`,
+          tag_name: `0.1.1`,
+          message: `Release 0.1.1`,
+        })
+        .reply(200)
+      ;
+
+      shell.exec(`git tag 0.1.0`);
+      shell.exec(`git commit --allow-empty -m "feat(index): add cool new method" --no-gpg-sign`);
+
+      return expect(semanticReleaseGitlab()).to.be.fulfilled
+        .and.to.eventually.equal(`0.1.1`)
+        .then(() => scope.isDone())
+      ;
+    });
+
+    it.skip(`should increment last tag with a minor for a breaking change (major-worthy)`, function () {
+      const scope = nock(`https://gitlab.com`, {encodedQueryParams: true})
+        .post(`/api/v3/projects/hyper-expanse%2Fsemantic-release-gitlab/repository/tags`, {
+          id: `hyper-expanse/semantic-release-gitlab`,
+          tag_name: `0.2.0`,
+          message: `Release 0.2.0`,
+        })
+        .reply(200)
+      ;
+
+      shell.exec(`git tag 0.1.0`);
+      shell.exec(`git commit --allow-empty -m "feat(index): major change\n\nBREAKING CHANGE: change" --no-gpg-sign`);
+
+      return expect(semanticReleaseGitlab()).to.be.fulfilled
+        .and.to.eventually.equal(`0.2.0`)
+        .then(() => scope.isDone())
+      ;
+    });
+  });
+
   describe(`existing tag`, function () {
     beforeEach(function () {
-      shell.exec(`git tag 1.0.1`);
+      shell.exec(`git tag 1.0.0`);
     });
 
     it(`should return undefined since no commit has happened since last tag`, function () {
@@ -93,8 +175,8 @@ describe('semantic-release-gitlab', function () {
       const scope = nock(`https://gitlab.com`, {encodedQueryParams: true})
         .post(`/api/v3/projects/hyper-expanse%2Fsemantic-release-gitlab/repository/tags`, {
           id: `hyper-expanse/semantic-release-gitlab`,
-          tag_name: `1.0.2`,
-          message: `Release 1.0.2`,
+          tag_name: `1.0.1`,
+          message: `Release 1.0.1`,
         })
         .reply(200)
       ;
@@ -102,7 +184,7 @@ describe('semantic-release-gitlab', function () {
       shell.exec(`git commit --allow-empty -m "fix(index): remove bug" --no-gpg-sign`);
 
       return expect(semanticReleaseGitlab()).to.be.fulfilled
-        .and.to.eventually.equal(`1.0.2`)
+        .and.to.eventually.equal(`1.0.1`)
         .then(() => scope.isDone())
       ;
     });
