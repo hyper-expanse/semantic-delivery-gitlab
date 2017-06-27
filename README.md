@@ -128,6 +128,8 @@ Full documentation for GitLab CI is available on the [GitLab CI](http://docs.git
 
 You may also take a look at our [.gitlab-ci.yml](https://gitlab.com/hyper-expanse/semantic-release-gitlab/blob/master/.gitlab-ci.yml) file as an example.
 
+In addition to publishing a new release on every new commit, which is the strategy shown above, you may use use any number of other strategies, such as publishing a release on a given schedule. Please see the _Release Strategies_ section below for a few such alternative approaches.
+
 ## How to Publish Project to an npm Registry
 
 Once `semantic-release-gitlab` has created a release on GitLab, the next step for an `npm` package is to publish that package to an `npm`-compatible registry. To publish your project to an `npm`-compatible registry, please use [npm-publish-git-tag](https://www.npmjs.com/package/npm-publish-git-tag).
@@ -137,6 +139,26 @@ Once `semantic-release-gitlab` has created a release on GitLab, the next step fo
 As noted earlier `semantic-release-gitlab` uses [conventional-recommended-bump](https://www.npmjs.com/package/conventional-recommended-bump) to determine the version to use when releasing. If `conventional-recommended-bump` indicates that no new release should be made then `semantic-release-gitlab` will **not** release a new version of your project.
 
 Rules used by `conventional-recommended-bump` are housed in it's repository. If you have any questions or concerns regarding those rules, or the version recommended by `conventional-recommended-bump`, please reach out to their project.
+
+## Release Strategies
+
+You can employ many different release strategies using an automated tool such as `semantic-release-gitlab`.
+
+Below we document a few release strategies. Please don't consider this list exhaustive. There are likely many other ways to decide when it's best to generate a new release for your project.
+
+### On Every Push To A Repository With New Commits
+
+Publishing a new release on every push to a repository with new commits is the approach taken by this project. If you take this approach, you can push a single commit, leading to a release for that one change, or you can create multiple commits and push them all at once, leading to a single release containing all those changes.
+
+An example our setup for GitLab CI can be seen in the _Continuous Integration and Delivery (CID) Setup_ section above.
+
+### On A Schedule
+
+You may also release your changes on a schedule. For example, using a CI platform like [Jenkins CI](https://jenkins.io/), you can create and configure a job to run on a given schedule, such as once every two weeks, and, as part of a _Post Build Action_, run the release tool.
+
+Other CI platforms besides Jenkins also allow you to run a particular action on a given schedule, allowing you to schedule releases as you could with Jenkins CI.
+
+With this strategy all commits that have accumulated in your repository since the last scheduled job run will be incorporated into a single new release. Because this release tool uses `conventional-recommended-bump`, which recommends an appropriate new version based on all commits targeted for release, you can be assured that each scheduled release will use a version appropriate for the changes accumulated in that release.
 
 ## Debugging
 
