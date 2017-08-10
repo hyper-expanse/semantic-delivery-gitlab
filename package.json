@@ -40,7 +40,7 @@
     "commander": "^2.9.0",
     "conventional-commits-detector": "^0.1.1",
     "conventional-recommended-bump": "^1.0.0",
-    "debug": "^2.2.0",
+    "debug": "^3.0.0",
     "git-latest-semver-tag": "^1.0.2",
     "git-raw-commits": "^1.2.0",
     "lodash": "^4.7.0",
