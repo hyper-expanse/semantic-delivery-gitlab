@@ -160,6 +160,24 @@ Other CI platforms besides Jenkins also allow you to run a particular action on 
 
 With this strategy all commits that have accumulated in your repository since the last scheduled job run will be incorporated into a single new release. Because this release tool uses `conventional-recommended-bump`, which recommends an appropriate new version based on all commits targeted for release, you can be assured that each scheduled release will use a version appropriate for the changes accumulated in that release.
 
+## Common Issues
+
+A collection of common issues encountered while using `semantic-release-gitlab`.
+
+### GitLabError: 404 Project Not Found (404)
+
+In some instances you may see the following error after running `semantic-release-gitlab`:
+
+```bash
+semantic-release-gitlab failed for the following reason - GitLabError: 404 Project Not Found (404)
+```
+
+That error can be caused by one of several reasons.
+
+First, the project, or at least the project URL used by `semantic-release-gitlab`, is not valid. Please make sure the [repository field](https://docs.npmjs.com/files/package.json#repository) in your `package.json` is correct. If it is correct, please consider running `semantic-release-gitlab` in [debug mode](#debugging) to see what URL is being used to interact with GitLab.
+
+Second, you have not set the [required environment variable](#required-environment-variable), or the access token assigned to that environment variable does not have access to your project's repository.
+
 ## Debugging
 
 To assist users of `semantic-release-gitlab` with debugging the behavior of this module we use the [debug](https://www.npmjs.com/package/debug) utility package to print information about the release process to the console. To enable debug message printing, the environment variable `DEBUG`, which is the variable used by the `debug` package, must be set to a value configured by the package containing the debug messages to be printed.
