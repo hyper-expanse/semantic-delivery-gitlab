@@ -61,12 +61,14 @@ describe('semantic-release-gitlab', function () {
 
   describe(`no existing tag`, function () {
     it(`should set initial version to 1.0.0`, function () {
-      const scope = nock(`https://gitlab.com`, {encodedQueryParams: true})
-        .post(`/api/v3/projects/hyper-expanse%2Fsemantic-release-gitlab/repository/tags`, {
-          tag_name: `1.0.0`,
+      const scope = nock(`https://gitlab.com`)
+        .get(`/api/v4/version`).reply(200)
+        .post(`/api/v4/projects/hyper-expanse%2Fsemantic-release-gitlab/repository/tags`, {
           message: `Release 1.0.0`,
-        })
-        .reply(200)
+          release_description: /.*/,
+          ref: /.*/,
+          tag_name: `1.0.0`,
+        }).reply(201)
       ;
 
       return expect(semanticReleaseGitlab()).to.be.fulfilled
@@ -102,12 +104,14 @@ describe('semantic-release-gitlab', function () {
     //   '1.0.0'
 
     it(`should increment last tag with a patch for a fix (patch-worthy)`, function () {
-      const scope = nock(`https://gitlab.com`, {encodedQueryParams: true})
-        .post(`/api/v3/projects/hyper-expanse%2Fsemantic-release-gitlab/repository/tags`, {
-          tag_name: `0.1.1`,
+      const scope = nock(`https://gitlab.com`)
+        .get(`/api/v4/version`).reply(200)
+        .post(`/api/v4/projects/hyper-expanse%2Fsemantic-release-gitlab/repository/tags`, {
           message: `Release 0.1.1`,
-        })
-        .reply(200)
+          release_description: /.*/,
+          ref: /.*/,
+          tag_name: `0.1.1`,
+        }).reply(201)
       ;
 
       shell.exec(`git tag 0.1.0`);
@@ -120,12 +124,14 @@ describe('semantic-release-gitlab', function () {
     });
 
     it.skip(`should increment last tag with a patch for a feature (minor-worthy)`, function () {
-      const scope = nock(`https://gitlab.com`, {encodedQueryParams: true})
-        .post(`/api/v3/projects/hyper-expanse%2Fsemantic-release-gitlab/repository/tags`, {
-          tag_name: `0.1.1`,
+      const scope = nock(`https://gitlab.com`)
+        .get(`/api/v4/version`).reply(200)
+        .post(`/api/v4/projects/hyper-expanse%2Fsemantic-release-gitlab/repository/tags`, {
           message: `Release 0.1.1`,
-        })
-        .reply(200)
+          release_description: /.*/,
+          ref: /.*/,
+          tag_name: `0.1.1`,
+        }).reply(201)
       ;
 
       shell.exec(`git tag 0.1.0`);
@@ -138,12 +144,14 @@ describe('semantic-release-gitlab', function () {
     });
 
     it.skip(`should increment last tag with a minor for a breaking change (major-worthy)`, function () {
-      const scope = nock(`https://gitlab.com`, {encodedQueryParams: true})
-        .post(`/api/v3/projects/hyper-expanse%2Fsemantic-release-gitlab/repository/tags`, {
-          tag_name: `0.2.0`,
+      const scope = nock(`https://gitlab.com`)
+        .get(`/api/v4/version`).reply(200)
+        .post(`/api/v4/projects/hyper-expanse%2Fsemantic-release-gitlab/repository/tags`, {
           message: `Release 0.2.0`,
-        })
-        .reply(200)
+          release_description: /.*/,
+          ref: /.*/,
+          tag_name: `0.2.0`,
+        }).reply(201)
       ;
 
       shell.exec(`git tag 0.1.0`);
@@ -168,12 +176,14 @@ describe('semantic-release-gitlab', function () {
     });
 
     it(`should increment last tag with a patch`, function () {
-      const scope = nock(`https://gitlab.com`, {encodedQueryParams: true})
-        .post(`/api/v3/projects/hyper-expanse%2Fsemantic-release-gitlab/repository/tags`, {
-          tag_name: `1.0.1`,
+      const scope = nock(`https://gitlab.com`)
+        .get(`/api/v4/version`).reply(200)
+        .post(`/api/v4/projects/hyper-expanse%2Fsemantic-release-gitlab/repository/tags`, {
           message: `Release 1.0.1`,
-        })
-        .reply(200)
+          release_description: /.*/,
+          ref: /.*/,
+          tag_name: `1.0.1`,
+        }).reply(201)
       ;
 
       shell.exec(`git commit --allow-empty -m "fix(index): remove bug" --no-gpg-sign`);
@@ -212,12 +222,14 @@ describe('semantic-release-gitlab', function () {
     });
 
     it(`should release patch version within 1.x.x range instead of on the recent 2.x.x version range`, function () {
-      const scope = nock(`https://gitlab.com`, {encodedQueryParams: true})
-        .post(`/api/v3/projects/hyper-expanse%2Fsemantic-release-gitlab/repository/tags`, {
-          tag_name: `1.0.2`,
+      const scope = nock(`https://gitlab.com`)
+        .get(`/api/v4/version`).reply(200)
+        .post(`/api/v4/projects/hyper-expanse%2Fsemantic-release-gitlab/repository/tags`, {
           message: `Release 1.0.2`,
-        })
-        .reply(200)
+          release_description: /.*/,
+          ref: /.*/,
+          tag_name: `1.0.2`,
+        }).reply(201)
       ;
 
       shell.exec(`git commit --allow-empty -m "fix(index): remove bug" --no-gpg-sign`);
