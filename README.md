@@ -18,9 +18,9 @@ This idea, however, is not new. `semantic-release-gitlab` was heavily inspired b
 
 ## Features
 
-* [&#x2713;] Get a list of unreleased commits using [ggit](https://www.npmjs.com/package/ggit).
+* [&#x2713;] Get a list of unreleased commits using [git-raw-commits](https://www.npmjs.com/package/git-raw-commits).
 * [&#x2713;] Detect commit message convention used by a project with [conventional-commits-detector](https://www.npmjs.com/package/conventional-commits-detector).
-* [&#x2713;] Determine appropriate version to release with [conventional-recommended-bump](https://www.npmjs.com/package/conventional-recommended-bump).
+* [&#x2713;] Determine appropriate version to release, or whether to release at all, with [conventional-recommended-bump](https://www.npmjs.com/package/conventional-recommended-bump).
 * [&#x2713;] Publish a [GitLab release](http://docs.gitlab.com/ce/workflow/releases.html) using [conventional-gitlab-releaser](https://www.npmjs.com/package/conventional-gitlab-releaser) through the [semantic-release-gitlab-releaser](https://www.npmjs.com/package/semantic-release-gitlab-releaser) plugin.
 * [&#x2713;] Create an annotated [git tag](https://git-scm.com/book/en/v2/Git-Basics-Tagging) on GitLab.
 * [&#x2713;] Post a comment to GitLab issues closed by changes included in a release through the [semantic-release-gitlab-notifier](https://www.npmjs.com/package/semantic-release-gitlab-notifier) plugin.
@@ -55,17 +55,17 @@ If you're using the `npm` package manager:
 $(npm bin)/semantic-release-gitlab
 ```
 
-To learn how `semantic-release-gitlab` can be used to automatically release your project when new changes are pushed to your repository, which we highly recommend, please see the _Continuous Integration and Delivery (CID) Setup_ section below.
+To learn how `semantic-release-gitlab` can be used to automatically release your project on new changes to your repository, please see the _Continuous Integration and Delivery (CID) Setup_ section below.
 
 ### How the Release Happens
 
-First step of `semantic-release-gitlab` is to get a list of commits made to your project after the latest semantic version tag. If no commits are found, which typically occurs if the latest commit in your project is pointed to by a semantic version tag, then `semantic-release-gitlab` will exit cleanly and indicate that no changes can be released. This ensures you can run the release process multiple times, only releasing new versions if there are unreleased commits. If commits are available, `semantic-release-gitlab` will proceed to the next step.
+First step of `semantic-release-gitlab` is to get a list of commits made to your project after the latest semantic version tag. If no commits are found, which typically happens if the latest commit in your project is pointed to by a semantic version tag, then `semantic-release-gitlab` will exit cleanly and indicate no changes can be released. This ensures you can run the release process multiple times and only release new versions if there are unreleased commits. If unreleased commits are available, `semantic-release-gitlab` will proceed to the next step.
 
-Then `semantic-release-gitlab` determines the commit convention used by your project with `conventional-commits-detector`. Once we have determined your commit message convention we pass that information on to `conventional-recommended-bump` to determine the appropriate version to release. For more information on how versions are determined, please see the _Version Selection_ section below.
+The commit convention used by your project is determined by `conventional-commits-detector`. Once we have determined your commit message convention, we pass the list of unreleased commits, and your project's commit message convention, to `conventional-recommended-bump`, which will determine the appropriate version to release. For more information on how versions are determined, please see the _Version Selection_ section below.
 
-Once a version has been determined by `conventional-recommended-bump`, we generate a new [GitLab release page](http://docs.gitlab.com/ce/workflow/releases.html), with a list of all the changes made since the last version. Creating a GitLab release also creates an annotated git tag (Which you can then `git fetch`).
+Once a recommendation has been provided by `conventional-recommended-bump`, we generate a new [GitLab release page](http://docs.gitlab.com/ce/workflow/releases.html), with a list of all the changes made since the last version. Creating a GitLab release also creates an annotated git tag (Which you can retrieve using `git fetch`).
 
-Lastly, a comment will be posted to every issue that is referenced in a released commit, informing subscribers to that issue of the recent release, including version number.
+Lastly, a comment will be posted to every issue that is referenced in a released commit, informing subscribers to that issue of the recent release and version number.
 
 ### Required Environment Variable
 
@@ -136,9 +136,13 @@ Once `semantic-release-gitlab` has created a release on GitLab, the next step fo
 
 ## Version Selection
 
-As noted earlier `semantic-release-gitlab` uses [conventional-recommended-bump](https://www.npmjs.com/package/conventional-recommended-bump) to determine the version to use when releasing. If `conventional-recommended-bump` indicates that no new release should be made then `semantic-release-gitlab` will **not** release a new version of your project.
+As noted earlier `semantic-release-gitlab` uses [conventional-recommended-bump](https://www.npmjs.com/package/conventional-recommended-bump) to see if a release is recommended and whether that should be a `major`, `minor`, or `patch` release.
 
-Rules used by `conventional-recommended-bump` are housed in it's repository. If you have any questions or concerns regarding those rules, or the version recommended by `conventional-recommended-bump`, please reach out to their project.
+The process involves `semantic-release-gitlab` passing the list of all unreleased commits, along with your project's commit message convention, to `conventional-recommended-bump`. `conventional-recommended-bump` will either report that no new release is recommended, or it will report that a new `major`, `minor`, or `patch` version is recommended.
+
+If `conventional-recommended-bump` indicates that no new release should be made then `semantic-release-gitlab` will **not** release a new version of your project.
+
+Rules used by `conventional-recommended-bump` to make its recommendation are housed in it's repository. If you have any questions or concerns regarding those rules, or the version recommended by `conventional-recommended-bump`, please reach out to their project.
 
 ## Release Strategies
 
