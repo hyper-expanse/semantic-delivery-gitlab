@@ -5,16 +5,44 @@
 
 > Automatically generate a release, along with a corresponding git tag, for GitLab-hosted source code.
 
-Releasing GitLab-hosted source code may include:
-* Getting a list of all commits to a project that have not been formally released.
-* Determining the appropriate [semantic version](http://semver.org/) to release.
-* Generating a git tag for the repository on GitLab with that version.
-* Publishing a [GitLab release page](https://docs.gitlab.com/ce/workflow/releases.html) containing a list of changes included in that version.
-* Informing people subscribed to GitLab issues, or merge requests, about the release.
+When you create a new release for your GitLab project, you probably do several of the steps listed below:
+* Get a list of all commits to the project that have not been released.
+* Determine the appropriate [semantic version](http://semver.org/) to use for the release.
+* Generate a git tag for the repository on GitLab with that version.
+* Publish a [GitLab release page](https://docs.gitlab.com/ce/workflow/releases.html) with a list of changes  in that version.
+* Inform people subscribed to GitLab issues, or merge requests, about the release.
 
-By automating these steps `semantic-release-gitlab` alleviates some of the overhead in managing a project, allowing you to quickly and consistently release enhancements that provide value to your consumers.
+Well, `semantic-release-gitlab` streamlines all those steps into a single command line tool.
+
+Since `semantic-release-gitlab` is a command line tool, you can call `semantic-release-gitlab` yourself whenever you want, or you can setup your project to automatically call `semantic-release-gitlab` after every commit to your repository, or on a regular schedule.
 
 This idea, however, is not new. `semantic-release-gitlab` was heavily inspired by the work of [semantic-release](https://www.npmjs.com/package/semantic-release).
+
+## Table of Contents
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+
+
+- [Features](#features)
+- [Installation](#installation)
+- [Usage](#usage)
+  - [How the Release Happens](#how-the-release-happens)
+  - [Required Environment Variable](#required-environment-variable)
+  - [Required GitLab CE/EE Edition](#required-gitlab-ceee-edition)
+    - [Setting HTTP Protocol for GitLab Integration](#setting-http-protocol-for-gitlab-integration)
+  - [Continuous Integration and Delivery (CID) Setup](#continuous-integration-and-delivery-cid-setup)
+- [How to Publish Project to an npm Registry](#how-to-publish-project-to-an-npm-registry)
+- [Version Selection](#version-selection)
+- [Release Strategies](#release-strategies)
+  - [On Every Push To A Repository With New Commits](#on-every-push-to-a-repository-with-new-commits)
+  - [On A Schedule](#on-a-schedule)
+- [Common Issues](#common-issues)
+  - [GitLabError: 404 Project Not Found (404)](#gitlaberror-404-project-not-found-404)
+- [Debugging](#debugging)
+- [Node Support Policy](#node-support-policy)
+- [Contributing](#contributing)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
 ## Features
 
