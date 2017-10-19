@@ -115,7 +115,7 @@ stages:
 
 release:
   before_script:
-    - yarn install --freeze-lockfile
+    - yarn install --frozen-lockfile
   image: node:6
   only:
     - master@<GROUP>/<PROJECT>
