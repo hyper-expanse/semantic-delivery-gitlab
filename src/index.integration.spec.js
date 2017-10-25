@@ -193,6 +193,39 @@ describe('semantic-release-gitlab', function () {
         .then(() => scope.isDone())
       ;
     });
+
+    it(`should increment last tag with a patch when provided a valid preset`, function () {
+      const scope = nock(`https://gitlab.com`, {encodedQueryParams: true})
+        .post(`/api/v3/projects/hyper-expanse%2Fsemantic-release-gitlab/repository/tags`, {
+          message: `Release 1.0.1`,
+          release_description: /.*/,
+          ref: /.*/,
+          tag_name: `1.0.1`,
+        })
+        .reply(200)
+      ;
+
+      const validPreset = {
+        preset: 'angular',
+      };
+
+      shell.exec(`git commit --allow-empty -m "fix(index): remove bug" --no-gpg-sign`);
+
+      return expect(semanticReleaseGitlab(validPreset)).to.be.fulfilled
+        .and.to.eventually.equal(`1.0.1`)
+        .then(() => scope.isDone())
+      ;
+    });
+
+    it(`should fail when given an invalid preset`, function () {
+      const noSuchPreset = {
+        preset: 'noSuchPreset',
+      };
+
+      shell.exec(`git commit --allow-empty -m "fix(index): remove bug" --no-gpg-sign`);
+
+      return expect(semanticReleaseGitlab(noSuchPreset)).to.be.rejected;
+    });
   });
 
   describe(`releasing patches and minor versions off of a branch`, function () {

@@ -17,7 +17,8 @@ const shell = require(`shelljs`);
 
 module.exports = semanticRelease;
 
-function semanticRelease() {
+function semanticRelease(packageOpts) {
+  packageOpts = packageOpts || {};
   return latestSemverTag()
     .then(_.partial(debugAndReturn, `last tag`, _))
     .then(latestTag => streamToArray(rawCommitsStream({from: latestTag})))
@@ -36,7 +37,7 @@ function semanticRelease() {
         options: {
           scmToken: process.env.GITLAB_AUTH_TOKEN,
           insecureApi: process.env.GITLAB_INSECURE_API === `true`,
-          preset: conventionalCommitsDetector(commits),
+          preset: packageOpts.preset || conventionalCommitsDetector(commits),
         },
       };
 
