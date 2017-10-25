@@ -9,10 +9,15 @@ var semanticRelease = require(`./index.js`);
 program
   .description(pkg.description)
   .version(pkg.version)
+  .option('-p, --preset <convention>', 'Commit convention [angular, ...]. See \'conventional-recommended-bump\' for available options', /^(angular)$/)
   .parse(process.argv)
 ;
 
-semanticRelease()
+const packageOpts = {
+  preset: program.preset,
+};
+
+semanticRelease(packageOpts)
   .then(function (releasedVersion) {
     const message = releasedVersion ?
       `Released version ${releasedVersion}` :
