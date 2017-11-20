@@ -12,7 +12,7 @@ const rawCommitsStream = require(`git-raw-commits`);
 const recommendedBump = Bluebird.promisify(require(`conventional-recommended-bump`));
 const streamToArray = require(`stream-to-array`);
 const path = require(`path`);
-const semver = require(`semver`);
+const semverIncrement = require(`shifted-semver-increment`);
 const shell = require(`shelljs`);
 
 module.exports = semanticRelease;
@@ -58,7 +58,7 @@ function semanticRelease(packageOpts) {
 
           return latestSemverTag()
             .then(_.partial(debugAndReturn, `last tag`, _))
-            .then(latestTag => latestTag === '' ? `1.0.0` : semver.inc(latestTag, recommendation.releaseType))
+            .then(latestTag => latestTag === '' ? `1.0.0` : semverIncrement(latestTag, recommendation.releaseType))
             .then(_.partial(debugAndReturn, `version to be released`, _))
             .then(_.partial(_.set, config, `data.version`, _))
             .then(config => shell.exec(`git tag ${config.data.version}`))

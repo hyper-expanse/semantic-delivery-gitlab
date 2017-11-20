@@ -14,7 +14,7 @@ When you create a new release for your GitLab project, you probably do several o
 
 Well, `semantic-release-gitlab` streamlines all those steps into a single command line tool.
 
-Since `semantic-release-gitlab` is a command line tool, you can call `semantic-release-gitlab` yourself whenever you want, or you can setup your project to automatically call `semantic-release-gitlab` after every commit to your repository, or on a regular schedule.
+Since `semantic-release-gitlab` is a command line tool, you can call `semantic-release-gitlab` yourself whenever you want, or you can setup your project to automatically call `semantic-release-gitlab` after every commit to your repository, or set it up to run on a regular schedule.
 
 This idea, however, is not new. `semantic-release-gitlab` was heavily inspired by the work of [semantic-release](https://www.npmjs.com/package/semantic-release).
 
@@ -33,6 +33,7 @@ This idea, however, is not new. `semantic-release-gitlab` was heavily inspired b
   - [Continuous Integration and Delivery (CID) Setup](#continuous-integration-and-delivery-cid-setup)
 - [How to Publish Project to an npm Registry](#how-to-publish-project-to-an-npm-registry)
 - [Version Selection](#version-selection)
+  - [Major Version Zero](#major-version-zero)
 - [Release Strategies](#release-strategies)
   - [On Every Push To A Repository With New Commits](#on-every-push-to-a-repository-with-new-commits)
   - [On A Schedule](#on-a-schedule)
@@ -164,13 +165,33 @@ Once `semantic-release-gitlab` has created a release on GitLab, the next step fo
 
 ## Version Selection
 
-As noted earlier `semantic-release-gitlab` uses [conventional-recommended-bump](https://www.npmjs.com/package/conventional-recommended-bump) to see if a release is recommended and whether that should be a `major`, `minor`, or `patch` release.
+As noted earlier `semantic-release-gitlab` uses [conventional-recommended-bump](https://www.npmjs.com/package/conventional-recommended-bump) to determine if a release is needed, and whether that should be a `major`, `minor`, or `patch` release.
 
-The process involves `semantic-release-gitlab` passing the list of all unreleased commits, along with your project's commit message convention, to `conventional-recommended-bump`. `conventional-recommended-bump` will either report that no new release is recommended, or it will report that a new `major`, `minor`, or `patch` version is recommended.
+The process involves `semantic-release-gitlab` passing the list of all unreleased commits, along with your project's commit message convention, to `conventional-recommended-bump`. `conventional-recommended-bump` will either report that no new release is recommended, or it will recommend a new `major`, `minor`, or `patch` release.
 
-If `conventional-recommended-bump` indicates that no new release should be made then `semantic-release-gitlab` will **not** release a new version of your project.
+Rules used by `conventional-recommended-bump` to make a recommendation are housed in it's repository. If you have any questions or concerns regarding those rules, or the release recommended by `conventional-recommended-bump`, please reach out to their project.
 
-Rules used by `conventional-recommended-bump` to make its recommendation are housed in it's repository. If you have any questions or concerns regarding those rules, or the version recommended by `conventional-recommended-bump`, please reach out to their project.
+If `conventional-recommended-bump` indicates that no new release should be made, `semantic-release-gitlab` will **not** release a new version of your project.
+
+If a release is recommended, and no previous version exists, we will always set the first version to `1.0.0`.
+
+If a previous version exists, we take that version and increment it according to the recommendation.
+
+If the project's existing major version is zero, we follow the version incrementing behavior outlined in the [_Major Version Zero_](#major-version-zero) section below.
+
+Otherwise we use the default behavior of the [inc](https://www.npmjs.com/package/semver#functions) function provided by the [semver](https://www.npmjs.com/package/semver) package.
+
+### Major Version Zero
+
+When the `major` version, the first number in `major.minor.patch`, of a [semantic version](http://semver.org/) string, is zero, `semantic-release-gitlab` will increment the version number following a different set of rules.
+
+In this scenario, incrementing the `major` version will increment what is traditionally the `minor` number in the semantic version string, while incrementing the `minor` or `patch` version will increment the `patch` number in the semantic version string.
+
+When the major version is greater than zero, `semantic-release-gitlab` will switch back to the default behavior of using the [inc](https://www.npmjs.com/package/semver#functions) function provided by the [semver](https://www.npmjs.com/package/semver) package.
+
+> So how do you automatically increment from a _Major Version Zero_ version to a major version greater than zero?
+
+Since `semantic-release-gitlab` will always treat a `major` version as a `minor` version for a _Major Version Zero_ release, it's technically impossible for `semantic-release-gitlab` to increment from `0.Y.Z` to `X.Y.Z`. So it's up to you, as the project owner, to manually create the first non-zero major version.
 
 ## Release Strategies
 

@@ -46,8 +46,8 @@
     "lodash": "^4.7.0",
     "semantic-release-gitlab-notifier": "^5.0.0",
     "semantic-release-gitlab-releaser": "^3.0.3",
-    "semver": "^5.1.0",
     "shelljs": "^0.7.7",
+    "shifted-semver-increment": "^1.0.3",
     "stream-to-array": "^2.3.0"
   },
   "devDependencies": {

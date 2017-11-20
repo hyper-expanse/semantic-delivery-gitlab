@@ -88,21 +88,6 @@ describe('semantic-release-gitlab', function () {
     // changing their API as they flush out the purpose and goals of their project, without committing to a publicly
     // accessible stable interface.
 
-    // TODO: Work with upstream packages to allow `semantic-release-gitlab` to support major version zero releases.
-
-    // At this time `semantic-release-gitlab` cannot support major version zero releases because `semver` will bump
-    // a version from `0.1.0` to `1.0.0` for a `major` release which is not typically expected when using major version
-    // zero. Instead, most would expect the version to increment to `0.2.0`.
-    // Fixing this should happen upstream.
-    // `conventional-recommended-bump` issue
-    //   - https://github.com/conventional-changelog-archived-repos/conventional-recommended-bump/issues/24
-    // `semver` issue
-    //   - https://github.com/npm/node-semver/issues/177
-
-    // Example:
-    //   > semver.inc(`0.1.0`, `major`)
-    //   '1.0.0'
-
     it(`should increment last tag with a patch for a fix (patch-worthy)`, function () {
       const scope = nock(`https://gitlab.com`)
         .get(`/api/v4/version`).reply(200)
@@ -123,7 +108,7 @@ describe('semantic-release-gitlab', function () {
       ;
     });
 
-    it.skip(`should increment last tag with a patch for a feature (minor-worthy)`, function () {
+    it(`should increment last tag with a patch for a feature (minor-worthy)`, function () {
       const scope = nock(`https://gitlab.com`)
         .get(`/api/v4/version`).reply(200)
         .post(`/api/v4/projects/hyper-expanse%2Fsemantic-release-gitlab/repository/tags`, {
@@ -143,7 +128,7 @@ describe('semantic-release-gitlab', function () {
       ;
     });
 
-    it.skip(`should increment last tag with a minor for a breaking change (major-worthy)`, function () {
+    it(`should increment last tag with a minor for a breaking change (major-worthy)`, function () {
       const scope = nock(`https://gitlab.com`)
         .get(`/api/v4/version`).reply(200)
         .post(`/api/v4/projects/hyper-expanse%2Fsemantic-release-gitlab/repository/tags`, {
