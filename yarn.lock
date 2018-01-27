@@ -2982,9 +2982,9 @@ scoped-regex@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/scoped-regex/-/scoped-regex-1.0.0.tgz#a346bb1acd4207ae70bd7c0c7ca9e566b6baddb8"
 
-semantic-release-gitlab-notifier@^5.0.0:
-  version "5.1.33"
-  resolved "https://registry.yarnpkg.com/semantic-release-gitlab-notifier/-/semantic-release-gitlab-notifier-5.1.33.tgz#4298002809da5c6d792b90b8e1837438626f059b"
+semantic-release-gitlab-notifier@^6.0.0:
+  version "6.0.0"
+  resolved "https://registry.yarnpkg.com/semantic-release-gitlab-notifier/-/semantic-release-gitlab-notifier-6.0.0.tgz#2adbbb3103f294634bc2251537240af6a20e7e01"
   dependencies:
     bluebird "^3.4.1"
     conventional-commits-parser "^2.0.0"
