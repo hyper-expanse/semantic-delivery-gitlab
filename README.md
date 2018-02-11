@@ -1,7 +1,7 @@
 # semantic-release-gitlab
 
 [![build status](https://gitlab.com/hyper-expanse/semantic-release-gitlab/badges/master/build.svg)](https://gitlab.com/hyper-expanse/semantic-release-gitlab/commits/master)
-[![codecov.io](https://codecov.io/gitlab/hyper-expanse/semantic-release-gitlab/coverage.svg?branch=master)](https://codecov.io/gitlab/hyper-expanse/semantic-release-gitlab?branch=master)
+[![codecov](https://codecov.io/gl/hyper-expanse/semantic-release-gitlab/branch/master/graph/badge.svg)](https://codecov.io/gl/hyper-expanse/semantic-release-gitlab)
 
 > Automatically generate a release, along with a corresponding git tag, for GitLab-hosted source code.
 
@@ -47,25 +47,19 @@ This idea, however, is not new. `semantic-release-gitlab` was heavily inspired b
 
 ## Features
 
-* [&#x2713;] Get a list of unreleased commits using [git-raw-commits](https://www.npmjs.com/package/git-raw-commits).
-* [&#x2713;] Detect commit message convention used by a project with [conventional-commits-detector](https://www.npmjs.com/package/conventional-commits-detector).
-* [&#x2713;] Determine appropriate version to release, or whether to release at all, with [conventional-recommended-bump](https://www.npmjs.com/package/conventional-recommended-bump).
-* [&#x2713;] Publish a [GitLab release](http://docs.gitlab.com/ce/workflow/releases.html) using [conventional-gitlab-releaser](https://www.npmjs.com/package/conventional-gitlab-releaser) through the [semantic-release-gitlab-releaser](https://www.npmjs.com/package/semantic-release-gitlab-releaser) plugin.
-* [&#x2713;] Create an annotated [git tag](https://git-scm.com/book/en/v2/Git-Basics-Tagging) on GitLab.
-* [&#x2713;] Post a comment to GitLab issues closed by changes included in a release through the [semantic-release-gitlab-notifier](https://www.npmjs.com/package/semantic-release-gitlab-notifier) plugin.
+* [x] Get a list of unreleased commits using [git-raw-commits](https://www.npmjs.com/package/git-raw-commits).
+* [x] Detect commit message convention used by a project with [conventional-commits-detector](https://www.npmjs.com/package/conventional-commits-detector).
+* [x] Determine appropriate version to release, or whether to release at all, with [conventional-recommended-bump](https://www.npmjs.com/package/conventional-recommended-bump).
+* [x] Publish a [GitLab release](http://docs.gitlab.com/ce/workflow/releases.html) using [conventional-gitlab-releaser](https://www.npmjs.com/package/conventional-gitlab-releaser) through the [semantic-release-gitlab-releaser](https://www.npmjs.com/package/semantic-release-gitlab-releaser) plugin.
+* [x] Create an annotated [git tag](https://git-scm.com/book/en/v2/Git-Basics-Tagging) on GitLab.
+* [x] Post a comment to GitLab issues closed by changes included in a release through the [semantic-release-gitlab-notifier](https://www.npmjs.com/package/semantic-release-gitlab-notifier) plugin.
 
 ## Installation
 
 To install the `semantic-release-gitlab` tool for use in your project's release process please run the following command:
 
 ```bash
-yarn add --dev semantic-release-gitlab
-```
-
-If you are using the `npm` package manager:
-
-```bash
-npm install --save-dev semantic-release-gitlab
+yarn add [--dev] semantic-release-gitlab
 ```
 
 ## Usage
@@ -76,12 +70,6 @@ Then call `semantic-release-gitlab` from within your project's top folder:
 
 ```bash
 $(yarn bin)/semantic-release-gitlab
-```
-
-If you're using the `npm` package manager:
-
-```bash
-$(npm bin)/semantic-release-gitlab
 ```
 
 To learn how `semantic-release-gitlab` can be used to automatically release your project on new changes to your repository, please see the _Continuous Integration and Delivery (CID) Setup_ section below.
@@ -145,7 +133,7 @@ stages:
 release:
   before_script:
     - yarn install --frozen-lockfile
-  image: node:6
+  image: node:8
   only:
     - master@<GROUP>/<PROJECT>
   script:
@@ -252,14 +240,6 @@ All `semantic-release-gitlab` plugins use `debug` to print information to the co
 
 ```bash
 DEBUG=semantic-release-gitlab* semantic-release-gitlab
-```
-
-You may also print debug messages for the underlying HTTP request library, [request](https://www.npmjs.com/package/request), by setting the `NODE_DEBUG` environment variable to `request`, as [shown in their documentation](https://www.npmjs.com/package/request#debugging).
-
-As an example:
-
-```bash
-NODE_DEBUG=request semantic-release-gitlab
 ```
 
 ## Node Support Policy
