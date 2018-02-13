@@ -9,7 +9,7 @@ var semanticRelease = require(`./index.js`);
 program
   .description(pkg.description)
   .version(pkg.version)
-  .option('-p, --preset <convention>', 'Commit convention [angular, ...]. See \'conventional-recommended-bump\' for available options', /^(angular)$/)
+  .option(`-p, --preset <convention>`, `Preset package name [angular, @scope/angular, ...]. See 'conventional-recommended-bump' for preset package requirements.`)
   .parse(process.argv);
 const packageOpts = {
   preset: program.preset,

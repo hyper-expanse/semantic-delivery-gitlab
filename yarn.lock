@@ -494,6 +494,13 @@ conventional-changelog-angular@^1.6.2:
     compare-func "^1.3.1"
     q "^1.4.1"
 
+conventional-changelog-angular@^1.6.4:
+  version "1.6.4"
+  resolved "https://registry.yarnpkg.com/conventional-changelog-angular/-/conventional-changelog-angular-1.6.4.tgz#47debaf92b75b0bd6b39fcba8f9c70dd97552be6"
+  dependencies:
+    compare-func "^1.3.1"
+    q "^1.4.1"
+
 conventional-changelog-atom@^0.2.0:
   version "0.2.0"
   resolved "https://registry.yarnpkg.com/conventional-changelog-atom/-/conventional-changelog-atom-0.2.0.tgz#72f18e5c74e3d8807411252fe013818ddffa7157"
@@ -560,6 +567,10 @@ conventional-changelog-jshint@^0.3.0:
   dependencies:
     compare-func "^1.3.1"
     q "^1.4.1"
+
+conventional-changelog-preset-loader@^1.1.2:
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/conventional-changelog-preset-loader/-/conventional-changelog-preset-loader-1.1.2.tgz#dfb5877884ef852b648bdef6e69e53e1bda188df"
 
 conventional-changelog-writer@^3.0.0:
   version "3.0.0"
@@ -634,17 +645,18 @@ conventional-gitlab-releaser@^2.0.4:
     semver-regex "^1.0.0"
     through2 "^2.0.0"
 
-conventional-recommended-bump@^1.0.0:
-  version "1.2.1"
-  resolved "https://registry.yarnpkg.com/conventional-recommended-bump/-/conventional-recommended-bump-1.2.1.tgz#1b7137efb5091f99fe009e2fe9ddb7cc490e9375"
+conventional-recommended-bump@^2.0.0:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/conventional-recommended-bump/-/conventional-recommended-bump-2.0.1.tgz#b268204932a17461ef813676e418cba8f76b485f"
   dependencies:
     concat-stream "^1.4.10"
+    conventional-changelog-preset-loader "^1.1.2"
     conventional-commits-filter "^1.1.1"
     conventional-commits-parser "^2.1.1"
     git-raw-commits "^1.3.0"
     git-semver-tags "^1.3.0"
     meow "^3.3.0"
-    object-assign "^4.0.1"
+    q "^1.5.1"
 
 convert-source-map@^1.3.0:
   version "1.5.1"
@@ -2342,7 +2354,7 @@ punycode@^1.4.1:
   version "1.4.1"
   resolved "https://registry.yarnpkg.com/punycode/-/punycode-1.4.1.tgz#c0d5a63b2718800ad8e1eb0fa5269c84dd41845e"
 
-q@^1.4.1:
+q@^1.4.1, q@^1.5.1:
   version "1.5.1"
   resolved "https://registry.yarnpkg.com/q/-/q-1.5.1.tgz#7e32f75b41381291d04611f1bf14109ac00651d7"
 
