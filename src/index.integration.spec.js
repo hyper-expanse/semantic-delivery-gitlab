@@ -68,13 +68,10 @@ describe('semantic-release-gitlab', function () {
           release_description: /.*/,
           ref: /.*/,
           tag_name: `1.0.0`,
-        }).reply(201)
-      ;
-
+        }).reply(201);
       return expect(semanticReleaseGitlab()).to.be.fulfilled
         .and.to.eventually.equal(`1.0.0`)
-        .then(() => scope.isDone())
-      ;
+        .then(() => scope.isDone());
     });
   });
 
@@ -96,16 +93,13 @@ describe('semantic-release-gitlab', function () {
           release_description: /.*/,
           ref: /.*/,
           tag_name: `0.1.1`,
-        }).reply(201)
-      ;
-
+        }).reply(201);
       shell.exec(`git tag 0.1.0`);
       shell.exec(`git commit --allow-empty -m "fix(index): remove bug" --no-gpg-sign`);
 
       return expect(semanticReleaseGitlab()).to.be.fulfilled
         .and.to.eventually.equal(`0.1.1`)
-        .then(() => scope.isDone())
-      ;
+        .then(() => scope.isDone());
     });
 
     it(`should increment last tag with a patch for a feature (minor-worthy)`, function () {
@@ -116,16 +110,13 @@ describe('semantic-release-gitlab', function () {
           release_description: /.*/,
           ref: /.*/,
           tag_name: `0.1.1`,
-        }).reply(201)
-      ;
-
+        }).reply(201);
       shell.exec(`git tag 0.1.0`);
       shell.exec(`git commit --allow-empty -m "feat(index): add cool new method" --no-gpg-sign`);
 
       return expect(semanticReleaseGitlab()).to.be.fulfilled
         .and.to.eventually.equal(`0.1.1`)
-        .then(() => scope.isDone())
-      ;
+        .then(() => scope.isDone());
     });
 
     it(`should increment last tag with a minor for a breaking change (major-worthy)`, function () {
@@ -136,16 +127,13 @@ describe('semantic-release-gitlab', function () {
           release_description: /.*/,
           ref: /.*/,
           tag_name: `0.2.0`,
-        }).reply(201)
-      ;
-
+        }).reply(201);
       shell.exec(`git tag 0.1.0`);
       shell.exec(`git commit --allow-empty -m "feat(index): major change\n\nBREAKING CHANGE: change" --no-gpg-sign`);
 
       return expect(semanticReleaseGitlab()).to.be.fulfilled
         .and.to.eventually.equal(`0.2.0`)
-        .then(() => scope.isDone())
-      ;
+        .then(() => scope.isDone());
     });
   });
 
@@ -156,8 +144,7 @@ describe('semantic-release-gitlab', function () {
 
     it(`should return undefined since no commit has happened since last tag`, function () {
       return expect(semanticReleaseGitlab()).to.be.fulfilled
-        .and.to.eventually.equal(undefined)
-      ;
+        .and.to.eventually.equal(undefined);
     });
 
     it(`should increment last tag with a patch`, function () {
@@ -168,15 +155,12 @@ describe('semantic-release-gitlab', function () {
           release_description: /.*/,
           ref: /.*/,
           tag_name: `1.0.1`,
-        }).reply(201)
-      ;
-
+        }).reply(201);
       shell.exec(`git commit --allow-empty -m "fix(index): remove bug" --no-gpg-sign`);
 
       return expect(semanticReleaseGitlab()).to.be.fulfilled
         .and.to.eventually.equal(`1.0.1`)
-        .then(() => scope.isDone())
-      ;
+        .then(() => scope.isDone());
     });
 
     it(`should increment last tag with a patch when provided a valid preset`, function () {
@@ -187,9 +171,7 @@ describe('semantic-release-gitlab', function () {
           ref: /.*/,
           tag_name: `1.0.1`,
         })
-        .reply(200)
-      ;
-
+        .reply(200);
       const validPreset = {
         preset: 'angular',
       };
@@ -198,8 +180,7 @@ describe('semantic-release-gitlab', function () {
 
       return expect(semanticReleaseGitlab(validPreset)).to.be.fulfilled
         .and.to.eventually.equal(`1.0.1`)
-        .then(() => scope.isDone())
-      ;
+        .then(() => scope.isDone());
     });
 
     it(`should fail when given an invalid preset`, function () {
@@ -247,15 +228,12 @@ describe('semantic-release-gitlab', function () {
           release_description: /.*/,
           ref: /.*/,
           tag_name: `1.0.2`,
-        }).reply(201)
-      ;
-
+        }).reply(201);
       shell.exec(`git commit --allow-empty -m "fix(index): remove bug" --no-gpg-sign`);
 
       return expect(semanticReleaseGitlab()).to.be.fulfilled
         .and.to.eventually.equal(`1.0.2`)
-        .then(() => scope.isDone())
-      ;
+        .then(() => scope.isDone());
     });
   });
 });

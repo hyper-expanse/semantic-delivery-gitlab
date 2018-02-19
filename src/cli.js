@@ -10,9 +10,7 @@ program
   .description(pkg.description)
   .version(pkg.version)
   .option('-p, --preset <convention>', 'Commit convention [angular, ...]. See \'conventional-recommended-bump\' for available options', /^(angular)$/)
-  .parse(process.argv)
-;
-
+  .parse(process.argv);
 const packageOpts = {
   preset: program.preset,
 };
@@ -27,5 +25,5 @@ semanticRelease(packageOpts)
   .catch(error => {
     console.error(`semantic-release-gitlab failed for the following reason - ${error}`);
     process.exit(1);
-  })
-;
+  });
+

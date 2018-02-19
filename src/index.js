@@ -64,12 +64,9 @@ function semanticRelease(packageOpts) {
             .then(config => shell.exec(`git tag ${config.data.version}`))
             .then(_.partial(gitlabReleaser, config))
             .then(_.partial(gitlabNotifier, config))
-            .then(() => config.data.version)
-          ;
-        })
-      ;
-    })
-  ;
+            .then(() => config.data.version);
+        });
+    });
 }
 
 function debugAndReturn(message, value) {
