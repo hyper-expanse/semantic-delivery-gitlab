@@ -12,9 +12,6 @@ cache:
     - tags
   stage: test
 
-.node_4: &node_4
-  image: node:4
-
 .node_6: &node_6
   image: node:6
 
@@ -34,9 +31,6 @@ cache:
   <<: [*yarn]
   before_script:
     - curl -o- -L https://yarnpkg.com/install.sh | bash
-
-node_4_yarn_latest:
-  <<: [*common, *node_4, *yarn_latest]
 
 node_6_yarn_latest:
   <<: [*common, *node_6, *yarn_latest]
