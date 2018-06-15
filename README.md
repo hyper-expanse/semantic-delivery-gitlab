@@ -59,12 +59,12 @@ This idea, however, is not new. `semantic-release-gitlab` was heavily inspired b
 To install the `semantic-release-gitlab` tool for use in your project's release process please run the following command:
 
 ```bash
-yarn add [--dev] semantic-release-gitlab
+yarn add --dev semantic-release-gitlab
 ```
 
 ## Usage
 
-Setup the environment variable described in the _Required Environment Variable_ section.
+Setup the environment variable described in the [_Required Environment Variable_](#required-environment-variable) section.
 
 Then call `semantic-release-gitlab` from within your project's top folder:
 
@@ -72,15 +72,15 @@ Then call `semantic-release-gitlab` from within your project's top folder:
 $(yarn bin)/semantic-release-gitlab
 ```
 
-To learn how `semantic-release-gitlab` can be used to automatically release your project on new changes to your repository, please see the _Continuous Integration and Delivery (CID) Setup_ section below.
+To learn how `semantic-release-gitlab` can be used to automatically release your project on new changes to your repository, please see the [_Continuous Integration and Delivery (CID) Setup_](#continuous-integration-and-delivery-cid-setup) section below.
 
 ### How the Release Happens
 
 First step of `semantic-release-gitlab` is to get a list of commits made to your project after the latest semantic version tag. If no commits are found, which typically happens if the latest commit in your project is pointed to by a semantic version tag, then `semantic-release-gitlab` will exit cleanly and indicate no changes can be released. This ensures you can run the release process multiple times and only release new versions if there are unreleased commits. If unreleased commits are available, `semantic-release-gitlab` will proceed to the next step.
 
-The commit convention used by your project is determined by `conventional-commits-detector` or a command-line variable (--preset). Once we have determined your commit message convention we pass that information on to `conventional-recommended-bump` to determine the appropriate version to release. For more information on how versions are determined, please see the _Version Selection_ section below.
+Unless you have configured a [preset](#preset), the convention used by your project will be determined by `conventional-commits-detector`. Once we have determined your convention, we pass along the preset package associated with that convention to `conventional-recommended-bump`. `conventional-recommended-bump` will determine the appropriate version to release. For more information on how versions are determined, please see the [_Version Selection_](#version-selection) section below.
 
-Once a recommendation has been provided by `conventional-recommended-bump`, we generate a new [GitLab release page](http://docs.gitlab.com/ce/workflow/releases.html), with a list of all the changes made since the last version. Creating a GitLab release also creates an annotated git tag (Which you can retrieve using `git fetch`).
+Once a recommendation has been provided by `conventional-recommended-bump`, we generate a new [GitLab release page](http://docs.gitlab.com/ce/workflow/releases.html), with a list of all the changes made since the last version, using the authentication token configured in the [_Required Environment Variables_](#required-environment-variable) section below. Creating a GitLab release also creates an annotated git tag (You can retrieve the annotated tag using `git fetch`).
 
 Lastly, a comment will be posted to every issue that is referenced in a released commit, informing subscribers to that issue of the recent release and version number.
 
@@ -98,15 +98,33 @@ The account associated with the GitLab private token must have _Developer_ permi
 
 ### Required GitLab CE/EE Edition
 
-Version [8.2](https://about.gitlab.com/2015/11/22/gitlab-8-2-released/), or higher, of GitLab CE/EE is required for `semantic-release-gitlab`.
+Version [9.0](https://about.gitlab.com/2017/03/22/gitlab-9-0-released/#api-v4-ce-ees-eep), or higher, of GitLab CE/EE is required for `semantic-release-gitlab`.
 
 Core features used:
 * [GitLab release page](http://docs.gitlab.com/ce/workflow/releases.html)
-* [API v3](https://gitlab.com/gitlab-org/gitlab-ce/blob/8-16-stable/doc/api/README.md)
+* [API v4](https://docs.gitlab.com/ce/api/README.html)
 
 > This only applies to you if you're running your own instance of GitLab. GitLab.com is always the latest version of the GitLab application.
 
-#### Setting HTTP Protocol for GitLab Integration
+### Preset
+
+[Version selection](#version-selection), the format of the release notes, among other things, are configured through a `conventional-changelog` preset package.
+
+For example, to use the [ESLint release conventions](https://www.npmjs.com/package/conventional-changelog-eslint), first install their preset package along-side `semantic-release-gitlab`:
+
+```bash
+yarn add --dev conventional-changelog-eslint
+```
+
+Then pass the name, minus `conventional-changelog-`, of the preset package to `semantic-release-gitlab`:
+
+```bash
+$(yarn bin)/semantic-release-gitlab --preset eslint
+```
+
+If a preset is not provided `semantic-release-gitlab` will use [`conventional-changelog-angular`](https://www.npmjs.com/package/conventional-changelog-angular).
+
+### Using HTTP for GitLab
 
 By default all API calls to GitLab are made over HTTPS. To use HTTP set the environment variable `GITLAB_INSECURE_API` to `true`. Other values, including not setting the environment variable, will cause `semantic-release-gitlab` to use HTTPS.
 
@@ -157,17 +175,13 @@ As noted earlier `semantic-release-gitlab` uses [conventional-recommended-bump](
 
 The process involves `semantic-release-gitlab` passing the list of all unreleased commits, along with your project's commit message convention, to `conventional-recommended-bump`. `conventional-recommended-bump` will either report that no new release is recommended, or it will recommend a new `major`, `minor`, or `patch` release.
 
-Rules used by `conventional-recommended-bump` to make a recommendation are housed in it's repository. If you have any questions or concerns regarding those rules, or the release recommended by `conventional-recommended-bump`, please reach out to their project.
-
 If `conventional-recommended-bump` indicates that no new release should be made, `semantic-release-gitlab` will **not** release a new version of your project.
 
 If a release is recommended, and no previous version exists, we will always set the first version to `1.0.0`.
 
-If a previous version exists, we take that version and increment it according to the recommendation.
+If a previous version exists, we take that version and increment it according to the recommendation using the default behavior of the [`inc`](https://www.npmjs.com/package/semver#functions) function provided by the [`semver`](https://www.npmjs.com/package/semver) package.
 
 If the project's existing major version is zero, we follow the version incrementing behavior outlined in the [_Major Version Zero_](#major-version-zero) section below.
-
-Otherwise we use the default behavior of the [inc](https://www.npmjs.com/package/semver#functions) function provided by the [semver](https://www.npmjs.com/package/semver) package.
 
 ### Major Version Zero
 
