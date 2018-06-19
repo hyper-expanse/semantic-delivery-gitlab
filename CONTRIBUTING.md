@@ -32,14 +32,14 @@ npm test
 
 ## Feature Requests
 
-I'm always looking for suggestions to improve this project. If you have a suggestion for improving an existing feature, or would like to suggest a completely new feature, please file an issue with my [GitLab repository](https://gitlab.com/hyper-expanse/semantic-release-gitlab/issues).
+I'm always looking for suggestions to improve this project. If you have a suggestion for improving an existing feature, or would like to suggest a completely new feature, please file an issue with my [GitLab repository](https://gitlab.com/hyper-expanse/open-source/semantic-release-gitlab/issues).
 
 ## Bug Reports
 
-My project isn't always perfect, but I strive to always improve on that work. You may file bug reports on the [GitLab repository](https://gitlab.com/hyper-expanse/semantic-release-gitlab/issues) site.
+My project isn't always perfect, but I strive to always improve on that work. You may file bug reports on the [GitLab repository](https://gitlab.com/hyper-expanse/open-source/semantic-release-gitlab/issues) site.
 
 ## Pull Requests
 
 Along with my desire to hear your feedback and suggestions, I'm also interested in accepting direct assistance in the form of new code or documentation.
 
-Please feel free to file merge requests against my [GitLab repository](https://gitlab.com/hyper-expanse/semantic-release-gitlab/merge_requests).
+Please feel free to file merge requests against my [GitLab repository](https://gitlab.com/hyper-expanse/open-source/semantic-release-gitlab/merge_requests).

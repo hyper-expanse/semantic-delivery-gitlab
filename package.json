@@ -5,7 +5,7 @@
     "url": "https://gitlab.com/hutson"
   },
   "bin": "./src/cli.js",
-  "bugs": "https://gitlab.com/hyper-expanse/semantic-release-gitlab/issues",
+  "bugs": "https://gitlab.com/hyper-expanse/open-source/semantic-release-gitlab/issues",
   "description": "Automatically generate a release, along with a corresponding git tag, for GitLab-hosted source code.",
   "engines": {
     "node": ">=6.9.0"
@@ -13,7 +13,7 @@
   "files": [
     "src/"
   ],
-  "homepage": "https://gitlab.com/hyper-expanse/semantic-release-gitlab#readme",
+  "homepage": "https://gitlab.com/hyper-expanse/open-source/semantic-release-gitlab#readme",
   "keywords": [
     "automation",
     "gitlab",
@@ -27,7 +27,7 @@
   "name": "semantic-release-gitlab",
   "repository": {
     "type": "git",
-    "url": "https://gitlab.com/hyper-expanse/semantic-release-gitlab.git"
+    "url": "https://gitlab.com/hyper-expanse/open-source/semantic-release-gitlab.git"
   },
   "scripts": {
     "dev": "docker run --rm --user node -v \"$(pwd)\":/app -w /app -it node:4 sh -c \"yarn install; yarn test; bash\"",

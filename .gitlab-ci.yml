@@ -46,7 +46,7 @@ release:
   before_script:
     - yarn install --frozen-lockfile
   only:
-    - master@hyper-expanse/semantic-release-gitlab
+    - master
   script:
     - node ./src/cli.js
   stage: release

@@ -1,8 +1,5 @@
 # semantic-release-gitlab
 
-[![build status](https://gitlab.com/hyper-expanse/semantic-release-gitlab/badges/master/build.svg)](https://gitlab.com/hyper-expanse/semantic-release-gitlab/commits/master)
-[![codecov](https://codecov.io/gl/hyper-expanse/semantic-release-gitlab/branch/master/graph/badge.svg)](https://codecov.io/gl/hyper-expanse/semantic-release-gitlab)
-
 > Automatically generate a release, along with a corresponding git tag, for GitLab-hosted source code.
 
 When you create a new release for your GitLab project, you probably do several of the steps listed below:
@@ -162,7 +159,7 @@ release:
 
 Full documentation for GitLab CI is available on the [GitLab CI](http://docs.gitlab.com/ce/ci/yaml/README.html) site.
 
-You may also take a look at our [.gitlab-ci.yml](https://gitlab.com/hyper-expanse/semantic-release-gitlab/blob/master/.gitlab-ci.yml) file as an example.
+You may also take a look at our [.gitlab-ci.yml](https://gitlab.com/hyper-expanse/open-source/semantic-release-gitlab/blob/master/.gitlab-ci.yml) file as an example.
 
 In addition to publishing a new release on every new commit, which is the strategy shown above, you may use use any number of other strategies, such as publishing a release on a given schedule. Please see the _Release Strategies_ section below for a few such alternative approaches.
 
@@ -273,4 +270,4 @@ JavaScript package managers should allow you to install this package with any ve
 
 ## Contributing
 
-Please read our [contributing guide](https://gitlab.com/hyper-expanse/semantic-release-gitlab/blob/master/CONTRIBUTING.md) to see how you may contribute to this project.
+Please read our [contributing guide](https://gitlab.com/hyper-expanse/open-source/semantic-release-gitlab/blob/master/CONTRIBUTING.md) to see how you may contribute to this project.
