@@ -58,4 +58,4 @@ publish:
   only:
     - tags
   script:
-    - $(yarn bin)/npm-publish-git-tag
+    - $(yarn bin)/npm-publish-git-tag --access public
