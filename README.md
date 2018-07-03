@@ -84,11 +84,14 @@ Lastly, a comment will be posted to every issue that is referenced in a released
 
 ### Required Environment Variable
 
-For `semantic-release-gitlab` to publish a release to GitLab a [GitLab Private Token](https://gitlab.com/profile/account) must be setup within your environment.
+For `semantic-release-gitlab` to publish a release to GitLab you must setup a [GitLab Personal Access Token](https://gitlab.com/profile/personal_access_tokens) in your environment with the following environment variable name:
 
 **Environment variable name** - `GITLAB_AUTH_TOKEN`
 
-The account associated with the GitLab private token must have _Developer_ permissions. That account must be a member of the project you're wanting to automatically release.
+The personal access token must have the following scope set:
+* `api`
+
+The personal access token must be setup on an account for a member of the project you're wanting to automatically release.
 
 > The permissions are required by the `semantic-release-gitlab-releaser` plugin.
 
