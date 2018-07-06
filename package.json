@@ -39,7 +39,7 @@
     "commander": "^2.9.0",
     "conventional-changelog-angular": "^1.6.4",
     "conventional-commits-detector": "^0.1.1",
-    "conventional-recommended-bump": "^2.0.0",
+    "conventional-recommended-bump": "^4.0.0",
     "debug": "^3.0.0",
     "git-latest-semver-tag": "^1.0.2",
     "git-raw-commits": "^1.2.0",
