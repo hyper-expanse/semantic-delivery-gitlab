@@ -2963,9 +2963,9 @@ shelljs@^0.8.0:
     interpret "^1.0.0"
     rechoir "^0.6.2"
 
-shifted-semver-increment@^1.0.3:
-  version "1.0.22"
-  resolved "https://registry.yarnpkg.com/shifted-semver-increment/-/shifted-semver-increment-1.0.22.tgz#b87ac05357df6e8b2813f36f50a1868ef3aeb645"
+shifted-semver-increment@^2.0.0:
+  version "2.0.5"
+  resolved "https://registry.yarnpkg.com/shifted-semver-increment/-/shifted-semver-increment-2.0.5.tgz#71a7845ba1696513d0d1d18e20ba6342890ccc2f"
   dependencies:
     debug "^3.1.0"
     semver "^5.4.1"

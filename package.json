@@ -47,7 +47,7 @@
     "semantic-release-gitlab-notifier": "^8.0.0",
     "semantic-release-gitlab-releaser": "^3.0.3",
     "shelljs": "^0.8.0",
-    "shifted-semver-increment": "^1.0.3",
+    "shifted-semver-increment": "^2.0.0",
     "stream-to-array": "^2.3.0"
   },
   "devDependencies": {
