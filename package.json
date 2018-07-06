@@ -37,7 +37,7 @@
   "dependencies": {
     "bluebird": "^3.3.4",
     "commander": "^2.9.0",
-    "conventional-changelog-angular": "^1.6.4",
+    "conventional-changelog-angular": "^5.0.0",
     "conventional-commits-detector": "^0.1.1",
     "conventional-recommended-bump": "^4.0.0",
     "debug": "^3.0.0",
