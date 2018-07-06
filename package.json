@@ -44,7 +44,7 @@
     "git-latest-semver-tag": "^1.0.2",
     "git-raw-commits": "^1.2.0",
     "lodash": "^4.7.0",
-    "semantic-release-gitlab-notifier": "^6.0.0",
+    "semantic-release-gitlab-notifier": "^8.0.0",
     "semantic-release-gitlab-releaser": "^3.0.3",
     "shelljs": "^0.8.0",
     "shifted-semver-increment": "^1.0.3",
