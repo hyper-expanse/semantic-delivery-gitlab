@@ -13,7 +13,7 @@ const nock = require('nock');
 const semanticReleaseGitlab = require(`./index`);
 
 chai.use(chaiAsPromised);
-var expect = chai.expect;
+const expect = chai.expect;
 
 const afterEach = mocha.afterEach;
 const before = mocha.before;
@@ -25,7 +25,7 @@ describe('semantic-release-gitlab', function () {
   // Setting up our fake project and creating git commits takes longer than the default Mocha timeout.
   this.timeout(20000);
 
-  before(function () {
+  before(() => {
     nock.disableNetConnect();
   });
 
@@ -59,8 +59,8 @@ describe('semantic-release-gitlab', function () {
     process.chdir(this.cwd);
   });
 
-  describe(`no existing tag`, function () {
-    it(`should set initial version to 1.0.0`, function () {
+  describe(`no existing tag`, () => {
+    it(`should set initial version to 1.0.0`, () => {
       const scope = nock(`https://gitlab.com`)
         .get(`/api/v4/version`).reply(200)
         .post(`/api/v4/projects/hyper-expanse%2Fsemantic-release-gitlab/repository/tags`, {
@@ -75,7 +75,7 @@ describe('semantic-release-gitlab', function () {
     });
   });
 
-  describe(`existing major zero tag`, function () {
+  describe(`existing major zero tag`, () => {
     // Some project owners prefer to start their project using a _Major Version Zero_ release, where the leading
     // zero of a Semantic Version number is the value _zero_. According to the Semantic Version (http://semver.org/)
     // standard: "Major version zero (0.y.z) is for initial development. Anything may change at any time. The public
@@ -85,7 +85,7 @@ describe('semantic-release-gitlab', function () {
     // changing their API as they flush out the purpose and goals of their project, without committing to a publicly
     // accessible stable interface.
 
-    it(`should increment last tag with a patch for a fix (patch-worthy)`, function () {
+    it(`should increment last tag with a patch for a fix (patch-worthy)`, () => {
       const scope = nock(`https://gitlab.com`)
         .get(`/api/v4/version`).reply(200)
         .post(`/api/v4/projects/hyper-expanse%2Fsemantic-release-gitlab/repository/tags`, {
@@ -102,7 +102,7 @@ describe('semantic-release-gitlab', function () {
         .then(() => scope.isDone());
     });
 
-    it(`should increment last tag with a patch for a feature (minor-worthy)`, function () {
+    it(`should increment last tag with a patch for a feature (minor-worthy)`, () => {
       const scope = nock(`https://gitlab.com`)
         .get(`/api/v4/version`).reply(200)
         .post(`/api/v4/projects/hyper-expanse%2Fsemantic-release-gitlab/repository/tags`, {
@@ -119,7 +119,7 @@ describe('semantic-release-gitlab', function () {
         .then(() => scope.isDone());
     });
 
-    it(`should increment last tag with a minor for a breaking change (major-worthy)`, function () {
+    it(`should increment last tag with a minor for a breaking change (major-worthy)`, () => {
       const scope = nock(`https://gitlab.com`)
         .get(`/api/v4/version`).reply(200)
         .post(`/api/v4/projects/hyper-expanse%2Fsemantic-release-gitlab/repository/tags`, {
@@ -137,17 +137,17 @@ describe('semantic-release-gitlab', function () {
     });
   });
 
-  describe(`existing tag`, function () {
-    beforeEach(function () {
+  describe(`existing tag`, () => {
+    beforeEach(() => {
       shell.exec(`git tag 1.0.0`);
     });
 
-    it(`should return undefined since no commit has happened since last tag`, function () {
+    it(`should return undefined since no commit has happened since last tag`, () => {
       return expect(semanticReleaseGitlab()).to.be.fulfilled
         .and.to.eventually.equal(undefined);
     });
 
-    it(`should increment last tag with a patch`, function () {
+    it(`should increment last tag with a patch`, () => {
       const scope = nock(`https://gitlab.com`)
         .get(`/api/v4/version`).reply(200)
         .post(`/api/v4/projects/hyper-expanse%2Fsemantic-release-gitlab/repository/tags`, {
@@ -163,7 +163,7 @@ describe('semantic-release-gitlab', function () {
         .then(() => scope.isDone());
     });
 
-    it(`should increment last tag with a patch when provided a valid preset`, function () {
+    it(`should increment last tag with a patch when provided a valid preset`, () => {
       const scope = nock(`https://gitlab.com`, {encodedQueryParams: true})
         .post(`/api/v3/projects/hyper-expanse%2Fsemantic-release-gitlab/repository/tags`, {
           message: `Release 1.0.1`,
@@ -183,7 +183,7 @@ describe('semantic-release-gitlab', function () {
         .then(() => scope.isDone());
     });
 
-    it(`should fail when given an invalid preset`, function () {
+    it(`should fail when given an invalid preset`, () => {
       const noSuchPreset = {
         preset: 'noSuchPreset',
       };
@@ -194,7 +194,7 @@ describe('semantic-release-gitlab', function () {
     });
   });
 
-  describe(`releasing patches and minor versions off of a branch`, function () {
+  describe(`releasing patches and minor versions off of a branch`, () => {
     // We want to test the ability to run `semantic-release-gitlab` off of a branch.
 
     // Occasionally people will encounter the following scenario:
@@ -208,7 +208,7 @@ describe('semantic-release-gitlab', function () {
     // major version, push a bug fix to that branch, and have `semantic-release-gitlab` automatically release a new
     // patch version.
 
-    beforeEach(function () {
+    beforeEach(() => {
       shell.exec(`git tag 1.0.1`);
       shell.exec(`git commit --allow-empty -m "feat(index): major change\n\nBREAKING CHANGE: change" --no-gpg-sign`);
 
@@ -220,7 +220,7 @@ describe('semantic-release-gitlab', function () {
       shell.exec(`git checkout -b fix/package 1.0.1`);
     });
 
-    it(`should release patch version within 1.x.x range instead of on the recent 2.x.x version range`, function () {
+    it(`should release patch version within 1.x.x range instead of on the recent 2.x.x version range`, () => {
       const scope = nock(`https://gitlab.com`)
         .get(`/api/v4/version`).reply(200)
         .post(`/api/v4/projects/hyper-expanse%2Fsemantic-release-gitlab/repository/tags`, {

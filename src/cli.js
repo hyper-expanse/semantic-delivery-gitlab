@@ -3,8 +3,8 @@
 'use strict';
 
 const pkg = require(`../package.json`);
-var program = require(`commander`);
-var semanticRelease = require(`./index.js`);
+const program = require(`commander`);
+const semanticRelease = require(`./index.js`);
 
 program
   .description(pkg.description)
@@ -16,7 +16,7 @@ const packageOpts = {
 };
 
 semanticRelease(packageOpts)
-  .then(function (releasedVersion) {
+  .then(releasedVersion => {
     const message = releasedVersion ?
       `Released version ${releasedVersion}` :
       `No changes are available to release.`;
