@@ -2959,6 +2959,25 @@ semantic-release-gitlab-releaser@^3.0.3:
     get-pkg-repo "^2.0.0"
     lodash "^4.0.1"
 
+semantic-release-gitlab@^7.0.7:
+  version "7.0.7"
+  resolved "https://registry.yarnpkg.com/semantic-release-gitlab/-/semantic-release-gitlab-7.0.7.tgz#20c45709695b96828c2576f8846e262aa94b01ac"
+  dependencies:
+    bluebird "^3.3.4"
+    commander "^2.9.0"
+    conventional-changelog-angular "^5.0.0"
+    conventional-commits-detector "^0.1.1"
+    conventional-recommended-bump "^4.0.0"
+    debug "^3.0.0"
+    git-latest-semver-tag "^1.0.2"
+    git-raw-commits "^1.2.0"
+    lodash "^4.7.0"
+    semantic-release-gitlab-notifier "^8.0.0"
+    semantic-release-gitlab-releaser "^3.0.3"
+    shelljs "^0.8.0"
+    shifted-semver-increment "^2.0.0"
+    stream-to-array "^2.3.0"
+
 semver-regex@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/semver-regex/-/semver-regex-1.0.0.tgz#92a4969065f9c70c694753d55248fc68f8f652c9"
