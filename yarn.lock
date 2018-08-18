@@ -82,6 +82,12 @@
     lodash "^4.17.5"
     to-fast-properties "^2.0.0"
 
+"@hbetts/conventional-changelog-config@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@hbetts/conventional-changelog-config/-/conventional-changelog-config-1.0.0.tgz#40ef99f30a0f7260e353cef0fb1fafcb5d55c3a3"
+  dependencies:
+    conventional-changelog-angular "^5.0.0"
+
 "@hbetts/eslint-config@^1.0.1":
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/@hbetts/eslint-config/-/eslint-config-1.0.1.tgz#9c36357f27c303762275151135703992c864a0e8"
