@@ -45,7 +45,7 @@
     "git-raw-commits": "^1.2.0",
     "lodash": "^4.7.0",
     "semantic-release-gitlab-notifier": "^8.0.0",
-    "semantic-release-gitlab-releaser": "^3.0.3",
+    "semantic-release-gitlab-releaser": "^4.0.0",
     "shelljs": "^0.8.0",
     "shifted-semver-increment": "^2.0.0",
     "stream-to-array": "^2.3.0"
