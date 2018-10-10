@@ -5,7 +5,7 @@
 const chai = require(`chai`);
 const chaiAsPromised = require(`chai-as-promised`);
 const fs = require(`fs`);
-const mocha = require(`mocha`);
+const {afterEach, before, beforeEach, describe, it} = require(`mocha`);
 const shell = require(`shelljs`);
 const tmp = require(`tmp`);
 const nock = require('nock');
@@ -13,13 +13,7 @@ const nock = require('nock');
 const semanticReleaseGitlab = require(`./index`);
 
 chai.use(chaiAsPromised);
-const expect = chai.expect;
-
-const afterEach = mocha.afterEach;
-const before = mocha.before;
-const beforeEach = mocha.beforeEach;
-const describe = mocha.describe;
-const it = mocha.it;
+const {expect} = chai;
 
 describe('semantic-release-gitlab', function () {
   // Setting up our fake project and creating git commits takes longer than the default Mocha timeout.
