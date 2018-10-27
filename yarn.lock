@@ -825,6 +825,16 @@ conventional-commits-detector@^0.1.1:
     meow "^3.3.0"
     through2-concurrent "^1.1.0"
 
+conventional-commits-detector@^1.0.0:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/conventional-commits-detector/-/conventional-commits-detector-1.0.2.tgz#de5dacafa7b9ba45dbe7eccfec46a32e742964f4"
+  integrity sha512-7DwYW+4i2Ne2HKxsSpOkc6jne28vnPB7Y8bS3li7DJcUj7V5IoYQPobvN+Xsg71NGLBuFuHndnCfdtisGA0EQw==
+  dependencies:
+    arrify "^1.0.0"
+    git-raw-commits "^2.0.0"
+    meow "^5.0.0"
+    through2-concurrent "^2.0.0"
+
 conventional-commits-filter@^1.1.6:
   version "1.1.6"
   resolved "https://registry.yarnpkg.com/conventional-commits-filter/-/conventional-commits-filter-1.1.6.tgz#4389cd8e58fe89750c0b5fb58f1d7f0cc8ad3831"
@@ -3490,6 +3500,13 @@ through2-concurrent@^1.1.0:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/through2-concurrent/-/through2-concurrent-1.1.1.tgz#11cb4ea4c9e31bca6e4c1e6dba48d1c728c3524b"
   integrity sha1-EctOpMnjG8puTB5tukjRxyjDUks=
+  dependencies:
+    through2 "^2.0.0"
+
+through2-concurrent@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/through2-concurrent/-/through2-concurrent-2.0.0.tgz#c9dd2c146504ec9962dbc86a5168b63d662669fa"
+  integrity sha512-R5/jLkfMvdmDD+seLwN7vB+mhbqzWop5fAjx5IX8/yQq7VhBhzDmhXgaHAOnhnWkCpRMM7gToYHycB0CS/pd+A==
   dependencies:
     through2 "^2.0.0"
 
