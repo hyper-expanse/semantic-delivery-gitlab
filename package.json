@@ -16,11 +16,8 @@
   "homepage": "https://gitlab.com/hyper-expanse/open-source/semantic-release-gitlab#readme",
   "keywords": [
     "automation",
-    "gitlab",
-    "npm",
-    "publish",
-    "release",
-    "semantic-release"
+    "deliver",
+    "gitlab"
   ],
   "license": "Apache-2.0",
   "main": "src/index.js",
