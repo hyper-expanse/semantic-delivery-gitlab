@@ -190,11 +190,10 @@ When the `major` version, the first number in `major.minor.patch`, of a [semanti
 
 In this scenario, incrementing the `major` version will increment what is traditionally the `minor` number in the semantic version string, while incrementing the `minor` or `patch` version will increment the `patch` number in the semantic version string.
 
-When the major version is greater than zero, `semantic-release-gitlab` will switch back to the default behavior of using the [inc](https://www.npmjs.com/package/semver#functions) function provided by the [semver](https://www.npmjs.com/package/semver) package.
+**Note:** To release a version `1.0.0` of your library you must create a `1.0.0` tag manually on your [GitLab project](https://docs.gitlab.com/ee/workflow/releases.html).
 
-> So how do you automatically increment from a _Major Version Zero_ version to a major version greater than zero?
+When the major version is greater than zero, `semantic-release-gitlab` will switch back to it's default behavior of following [semantic versioning](http://semver.org/). (Which uses the [inc](https://www.npmjs.com/package/semver#functions) function provided by the [semver](https://www.npmjs.com/package/semver) package.)
 
-Since `semantic-release-gitlab` will always treat a `major` version as a `minor` version for a _Major Version Zero_ release, it's technically impossible for `semantic-release-gitlab` to increment from `0.Y.Z` to `X.Y.Z`. So it's up to you, as the project owner, to manually create the first non-zero major version.
 
 ## Release Strategies
 
