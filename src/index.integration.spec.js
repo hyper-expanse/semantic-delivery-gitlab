@@ -54,6 +54,22 @@ describe('semantic-release-gitlab', function () {
   });
 
   describe(`no existing tag`, () => {
+    it(`should fetch remote repository from 'git remote'`, () => {
+      fs.unlinkSync(`package.json`);
+      shell.exec(`git remote add origin https://gitlab.com/hyper-expanse/semantic-release-gitlab-remote.git`);
+
+      const scope = nock(`https://gitlab.com`)
+        .post(`/api/v4/projects/hyper-expanse%2Fsemantic-release-gitlab-remote/repository/tags`, {
+          message: `Release 1.0.0`,
+          release_description: /.*/,
+          ref: /.*/,
+          tag_name: `1.0.0`,
+        }).reply(201);
+      return expect(semanticReleaseGitlab()).to.be.fulfilled
+        .and.to.eventually.equal(`1.0.0`)
+        .then(() => scope.isDone());
+    });
+
     it(`should set initial version to 1.0.0`, () => {
       const scope = nock(`https://gitlab.com`)
         .post(`/api/v4/projects/hyper-expanse%2Fsemantic-release-gitlab/repository/tags`, {

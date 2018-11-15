@@ -4,6 +4,7 @@ const _ = require(`lodash`);
 const Bluebird = require(`bluebird`);
 const conventionalCommitsDetector = require(`conventional-commits-detector`);
 const debug = require(`debug`)(`semantic-release-gitlab`);
+const gitRemoteOriginUrl = require(`git-remote-origin-url`);
 const fs = require(`fs`);
 const gitlabNotifier = require(`semantic-release-gitlab-notifier`);
 const gitlabReleaser = require(`semantic-release-gitlab-releaser`);
@@ -19,7 +20,26 @@ module.exports = semanticRelease;
 
 function semanticRelease(packageOpts) {
   packageOpts = packageOpts || {};
-  return latestSemverTag()
+  const config = {};
+
+  return new Promise(resolve => {
+    try {
+      resolve(JSON.parse(fs.readFileSync(path.join(process.cwd(), `package.json`))));
+    } catch (error) {
+      /**
+       * Failed to retrieve the repository URL from the project's `package.json`. Perhaps because the project does
+       * not have a `package.json` file, such as a Python project.
+       */
+      resolve(gitRemoteOriginUrl().then(repositoryURL => {
+        return {
+          repository: repositoryURL,
+        };
+      }));
+    }
+  }).then(packageData => {
+    config.pkg = packageData;
+  })
+    .then(() => latestSemverTag())
     .then(_.partial(debugAndReturn, `last tag`, _))
     .then(latestTag => streamToArray(rawCommitsStream({from: latestTag})))
     .then(_.partial(_.map, _, value => value.toString()))
@@ -29,16 +49,14 @@ function semanticRelease(packageOpts) {
         return debug(`no commits to release so skipping the other release steps`);
       }
 
-      const config = {
-        data: {
-          commits,
-        },
-        pkg: JSON.parse(fs.readFileSync(path.join(process.cwd(), `package.json`))),
-        options: {
-          scmToken: process.env.GITLAB_AUTH_TOKEN,
-          insecureApi: process.env.GITLAB_INSECURE_API === `true`,
-          preset: packageOpts.preset || conventionalCommitsDetector(commits),
-        },
+      config.data = {
+        commits,
+      };
+
+      config.options = {
+        scmToken: process.env.GITLAB_AUTH_TOKEN,
+        insecureApi: process.env.GITLAB_INSECURE_API === `true`,
+        preset: packageOpts.preset || conventionalCommitsDetector(commits),
       };
 
       debug(`detected ${config.options.preset} commit convention`);
