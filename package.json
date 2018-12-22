@@ -49,9 +49,9 @@
     "stream-to-array": "^2.3.0"
   },
   "devDependencies": {
-    "@hbetts/conventional-changelog-config": "^1.0.0",
-    "@hbetts/eslint-config": "^2.0.0",
-    "@hbetts/nyc-config": "^1.0.2",
+    "@hutson/conventional-changelog-config": "^2.0.0",
+    "@hutson/eslint-config": "^3.0.0",
+    "@hutson/nyc-config": "^2.0.0",
     "chai": "^4.0.2",
     "chai-as-promised": "^7.0.0",
     "codecov": "^3.0.0",
