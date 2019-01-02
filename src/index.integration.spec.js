@@ -65,6 +65,7 @@ describe('semantic-release-gitlab', function () {
           ref: /.*/,
           tag_name: `1.0.0`,
         }).reply(201);
+
       return expect(semanticReleaseGitlab()).to.be.fulfilled
         .and.to.eventually.equal(`1.0.0`)
         .then(() => scope.isDone());
@@ -78,8 +79,25 @@ describe('semantic-release-gitlab', function () {
           ref: /.*/,
           tag_name: `1.0.0`,
         }).reply(201);
+
       return expect(semanticReleaseGitlab()).to.be.fulfilled
         .and.to.eventually.equal(`1.0.0`)
+        .then(() => scope.isDone());
+    });
+
+    it(`should clean up newly created tag if there's a failure`, () => {
+      const scope = nock(`https://gitlab.com`)
+        .post(`/api/v4/projects/hyper-expanse%2Fsemantic-release-gitlab/repository/tags`, {
+          message: `Release 1.0.0`,
+          release_description: /.*/,
+          ref: /.*/,
+          tag_name: `1.0.0`,
+        }).reply(400);
+
+      return expect(semanticReleaseGitlab()).to.be.rejected
+        .then(() => {
+          expect(shell.exec(`git tag`).stdout).to.equal(``);
+        })
         .then(() => scope.isDone());
     });
   });

@@ -82,6 +82,10 @@ function semanticRelease(packageOpts) {
             .then(config => shell.exec(`git tag ${config.data.version}`))
             .then(_.partial(gitlabReleaser, config))
             .then(_.partial(gitlabNotifier, config))
+            .catch(error => {
+              shell.exec(`git tag -d ${config.data.version}`);
+              throw error;
+            })
             .then(() => config.data.version);
         });
     });
