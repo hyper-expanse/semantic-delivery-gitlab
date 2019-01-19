@@ -11,7 +11,7 @@
     "node": ">=6.9.0"
   },
   "files": [
-    "src/"
+    "src/**/!(*.spec).js"
   ],
   "homepage": "https://gitlab.com/hyper-expanse/open-source/semantic-release-gitlab#readme",
   "keywords": [
