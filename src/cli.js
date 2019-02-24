@@ -4,7 +4,7 @@
 
 const pkg = require(`../package.json`);
 const program = require(`commander`);
-const semanticRelease = require(`./index.js`);
+const semanticRelease = require(`../`);
 
 program
   .description(pkg.description)

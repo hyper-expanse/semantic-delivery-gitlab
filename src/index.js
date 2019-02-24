@@ -6,8 +6,8 @@ const conventionalCommitsDetector = require(`conventional-commits-detector`);
 const debug = require(`debug`)(`semantic-release-gitlab`);
 const gitRemoteOriginUrl = require(`git-remote-origin-url`);
 const fs = require(`fs`);
-const gitlabNotifier = require(`semantic-release-gitlab-notifier`);
-const gitlabReleaser = require(`semantic-release-gitlab-releaser`);
+const notifier = require(`./notifier`);
+const releaser = require(`./releaser`);
 const latestSemverTag = Bluebird.promisify(require(`git-latest-semver-tag`));
 const rawCommitsStream = require(`git-raw-commits`);
 const recommendedBump = Bluebird.promisify(require(`conventional-recommended-bump`));
@@ -80,8 +80,8 @@ function semanticRelease(packageOpts) {
             .then(_.partial(debugAndReturn, `version to be released`, _))
             .then(_.partial(_.set, config, `data.version`, _))
             .then(config => shell.exec(`git tag ${config.data.version}`))
-            .then(_.partial(gitlabReleaser, config))
-            .then(_.partial(gitlabNotifier, config))
+            .then(_.partial(releaser, config))
+            .then(_.partial(notifier, config))
             .catch(error => {
               shell.exec(`git tag -d ${config.data.version}`);
               throw error;

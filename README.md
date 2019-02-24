@@ -48,9 +48,9 @@ This idea, however, is not new. `semantic-release-gitlab` was heavily inspired b
 * [x] Get a list of unreleased commits using [git-raw-commits](https://www.npmjs.com/package/git-raw-commits).
 * [x] Detect commit message convention used by a project with [conventional-commits-detector](https://www.npmjs.com/package/conventional-commits-detector).
 * [x] Determine appropriate version to release, or whether to release at all, with [conventional-recommended-bump](https://www.npmjs.com/package/conventional-recommended-bump).
-* [x] Publish a [GitLab release](http://docs.gitlab.com/ce/workflow/releases.html) using [conventional-gitlab-releaser](https://www.npmjs.com/package/conventional-gitlab-releaser) through the [semantic-release-gitlab-releaser](https://www.npmjs.com/package/semantic-release-gitlab-releaser) plugin.
+* [x] Publish a [GitLab release](http://docs.gitlab.com/ce/workflow/releases.html) using [conventional-gitlab-releaser](https://www.npmjs.com/package/conventional-gitlab-releaser).
 * [x] Create an annotated [git tag](https://git-scm.com/book/en/v2/Git-Basics-Tagging) on GitLab.
-* [x] Post a comment to GitLab issues closed by changes included in a release through the [semantic-release-gitlab-notifier](https://www.npmjs.com/package/semantic-release-gitlab-notifier) plugin.
+* [x] Post a comment to GitLab issues closed by changes included in a release.
 
 ## Installation
 
@@ -92,8 +92,6 @@ The personal access token must have the following scope set:
 * `api`
 
 The personal access token must be setup on an account for a member of the project you're wanting to automatically release.
-
-> The permissions are required by the `semantic-release-gitlab-releaser` plugin.
 
 > GitLab permissions are documented on the [GitLab Permissions](http://docs.gitlab.com/ce/user/permissions.html) site.
 
@@ -248,12 +246,6 @@ On the Windows command line you may do:
 ```bash
 set DEBUG=semantic-release-gitlab
 semantic-release-gitlab
-```
-
-All `semantic-release-gitlab` plugins use `debug` to print information to the console. You can instruct all plugins, and `semantic-release-gitlab`, to print their debugging information by using `semantic-release-gitlab*` as the value of the `DEBUG` environment variable.
-
-```bash
-DEBUG=semantic-release-gitlab* semantic-release-gitlab
 ```
 
 ## Node Support Policy

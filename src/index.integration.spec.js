@@ -10,7 +10,7 @@ const shell = require(`shelljs`);
 const tmp = require(`tmp`);
 const nock = require('nock');
 
-const semanticReleaseGitlab = require(`./index`);
+const semanticReleaseGitlab = require(`../`);
 
 chai.use(chaiAsPromised);
 const {expect} = chai;
