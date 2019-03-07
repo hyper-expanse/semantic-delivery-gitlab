@@ -14,7 +14,7 @@ chai.use(chaiAsPromised);
 chai.use(sinonChai);
 const {expect} = chai;
 
-describe(`semantic-release-gitlab-notifier`, () => {
+describe(`semantic-release-gitlab`, () => {
   before(() => {
     nock.disableNetConnect();
   });
@@ -37,7 +37,7 @@ describe(`semantic-release-gitlab-notifier`, () => {
         scmToken: `TOKEN`,
       },
       pkg: {
-        repository: `https://gitlab.com/hyper-expanse/semantic-release-gitlab-notifier.git`,
+        repository: `https://gitlab.com/hyper-expanse/semantic-release-gitlab.git`,
       },
     };
   });
@@ -49,17 +49,6 @@ describe(`semantic-release-gitlab-notifier`, () => {
 
     return expect(promise).to.be.fulfilled
       .and.to.eventually.equal(false);
-  });
-
-  it(`will reject if a 'pkg' object is not passed in the 'config' argument`, function () {
-    delete this.config.pkg;
-
-    const promise = semanticReleaseGitLabNotifier(this.config);
-
-    return expect(promise).to.be.rejectedWith(Error, 'This plugin, ' +
-      '`semantic-release-gitlab-notifier`, was not passed the contents of your package\'s ' +
-      '`package.json` file. Please contact the user of this plugin and request that they pass ' +
-      'the contents of `package.json` to the plugin.');
   });
 
   it(`will reject if no repository information in 'pkg' property of 'config'`, function () {
@@ -86,7 +75,7 @@ describe(`semantic-release-gitlab-notifier`, () => {
     const promise = semanticReleaseGitLabNotifier(this.config);
 
     return expect(promise)
-      .to.be.rejectedWith(Error, `Invalid version provided to 'semantic-release-gitlab-notifier'.`);
+      .to.be.rejectedWith(Error, `Invalid version provided to 'semantic-release-gitlab'.`);
   });
 
   it(`will reject if an invalid version is provided`, function () {
@@ -95,7 +84,7 @@ describe(`semantic-release-gitlab-notifier`, () => {
     const promise = semanticReleaseGitLabNotifier(this.config);
 
     return expect(promise)
-      .to.be.rejectedWith(Error, `Invalid version provided to 'semantic-release-gitlab-notifier'.`);
+      .to.be.rejectedWith(Error, `Invalid version provided to 'semantic-release-gitlab'.`);
   });
 
   it(`will reject if monoRepo option isn't passed for monoRepo version`, function () {
@@ -104,7 +93,7 @@ describe(`semantic-release-gitlab-notifier`, () => {
     const promise = semanticReleaseGitLabNotifier(this.config);
 
     return expect(promise)
-      .to.be.rejectedWith(Error, `Invalid version provided to 'semantic-release-gitlab-notifier'.`);
+      .to.be.rejectedWith(Error, `Invalid version provided to 'semantic-release-gitlab'.`);
   });
 
   it(`will reject if an invalid version for mono repos is provided`, function () {
@@ -114,7 +103,7 @@ describe(`semantic-release-gitlab-notifier`, () => {
     const promise = semanticReleaseGitLabNotifier(this.config);
 
     return expect(promise)
-      .to.be.rejectedWith(Error, `Invalid version provided to 'semantic-release-gitlab-notifier'.`);
+      .to.be.rejectedWith(Error, `Invalid version provided to 'semantic-release-gitlab'.`);
   });
 
   it(`will reject if an incorrect tagSplitter is passed into options`, function () {
@@ -125,7 +114,7 @@ describe(`semantic-release-gitlab-notifier`, () => {
     const promise = semanticReleaseGitLabNotifier(this.config);
 
     return expect(promise)
-      .to.be.rejectedWith(Error, `Invalid version provided to 'semantic-release-gitlab-notifier'.`);
+      .to.be.rejectedWith(Error, `Invalid version provided to 'semantic-release-gitlab'.`);
   });
 
   it(`will reject if it fails to create a GitLab comment`, function () {
@@ -160,7 +149,7 @@ describe(`semantic-release-gitlab-notifier`, () => {
 
   describe(`alternative repository URLs`, () => {
     it(`should succeed with SSH URL - git@gitlab.com`, function () {
-      this.config.pkg.repository = `git@gitlab.com/hyper-expanse/semantic-release-gitlab-notifier.git`;
+      this.config.pkg.repository = `git@gitlab.com/hyper-expanse/semantic-release-gitlab.git`;
 
       const notesResponse = generateNotesResponse();
 
@@ -175,7 +164,7 @@ describe(`semantic-release-gitlab-notifier`, () => {
     });
 
     it(`should succeed with company deployed SSH URL - git@gitlab.company.com`, function () {
-      this.config.pkg.repository = `git@gitlab.company.com/hyper-expanse/semantic-release-gitlab-notifier.git`;
+      this.config.pkg.repository = `git@gitlab.company.com/hyper-expanse/semantic-release-gitlab.git`;
 
       const notesResponse = generateNotesResponse(`https://gitlab.company.com`);
 
@@ -190,7 +179,7 @@ describe(`semantic-release-gitlab-notifier`, () => {
     });
 
     it(`should succeed with company deployed non-standard TLD - git@git.ourdomain.co`, function () {
-      this.config.pkg.repository = `git@git.ourdomain.co:hyper-expanse/semantic-release-gitlab-notifier.git`;
+      this.config.pkg.repository = `git@git.ourdomain.co:hyper-expanse/semantic-release-gitlab.git`;
 
       const notesResponse = generateNotesResponse(`https://git.ourdomain.co`);
 
@@ -226,8 +215,8 @@ function generateNotesResponse(customUrl) {
 
   return nock(url, {encodedQueryParams: true})
     .post(
-      `/api/v4/projects/hyper-expanse%2Fsemantic-release-gitlab-notifier/issues/1/notes`,
-      `{"body":"Version [1.0.0](${url}/hyper-expanse/semantic-release-gitlab-notifier/tags/1.0.0) has been released."}`
+      `/api/v4/projects/hyper-expanse%2Fsemantic-release-gitlab/issues/1/notes`,
+      `{"body":"Version [1.0.0](${url}/hyper-expanse/semantic-release-gitlab/tags/1.0.0) has been released."}`
     )
     .reply(201);
 }

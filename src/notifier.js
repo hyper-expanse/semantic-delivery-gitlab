@@ -15,12 +15,6 @@ module.exports = notifier;
 
 function notifier(config) {
   return new Bluebird((resolve, reject) => {
-    if (!_.has(config, `pkg`)) {
-      return reject(new Error('This plugin, `semantic-release-gitlab-notifier`, was not ' +
-        'passed the contents of your package\'s `package.json` file. Please contact the user of ' +
-        'this plugin and request that they pass the contents of `package.json` to the plugin.'));
-    }
-
     let repoUrl;
     try {
       repoUrl = getPkgRepo(config.pkg);
@@ -43,8 +37,8 @@ function notifier(config) {
     }
 
     if (semver.valid(semverVersion) === null) {
-      debug(`invalid version provided to 'semantic-release-gitlab-notifier'`);
-      return reject(new Error(`Invalid version provided to 'semantic-release-gitlab-notifier'.`));
+      debug(`invalid version provided to 'semantic-release-gitlab'`);
+      return reject(new Error(`Invalid version provided to 'semantic-release-gitlab'.`));
     }
 
     const domain = `${config.options.insecureApi ? `http` : `https`}://${repoUrl.domain}`;
@@ -73,12 +67,7 @@ function notifier(config) {
 
         Bluebird.all(commentPromises)
           .then(_.ary(_.partial(resolve, true)))
-          .catch(() => {
-            debug('failed to post comments to GitLab. Set `NODE_DEBUG` environment variable ' +
-              'to include `request` and re-run the tool to debug the issue');
-
-            return reject(new Error(`Failed to post comment(s) to GitLab.`));
-          });
+          .catch(() => reject(new Error(`Failed to post comment(s) to GitLab.`)));
       });
   });
 }
