@@ -102,65 +102,6 @@ describe('semantic-release-gitlab', function () {
     });
   });
 
-  describe(`existing major zero tag`, () => {
-    // Some project owners prefer to start their project using a _Major Version Zero_ release, where the leading
-    // zero of a Semantic Version number is the value _zero_. According to the Semantic Version (http://semver.org/)
-    // standard: "Major version zero (0.y.z) is for initial development. Anything may change at any time. The public
-    // API should not be considered stable."
-
-    // By starting with major version zero, a project owner can prototype the functionality of their package, quickly
-    // changing their API as they flush out the purpose and goals of their project, without committing to a publicly
-    // accessible stable interface.
-
-    it(`should increment last tag with a patch for a fix (patch-worthy)`, () => {
-      const scope = nock(`https://gitlab.com`)
-        .post(`/api/v4/projects/hyper-expanse%2Fsemantic-release-gitlab/repository/tags`, {
-          message: `Release 0.1.1`,
-          release_description: /.*/,
-          ref: /.*/,
-          tag_name: `0.1.1`,
-        }).reply(201);
-      shell.exec(`git tag 0.1.0`);
-      shell.exec(`git commit --allow-empty -m "fix(index): remove bug" --no-gpg-sign`);
-
-      return expect(semanticReleaseGitlab()).to.be.fulfilled
-        .and.to.eventually.equal(`0.1.1`)
-        .then(() => scope.isDone());
-    });
-
-    it(`should increment last tag with a patch for a feature (minor-worthy)`, () => {
-      const scope = nock(`https://gitlab.com`)
-        .post(`/api/v4/projects/hyper-expanse%2Fsemantic-release-gitlab/repository/tags`, {
-          message: `Release 0.1.1`,
-          release_description: /.*/,
-          ref: /.*/,
-          tag_name: `0.1.1`,
-        }).reply(201);
-      shell.exec(`git tag 0.1.0`);
-      shell.exec(`git commit --allow-empty -m "feat(index): add cool new method" --no-gpg-sign`);
-
-      return expect(semanticReleaseGitlab()).to.be.fulfilled
-        .and.to.eventually.equal(`0.1.1`)
-        .then(() => scope.isDone());
-    });
-
-    it(`should increment last tag with a minor for a breaking change (major-worthy)`, () => {
-      const scope = nock(`https://gitlab.com`)
-        .post(`/api/v4/projects/hyper-expanse%2Fsemantic-release-gitlab/repository/tags`, {
-          message: `Release 0.2.0`,
-          release_description: /.*/,
-          ref: /.*/,
-          tag_name: `0.2.0`,
-        }).reply(201);
-      shell.exec(`git tag 0.1.0`);
-      shell.exec(`git commit --allow-empty -m "feat(index): major change\n\nBREAKING CHANGE: change" --no-gpg-sign`);
-
-      return expect(semanticReleaseGitlab()).to.be.fulfilled
-        .and.to.eventually.equal(`0.2.0`)
-        .then(() => scope.isDone());
-    });
-  });
-
   describe(`existing tag`, () => {
     beforeEach(() => {
       shell.exec(`git tag 1.0.0`);

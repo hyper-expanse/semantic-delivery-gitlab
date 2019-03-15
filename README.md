@@ -31,7 +31,6 @@ This idea, however, is not new. `semantic-release-gitlab` was heavily inspired b
   - [Continuous Integration and Delivery (CID) Setup](#continuous-integration-and-delivery-cid-setup)
 - [How to Publish Project to an npm Registry](#how-to-publish-project-to-an-npm-registry)
 - [Version Selection](#version-selection)
-  - [Major Version Zero](#major-version-zero)
 - [Release Strategies](#release-strategies)
   - [On Every Push To A Repository With New Commits](#on-every-push-to-a-repository-with-new-commits)
   - [On A Schedule](#on-a-schedule)
@@ -179,18 +178,6 @@ If `conventional-recommended-bump` indicates that no new release should be made,
 If a release is recommended, and no previous version exists, we will always set the first version to `1.0.0`.
 
 If a previous version exists, we take that version and increment it according to the recommendation using the default behavior of the [`inc`](https://www.npmjs.com/package/semver#functions) function provided by the [`semver`](https://www.npmjs.com/package/semver) package.
-
-If the project's existing major version is zero, we follow the version incrementing behavior outlined in the [_Major Version Zero_](#major-version-zero) section below.
-
-### Major Version Zero
-
-When the `major` version, the first number in `major.minor.patch`, of a [semantic version](http://semver.org/) string, is zero, `semantic-release-gitlab` will increment the version number following a different set of rules.
-
-In this scenario, incrementing the `major` version will increment what is traditionally the `minor` number in the semantic version string, while incrementing the `minor` or `patch` version will increment the `patch` number in the semantic version string.
-
-**Note:** To release a version `1.0.0` of your library you must create a `1.0.0` tag manually on your [GitLab project](https://docs.gitlab.com/ee/workflow/releases.html).
-
-When the major version is greater than zero, `semantic-release-gitlab` will switch back to it's default behavior of following [semantic versioning](http://semver.org/). (Which uses the [inc](https://www.npmjs.com/package/semver#functions) function provided by the [semver](https://www.npmjs.com/package/semver) package.)
 
 
 ## Release Strategies
