@@ -18,7 +18,7 @@ const shell = require(`shelljs`);
 
 module.exports = semanticRelease;
 
-function semanticRelease(packageOpts) {
+function semanticRelease (packageOpts) {
   packageOpts = packageOpts || {};
   const config = {};
 
@@ -32,7 +32,7 @@ function semanticRelease(packageOpts) {
        */
       resolve(gitRemoteOriginUrl().then(repositoryURL => {
         return {
-          repository: repositoryURL,
+          repository: repositoryURL
         };
       }));
     }
@@ -41,7 +41,7 @@ function semanticRelease(packageOpts) {
   })
     .then(() => latestSemverTag())
     .then(_.partial(debugAndReturn, `last tag`, _))
-    .then(latestTag => streamToArray(rawCommitsStream({from: latestTag})))
+    .then(latestTag => streamToArray(rawCommitsStream({ from: latestTag })))
     .then(_.partial(_.map, _, value => value.toString()))
     .then(_.partial(debugAndReturn, `commit messages - %O`, _))
     .then(commits => {
@@ -50,23 +50,23 @@ function semanticRelease(packageOpts) {
       }
 
       config.data = {
-        commits,
+        commits
       };
 
       config.options = {
         scmToken: process.env.GITLAB_AUTH_TOKEN,
         insecureApi: process.env.GITLAB_INSECURE_API === `true`,
-        preset: packageOpts.preset || conventionalCommitsDetector(commits),
+        preset: packageOpts.preset || conventionalCommitsDetector(commits)
       };
 
       debug(`detected ${config.options.preset} commit convention`);
 
-      config.options.preset = config.options.preset === `unknown` ?
-        `angular` : config.options.preset;
+      config.options.preset = config.options.preset === `unknown`
+        ? `angular` : config.options.preset;
 
       debug(`using ${config.options.preset} commit convention`);
 
-      return recommendedBump({ignoreReverted: false, preset: config.options.preset})
+      return recommendedBump({ ignoreReverted: false, preset: config.options.preset })
         .then(recommendation => {
           debug(`recommended version bump is - %O`, recommendation);
 
@@ -91,7 +91,7 @@ function semanticRelease(packageOpts) {
     });
 }
 
-function debugAndReturn(message, value) {
+function debugAndReturn (message, value) {
   debug(message, value);
   return value;
 }

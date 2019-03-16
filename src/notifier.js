@@ -3,7 +3,7 @@
 const _ = require(`lodash`);
 const Bluebird = require(`bluebird`);
 const debug = require(`debug`)(`semantic-release-gitlab`);
-const {escape} = require(`querystring`);
+const { escape } = require(`querystring`);
 const getPkgRepo = require(`get-pkg-repo`);
 const glGot = require(`gl-got`);
 const parser = require(`conventional-commits-parser`);
@@ -13,7 +13,7 @@ const through = require(`through2`);
 
 module.exports = notifier;
 
-function notifier(config) {
+function notifier (config) {
   return new Bluebird((resolve, reject) => {
     let repoUrl;
     try {
@@ -73,7 +73,7 @@ function notifier(config) {
 }
 
 // eslint-disable-next-line max-params
-function generateIssueComments(domain, token, version, projectID, issueIds) {
+function generateIssueComments (domain, token, version, projectID, issueIds) {
   debug(`posting notifications to the following issues - %o`, Array.from(issueIds));
 
   const endpoint = `${domain}/api/v4/`;
@@ -84,8 +84,10 @@ function generateIssueComments(domain, token, version, projectID, issueIds) {
 
     return glGot.post(`projects/${escape(projectID)}/issues/${iid}/notes`, {
       body: {
-        body: `Version [${version}](${domain}/${projectID}/tags/${version}) has been released.`,
-      }, endpoint, token,
+        body: `Version [${version}](${domain}/${projectID}/tags/${version}) has been released.`
+      },
+      endpoint,
+      token
     });
   });
 }

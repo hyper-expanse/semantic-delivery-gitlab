@@ -4,7 +4,7 @@
 
 const chai = require(`chai`);
 const chaiAsPromised = require(`chai-as-promised`);
-const {before, beforeEach, describe, it} = require(`mocha`);
+const { before, beforeEach, describe, it } = require(`mocha`);
 const nock = require(`nock`);
 const proxyquire = require(`proxyquire`).noCallThru();
 const sinon = require(`sinon`);
@@ -13,12 +13,12 @@ const sinonChai = require(`sinon-chai`);
 const conventionalGitlabReleaserMock = sinon.stub();
 
 const semanticReleaseGitLabReleaser = proxyquire(`./releaser`, {
-  'conventional-gitlab-releaser': conventionalGitlabReleaserMock,
+  'conventional-gitlab-releaser': conventionalGitlabReleaserMock
 });
 
 chai.use(chaiAsPromised);
 chai.use(sinonChai);
-const {expect} = chai;
+const { expect } = chai;
 
 describe(`semantic-release-gitlab-releaser`, () => {
   before(() => {
@@ -29,11 +29,11 @@ describe(`semantic-release-gitlab-releaser`, () => {
     this.config = {
       options: {
         debug: false,
-        scmToken: `TOKEN`,
+        scmToken: `TOKEN`
       },
       pkg: {
-        repository: `https://gitlab.com/hyper-expanse/semantic-release-gitlab-releaser.git`,
-      },
+        repository: `https://gitlab.com/hyper-expanse/semantic-release-gitlab-releaser.git`
+      }
     };
 
     conventionalGitlabReleaserMock.resetHistory();
@@ -44,11 +44,11 @@ describe(`semantic-release-gitlab-releaser`, () => {
       this.config = {
         options: {
           debug: false,
-          scmToken: `TOKEN`,
+          scmToken: `TOKEN`
         },
         pkg: {
-          repository: `git@git.ourdomain.co:group/project.git`,
-        },
+          repository: `git@git.ourdomain.co:group/project.git`
+        }
       };
     });
 
@@ -62,10 +62,10 @@ describe(`semantic-release-gitlab-releaser`, () => {
         .then(() => {
           expect(conventionalGitlabReleaserMock).to.have.been.calledOnce
             .and.calledWith(
-              {url: `https://git.ourdomain.co/api/v4/`, token: this.config.options.scmToken},
-              {preset: `angular`},
-              {owner: `group`, repository: `project`},
-              {merges: null}
+              { url: `https://git.ourdomain.co/api/v4/`, token: this.config.options.scmToken },
+              { preset: `angular` },
+              { owner: `group`, repository: `project` },
+              { merges: null }
             );
         });
     });

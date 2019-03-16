@@ -4,7 +4,7 @@
 
 const chai = require(`chai`);
 const chaiAsPromised = require(`chai-as-promised`);
-const {before, beforeEach, describe, it} = require(`mocha`);
+const { before, beforeEach, describe, it } = require(`mocha`);
 const nock = require(`nock`);
 const sinonChai = require(`sinon-chai`);
 
@@ -12,7 +12,7 @@ const semanticReleaseGitLabNotifier = require(`./notifier`);
 
 chai.use(chaiAsPromised);
 chai.use(sinonChai);
-const {expect} = chai;
+const { expect } = chai;
 
 describe(`semantic-release-gitlab`, () => {
   before(() => {
@@ -28,17 +28,17 @@ describe(`semantic-release-gitlab`, () => {
             for the \`test-project\` project.\n\nCloses #1\n\n`,
           `docs(README): add 'as is' statement\n\n`,
           `Merge branch 'docs/readme/intro' into 'master'\r\n\r\nDocs/readme/intro
-            \r\n\r\nCloses #1\r\n\r\nSee merge request !1\n`,
+            \r\n\r\nCloses #1\r\n\r\nSee merge request !1\n`
         ],
-        version: `1.0.0`,
+        version: `1.0.0`
       },
       options: {
         debug: false,
-        scmToken: `TOKEN`,
+        scmToken: `TOKEN`
       },
       pkg: {
-        repository: `https://gitlab.com/hyper-expanse/semantic-release-gitlab.git`,
-      },
+        repository: `https://gitlab.com/hyper-expanse/semantic-release-gitlab.git`
+      }
     };
   });
 
@@ -118,7 +118,7 @@ describe(`semantic-release-gitlab`, () => {
   });
 
   it(`will reject if it fails to create a GitLab comment`, function () {
-    const notesResponse = nock(`https://gitlab.com/`, {encodedQueryParams: true})
+    const notesResponse = nock(`https://gitlab.com/`, { encodedQueryParams: true })
       .post(/.*/)
       .times(1)
       .reply(404);
@@ -210,10 +210,10 @@ describe(`semantic-release-gitlab`, () => {
   });
 });
 
-function generateNotesResponse(customUrl) {
+function generateNotesResponse (customUrl) {
   const url = customUrl || `https://gitlab.com`;
 
-  return nock(url, {encodedQueryParams: true})
+  return nock(url, { encodedQueryParams: true })
     .post(
       `/api/v4/projects/hyper-expanse%2Fsemantic-release-gitlab/issues/1/notes`,
       `{"body":"Version [1.0.0](${url}/hyper-expanse/semantic-release-gitlab/tags/1.0.0) has been released."}`

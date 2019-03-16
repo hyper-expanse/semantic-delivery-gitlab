@@ -4,7 +4,7 @@
 
 const chai = require(`chai`);
 const chaiAsPromised = require(`chai-as-promised`);
-const {before, beforeEach, describe, it} = require(`mocha`);
+const { before, beforeEach, describe, it } = require(`mocha`);
 const nock = require(`nock`);
 const proxyquire = require(`proxyquire`).noCallThru();
 const sinon = require(`sinon`);
@@ -16,12 +16,12 @@ const getPkgRepoMock = sinon.stub();
 
 const semanticReleaseGitLabReleaser = proxyquire(`./releaser`, {
   'conventional-gitlab-releaser': conventionalGitlabReleaserMock,
-  'get-pkg-repo': getPkgRepoMock,
+  'get-pkg-repo': getPkgRepoMock
 });
 
 chai.use(chaiAsPromised);
 chai.use(sinonChai);
-const {expect} = chai;
+const { expect } = chai;
 
 describe(`semantic-release-gitlab-releaser`, () => {
   before(() => {
@@ -32,11 +32,11 @@ describe(`semantic-release-gitlab-releaser`, () => {
     this.config = {
       options: {
         debug: false,
-        scmToken: `TOKEN`,
+        scmToken: `TOKEN`
       },
       pkg: {
-        repository: `https://gitlab.com/hyper-expanse/semantic-release-gitlab-releaser.git`,
-      },
+        repository: `https://gitlab.com/hyper-expanse/semantic-release-gitlab-releaser.git`
+      }
     };
 
     conventionalGitlabReleaserMock.resetHistory();
@@ -45,7 +45,7 @@ describe(`semantic-release-gitlab-releaser`, () => {
     getPkgRepoMock.returns({
       domain: `gitlab.com`,
       user: `hyper-expanse`,
-      project: `semantic-release-gitlab-releaser`,
+      project: `semantic-release-gitlab-releaser`
     });
   });
 
@@ -107,7 +107,7 @@ describe(`semantic-release-gitlab-releaser`, () => {
         expect(conventionalGitlabReleaserMock).to.have.been.calledOnce
           .and.calledWith({
             url: `https://gitlab.com/api/v4/`,
-            token: this.config.options.scmToken,
+            token: this.config.options.scmToken
           });
       });
   });
@@ -122,10 +122,10 @@ describe(`semantic-release-gitlab-releaser`, () => {
       .then(() => {
         expect(conventionalGitlabReleaserMock).to.have.been.calledOnce
           .and.calledWith(
-            {url: `https://gitlab.com/api/v4/`, token: this.config.options.scmToken},
-            {preset: `angular`},
-            {owner: `hyper-expanse`, repository: `semantic-release-gitlab-releaser`},
-            {merges: null}
+            { url: `https://gitlab.com/api/v4/`, token: this.config.options.scmToken },
+            { preset: `angular` },
+            { owner: `hyper-expanse`, repository: `semantic-release-gitlab-releaser` },
+            { merges: null }
           );
       });
   });
@@ -141,10 +141,10 @@ describe(`semantic-release-gitlab-releaser`, () => {
       .then(() => {
         expect(conventionalGitlabReleaserMock).to.have.been.calledOnce
           .and.calledWith(
-            {url: `https://gitlab.com/api/v4/`, token: this.config.options.scmToken},
-            {preset: `crazy`},
-            {owner: `hyper-expanse`, repository: `semantic-release-gitlab-releaser`},
-            {merges: null}
+            { url: `https://gitlab.com/api/v4/`, token: this.config.options.scmToken },
+            { preset: `crazy` },
+            { owner: `hyper-expanse`, repository: `semantic-release-gitlab-releaser` },
+            { merges: null }
           );
       });
   });
@@ -160,10 +160,10 @@ describe(`semantic-release-gitlab-releaser`, () => {
       .then(() => {
         expect(conventionalGitlabReleaserMock).to.have.been.calledOnce
           .and.calledWith(
-            {url: `http://gitlab.com/api/v4/`, token: this.config.options.scmToken},
-            {preset: `angular`},
-            {owner: `hyper-expanse`, repository: `semantic-release-gitlab-releaser`},
-            {merges: null}
+            { url: `http://gitlab.com/api/v4/`, token: this.config.options.scmToken },
+            { preset: `angular` },
+            { owner: `hyper-expanse`, repository: `semantic-release-gitlab-releaser` },
+            { merges: null }
           );
       });
   });

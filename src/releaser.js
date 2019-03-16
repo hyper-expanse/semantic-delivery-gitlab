@@ -8,7 +8,7 @@ const getPkgRepo = require(`get-pkg-repo`);
 
 module.exports = releaser;
 
-function releaser(config) {
+function releaser (config) {
   if (!_.has(config, `pkg`)) {
     return Bluebird.reject(new Error('This plugin, `semantic-release-gitlab-releaser`, was not ' +
       'passed the contents of your package\'s `package.json` file. Please contact the user of ' +
@@ -35,7 +35,7 @@ function releaser(config) {
 
   const auth = {
     url: `${config.options.insecureApi ? `http` : `https`}://${repoUrl.domain}/api/v4/`,
-    token: config.options.scmToken,
+    token: config.options.scmToken
   };
 
   // Placed at the end so that all GitLab code has had a chance to be invoked, including sanity
@@ -43,22 +43,22 @@ function releaser(config) {
   if (config.options.debug) {
     debug(`config - %O`, {
       auth: {
-        url: auth.url,
+        url: auth.url
       },
       options: {
-        preset: config.options.preset,
-      },
+        preset: config.options.preset
+      }
     });
     return Bluebird.resolve(false);
   }
 
   return conventionalGitlabReleaser(auth, {
-    preset: config.options.preset || `angular`,
+    preset: config.options.preset || `angular`
   }, {
     owner: repoUrl.user,
-    repository: repoUrl.project,
+    repository: repoUrl.project
   }, {
-    merges: null,
+    merges: null
   })
     .then(() => {
       debug(`successfully generated GitLab release`);

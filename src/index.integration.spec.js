@@ -5,7 +5,7 @@
 const chai = require(`chai`);
 const chaiAsPromised = require(`chai-as-promised`);
 const fs = require(`fs`);
-const {afterEach, before, beforeEach, describe, it} = require(`mocha`);
+const { afterEach, before, beforeEach, describe, it } = require(`mocha`);
 const shell = require(`shelljs`);
 const tmp = require(`tmp`);
 const nock = require('nock');
@@ -13,7 +13,7 @@ const nock = require('nock');
 const semanticReleaseGitlab = require(`../`);
 
 chai.use(chaiAsPromised);
-const {expect} = chai;
+const { expect } = chai;
 
 describe('semantic-release-gitlab', function () {
   // Setting up our fake project and creating git commits takes longer than the default Mocha timeout.
@@ -63,7 +63,7 @@ describe('semantic-release-gitlab', function () {
           message: `Release 1.0.0`,
           release_description: /.*/,
           ref: /.*/,
-          tag_name: `1.0.0`,
+          tag_name: `1.0.0`
         }).reply(201);
 
       return expect(semanticReleaseGitlab()).to.be.fulfilled
@@ -77,7 +77,7 @@ describe('semantic-release-gitlab', function () {
           message: `Release 1.0.0`,
           release_description: /.*/,
           ref: /.*/,
-          tag_name: `1.0.0`,
+          tag_name: `1.0.0`
         }).reply(201);
 
       return expect(semanticReleaseGitlab()).to.be.fulfilled
@@ -91,7 +91,7 @@ describe('semantic-release-gitlab', function () {
           message: `Release 1.0.0`,
           release_description: /.*/,
           ref: /.*/,
-          tag_name: `1.0.0`,
+          tag_name: `1.0.0`
         }).reply(400);
 
       return expect(semanticReleaseGitlab()).to.be.rejected
@@ -118,7 +118,7 @@ describe('semantic-release-gitlab', function () {
           message: `Release 1.0.1`,
           release_description: /.*/,
           ref: /.*/,
-          tag_name: `1.0.1`,
+          tag_name: `1.0.1`
         }).reply(201);
       shell.exec(`git commit --allow-empty -m "fix(index): remove bug" --no-gpg-sign`);
 
@@ -128,16 +128,16 @@ describe('semantic-release-gitlab', function () {
     });
 
     it(`should increment last tag with a patch when provided a valid preset`, () => {
-      const scope = nock(`https://gitlab.com`, {encodedQueryParams: true})
+      const scope = nock(`https://gitlab.com`, { encodedQueryParams: true })
         .post(`/api/v4/projects/hyper-expanse%2Fsemantic-release-gitlab/repository/tags`, {
           message: `Release 1.0.1`,
           release_description: /.*/,
           ref: /.*/,
-          tag_name: `1.0.1`,
+          tag_name: `1.0.1`
         })
         .reply(200);
       const validPreset = {
-        preset: 'angular',
+        preset: 'angular'
       };
 
       shell.exec(`git commit --allow-empty -m "fix(index): remove bug" --no-gpg-sign`);
@@ -149,7 +149,7 @@ describe('semantic-release-gitlab', function () {
 
     it(`should fail when given an invalid preset`, () => {
       const noSuchPreset = {
-        preset: 'noSuchPreset',
+        preset: 'noSuchPreset'
       };
 
       shell.exec(`git commit --allow-empty -m "fix(index): remove bug" --no-gpg-sign`);
@@ -190,7 +190,7 @@ describe('semantic-release-gitlab', function () {
           message: `Release 1.0.2`,
           release_description: /.*/,
           ref: /.*/,
-          tag_name: `1.0.2`,
+          tag_name: `1.0.2`
         }).reply(201);
       shell.exec(`git commit --allow-empty -m "fix(index): remove bug" --no-gpg-sign`);
 

@@ -12,18 +12,17 @@ program
   .option(`-p, --preset <convention>`, `Preset package name [angular, @scope/angular, ...]. See 'conventional-recommended-bump' for preset package requirements.`)
   .parse(process.argv);
 const packageOpts = {
-  preset: program.preset,
+  preset: program.preset
 };
 
 semanticRelease(packageOpts)
   .then(releasedVersion => {
-    const message = releasedVersion ?
-      `Released version ${releasedVersion}` :
-      `No changes are available to release.`;
+    const message = releasedVersion
+      ? `Released version ${releasedVersion}`
+      : `No changes are available to release.`;
     console.log(message);
   })
   .catch(error => {
     console.error(`semantic-release-gitlab failed for the following reason - ${error}`);
     process.exit(1);
   });
-
