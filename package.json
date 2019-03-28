@@ -45,7 +45,6 @@
     "git-remote-origin-url": "^2.0.0",
     "gl-got": "^8.0.0",
     "lodash": "^4.7.0",
-    "semistandard": "^13.0.1",
     "semver": "^5.3.0",
     "shelljs": "^0.8.0",
     "stream-array": "^1.1.2",
@@ -64,6 +63,7 @@
     "nyc": "^13.0.0",
     "proxyquire": "^2.0.0",
     "semantic-release-gitlab": "^7.0.7",
+    "semistandard": "^13.0.1",
     "sinon": "^7.0.0",
     "sinon-chai": "^3.0.0",
     "tmp": "^0.0.33"
