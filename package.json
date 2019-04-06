@@ -22,6 +22,16 @@
   "license": "Apache-2.0",
   "main": "src/index.js",
   "name": "semantic-release-gitlab",
+  "renovate": {
+    "extends": [
+      "config:base",
+      ":maintainLockFilesWeekly",
+      ":rebaseStalePrs",
+      ":automergeDigest",
+      ":gitSignOff",
+      ":automergeMinor"
+    ]
+  },
   "repository": {
     "type": "git",
     "url": "https://gitlab.com/hyper-expanse/open-source/semantic-release-gitlab.git"
