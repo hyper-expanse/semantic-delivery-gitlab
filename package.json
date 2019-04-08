@@ -21,6 +21,13 @@
   ],
   "license": "Apache-2.0",
   "main": "src/index.js",
+  "mocha": {
+    "checkLeaks": true,
+    "fullTrace": true,
+    "inlineDiffs": true,
+    "recursive": true,
+    "reporter": "progress"
+  },
   "name": "semantic-release-gitlab",
   "renovate": {
     "extends": [
@@ -38,7 +45,7 @@
     "url": "https://gitlab.com/hyper-expanse/open-source/semantic-release-gitlab.git"
   },
   "scripts": {
-    "test": "semistandard 'src/**/*.js' && nyc mocha --opts mocha.opts src/**/*.spec.js"
+    "test": "semistandard 'src/**/*.js' && nyc mocha src/**/*.spec.js"
   },
   "version": "1.0.0",
   "dependencies": {
@@ -68,7 +75,7 @@
     "chai": "^4.0.2",
     "chai-as-promised": "^7.0.0",
     "codecov": "^3.0.0",
-    "mocha": "^5.0.0",
+    "mocha": "^6.0.0",
     "nock": "^10.0.0",
     "npm-publish-git-tag": "^3.0.0",
     "nyc": "^13.0.0",
