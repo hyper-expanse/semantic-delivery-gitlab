@@ -29,7 +29,8 @@
       ":rebaseStalePrs",
       ":automergeDigest",
       ":gitSignOff",
-      ":automergeMinor"
+      ":automergeMinor",
+      ":preserveSemverRanges"
     ]
   },
   "repository": {
