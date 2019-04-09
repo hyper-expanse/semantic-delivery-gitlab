@@ -29,6 +29,17 @@
     "reporter": "progress"
   },
   "name": "semantic-release-gitlab",
+  "nyc": {
+    "all": true,
+    "include": [
+      "src/**/*.js"
+    ],
+    "exclude": [
+      "src/cli.js",
+      "src/**/*.spec.js",
+      "src/**/*.mock.js"
+    ]
+  },
   "renovate": {
     "extends": [
       "config:base",
@@ -71,7 +82,6 @@
   },
   "devDependencies": {
     "@hutson/conventional-changelog-config": "^2.0.0",
-    "@hutson/nyc-config": "^2.0.0",
     "chai": "^4.0.2",
     "chai-as-promised": "^7.0.0",
     "codecov": "^3.0.0",
