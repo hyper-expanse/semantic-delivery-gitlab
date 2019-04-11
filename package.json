@@ -84,7 +84,6 @@
     "@hutson/conventional-changelog-config": "^2.0.0",
     "chai": "^4.0.2",
     "chai-as-promised": "^7.0.0",
-    "codecov": "^3.0.0",
     "mocha": "^6.0.0",
     "nock": "^10.0.0",
     "npm-publish-git-tag": "^3.0.0",
