@@ -38,6 +38,10 @@
       "src/cli.js",
       "src/**/*.spec.js",
       "src/**/*.mock.js"
+    ],
+    "reporter": [
+      "lcov",
+      "text"
     ]
   },
   "renovate": {
@@ -86,7 +90,6 @@
     "chai-as-promised": "^7.0.0",
     "mocha": "^6.0.0",
     "nock": "^10.0.0",
-    "npm-publish-git-tag": "^3.0.0",
     "nyc": "^13.0.0",
     "proxyquire": "^2.0.0",
     "semantic-release-gitlab": "^7.0.7",
