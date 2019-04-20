@@ -1,97 +1,98 @@
 'use strict';
 
-const _ = require(`lodash`);
-const Bluebird = require(`bluebird`);
+const { promisify } = require('util');
 const conventionalCommitsDetector = require(`conventional-commits-detector`);
-const debug = require(`debug`)(`semantic-release-gitlab`);
+const debug = require(`debug`)(`semantic-delivery-gitlab`);
 const gitRemoteOriginUrl = require(`git-remote-origin-url`);
 const fs = require(`fs`);
 const notifier = require(`./notifier`);
 const releaser = require(`./releaser`);
-const latestSemverTag = Bluebird.promisify(require(`git-latest-semver-tag`));
-const rawCommitsStream = require(`git-raw-commits`);
-const recommendedBump = Bluebird.promisify(require(`conventional-recommended-bump`));
+const gitSemverTags = promisify(require(`git-semver-tags`));
+const gitRawCommits = require(`git-raw-commits`);
+const getPkgRepo = require(`get-pkg-repo`);
+const conventionalRecommendedBump = promisify(require(`conventional-recommended-bump`));
 const streamToArray = require(`stream-to-array`);
 const path = require(`path`);
 const semver = require(`semver`);
-const shell = require(`shelljs`);
+const shelljs = require(`shelljs`);
 
 module.exports = semanticRelease;
 
-function semanticRelease (packageOpts) {
-  packageOpts = packageOpts || {};
-  const config = {};
+async function semanticRelease ({ dryRun = false, preset, token }) {
+  const config = { dryRun, token };
 
-  return new Promise(resolve => {
-    try {
-      resolve(JSON.parse(fs.readFileSync(path.join(process.cwd(), `package.json`))));
-    } catch (error) {
-      /**
-       * Failed to retrieve the repository URL from the project's `package.json`. Perhaps because the project does
-       * not have a `package.json` file, such as a Python project.
-       */
-      resolve(gitRemoteOriginUrl().then(repositoryURL => {
-        return {
-          repository: repositoryURL
-        };
-      }));
-    }
-  }).then(packageData => {
-    config.pkg = packageData;
-  })
-    .then(() => latestSemverTag())
-    .then(_.partial(debugAndReturn, `last tag`, _))
-    .then(latestTag => streamToArray(rawCommitsStream({ from: latestTag })))
-    .then(_.partial(_.map, _, value => value.toString()))
-    .then(_.partial(debugAndReturn, `commit messages - %O`, _))
-    .then(commits => {
-      if (commits.length === 0) {
-        return debug(`no commits to release so skipping the other release steps`);
-      }
+  let packageData;
+  try {
+    packageData = JSON.parse(fs.readFileSync(path.join(process.cwd(), `package.json`)));
+  } catch (error) {
+    /**
+     * Failed to retrieve the repository URL from the project's `package.json`. Perhaps because the project does
+     * not have a `package.json` file, such as a Python project.
+     */
+    packageData = {
+      repository: await gitRemoteOriginUrl()
+    };
+  }
 
-      config.data = {
-        commits
-      };
+  config.repository = getPkgRepo(packageData);
 
-      config.options = {
-        scmToken: process.env.GITLAB_AUTH_TOKEN,
-        insecureApi: process.env.GITLAB_INSECURE_API === `true`,
-        preset: packageOpts.preset || conventionalCommitsDetector(commits)
-      };
+  const tags = await gitSemverTags();
+  if (tags.length === 0) {
+    debug(`no tags found`);
+  } else {
+    debug(`latest tag`, tags[0]);
+  }
 
-      debug(`detected ${config.options.preset} commit convention`);
+  config.commits = await streamToArray(gitRawCommits({ from: tags[0] || `` })).then(rawCommits => rawCommits.map(value => value.toString()));
 
-      config.options.preset = config.options.preset === `unknown`
-        ? `angular` : config.options.preset;
+  if (config.commits.length === 0) {
+    return debug(`no commits to release so skipping the other release steps`);
+  }
 
-      debug(`using ${config.options.preset} commit convention`);
+  debug(`commit messages - %O`, config.commits);
 
-      return recommendedBump({ ignoreReverted: false, preset: config.options.preset })
-        .then(recommendation => {
-          debug(`recommended version bump is - %O`, recommendation);
+  // Only validate existence of token when we're not conducting a dry run.
+  if (config.dryRun === false && (typeof config.token !== `string` || config.token.length === 0)) {
+    throw new Error(`No token provided for GitLab.`);
+  }
 
-          if (recommendation.releaseType === undefined) {
-            return debug(`no recommended release so skipping the other release steps`);
-          }
+  config.preset = preset || conventionalCommitsDetector(config.commits);
 
-          return latestSemverTag()
-            .then(_.partial(debugAndReturn, `last tag`, _))
-            .then(latestTag => latestTag === '' ? `1.0.0` : semver.inc(latestTag, recommendation.releaseType))
-            .then(_.partial(debugAndReturn, `version to be released`, _))
-            .then(_.partial(_.set, config, `data.version`, _))
-            .then(config => shell.exec(`git tag ${config.data.version}`))
-            .then(_.partial(releaser, config))
-            .then(_.partial(notifier, config))
-            .catch(error => {
-              shell.exec(`git tag -d ${config.data.version}`);
-              throw error;
-            })
-            .then(() => config.data.version);
-        });
-    });
-}
+  debug(`detected ${config.preset} commit convention`);
 
-function debugAndReturn (message, value) {
-  debug(message, value);
-  return value;
+  config.preset = config.preset === `unknown` ? `angular` : config.preset;
+
+  debug(`using ${config.preset} commit convention`);
+
+  const recommendation = await conventionalRecommendedBump({ ignoreReverted: false, preset: config.preset });
+
+  debug(`recommended version bump is - %O`, recommendation);
+
+  // Difficult to test this particular conditional because the default preset always recommends a release.
+  // However, users of this package can use a preset that could choose not to recommend a release.
+  /* istanbul ignore if */
+  if (recommendation.releaseType === undefined) {
+    return debug(`no recommended release so skipping the other release steps`);
+  }
+
+  config.version = tags[0] === undefined ? `1.0.0` : semver.inc(tags[0], recommendation.releaseType);
+
+  debug(`version to be released`, config.version);
+
+  shelljs.exec(`git tag ${config.version}`);
+
+  try {
+    await releaser(config);
+    await notifier(config);
+  } catch (error) {
+    shelljs.exec(`git tag -d ${config.version}`);
+    throw error;
+  }
+
+  if (dryRun) {
+    shelljs.exec(`git tag -d ${config.version}`);
+    return;
+  }
+
+  return config.version;
 }

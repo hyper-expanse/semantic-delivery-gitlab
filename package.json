@@ -5,15 +5,15 @@
     "url": "https://gitlab.com/hutson"
   },
   "bin": "./src/cli.js",
-  "bugs": "https://gitlab.com/hyper-expanse/open-source/semantic-release-gitlab/issues",
-  "description": "Automatically generate a release, along with a corresponding git tag, for GitLab-hosted source code.",
+  "bugs": "https://gitlab.com/hyper-expanse/open-source/semantic-delivery-gitlab/issues",
+  "description": "Automatically generate a deliverable, along with a corresponding git tag, for GitLab-hosted source code.",
   "engines": {
     "node": ">=6.9.0"
   },
   "files": [
     "src/**/!(*.spec).js"
   ],
-  "homepage": "https://gitlab.com/hyper-expanse/open-source/semantic-release-gitlab#readme",
+  "homepage": "https://gitlab.com/hyper-expanse/open-source/semantic-delivery-gitlab#readme",
   "keywords": [
     "automation",
     "deliver",
@@ -28,7 +28,7 @@
     "recursive": true,
     "reporter": "progress"
   },
-  "name": "semantic-release-gitlab",
+  "name": "@hutson/semantic-delivery-gitlab",
   "nyc": {
     "all": true,
     "include": [
@@ -57,14 +57,13 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://gitlab.com/hyper-expanse/open-source/semantic-release-gitlab.git"
+    "url": "https://gitlab.com/hyper-expanse/open-source/semantic-delivery-gitlab.git"
   },
   "scripts": {
     "test": "semistandard 'src/**/*.js' && nyc mocha src/**/*.spec.js"
   },
   "version": "1.0.0",
   "dependencies": {
-    "bluebird": "^3.3.4",
     "commander": "^2.9.0",
     "conventional-changelog-angular": "^5.0.0",
     "conventional-commits-detector": "^1.0.0",
@@ -73,29 +72,22 @@
     "conventional-recommended-bump": "^4.0.0",
     "debug": "^4.0.0",
     "get-pkg-repo": "^4.0.2",
-    "git-latest-semver-tag": "^1.0.2",
     "git-raw-commits": "^2.0.0",
-    "git-remote-origin-url": "^2.0.0",
-    "gl-got": "^8.0.0",
-    "lodash": "^4.7.0",
-    "semver": "^5.3.0",
+    "git-remote-origin-url": "^3.0.0",
+    "git-semver-tags": "^2.0.2",
+    "got": "^9.6.0",
+    "semver": "^6.0.0",
     "shelljs": "^0.8.0",
-    "stream-array": "^1.1.2",
-    "stream-to-array": "^2.3.0",
-    "through2": "^3.0.0"
+    "stream-to-array": "^2.3.0"
   },
   "devDependencies": {
     "@hutson/conventional-changelog-config": "^2.0.0",
     "chai": "^4.0.2",
-    "chai-as-promised": "^7.0.0",
-    "mocha": "^6.0.0",
+    "mocha": "^6.1.4",
     "nock": "^10.0.0",
-    "nyc": "^13.0.0",
-    "proxyquire": "^2.0.0",
+    "nyc": "^14.0.0",
     "semantic-release-gitlab": "^8.0.1",
     "semistandard": "^13.0.1",
-    "sinon": "^7.0.0",
-    "sinon-chai": "^3.0.0",
-    "tmp": "^0.0.33"
+    "tmp": "^0.1.0"
   }
 }

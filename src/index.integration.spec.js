@@ -1,21 +1,16 @@
 'use strict';
 
-/* eslint-disable no-unused-expressions */
-
-const chai = require(`chai`);
-const chaiAsPromised = require(`chai-as-promised`);
+const { expect } = require(`chai`);
 const fs = require(`fs`);
 const { afterEach, before, beforeEach, describe, it } = require(`mocha`);
-const shell = require(`shelljs`);
+const shelljs = require(`shelljs`);
 const tmp = require(`tmp`);
 const nock = require('nock');
+const semanticDeliveryGitlab = require(`../`);
 
-const semanticReleaseGitlab = require(`../`);
+shelljs.config.silent = true;
 
-chai.use(chaiAsPromised);
-const { expect } = chai;
-
-describe('semantic-release-gitlab', function () {
+describe('semantic-delivery-gitlab', function () {
   // Setting up our fake project and creating git commits takes longer than the default Mocha timeout.
   this.timeout(20000);
 
@@ -24,179 +19,283 @@ describe('semantic-release-gitlab', function () {
   });
 
   beforeEach(function () {
-    // Switch into a temporary directory to isolate the behavior of this tool from
-    // the rest of the environment.
+    // Switch into a temporary directory to isolate the behavior of this tool from the rest of the environment.
     this.cwd = process.cwd();
     this.tmpDir = tmp.dirSync();
     process.chdir(this.tmpDir.name);
 
-    this.oldToken = process.env.GITLAB_AUTH_TOKEN;
-    process.env.GITLAB_AUTH_TOKEN = `token`;
-
     // Empty `package.json` file for our publish pipeline to write a version into.
     fs.writeFileSync(`package.json`, `{ "name": "test",
-      "repository": { "type": "git", "url": "https://gitlab.com/hyper-expanse/semantic-release-gitlab.git" }}`);
-
-    // Do not console print output from tools invoked by `shelljs`.
-    shell.config.silent = true;
+      "repository": { "type": "git", "url": "https://gitlab.com/hyper-expanse/open-source/semantic-delivery-gitlab.git" }}`);
 
     // Create git repository and then generate two commits, tagging each commit with a unique
     // semantic version valid tag. The second tag should be the one pulled by the pipeline.
-    shell.exec(`git init`);
-    shell.exec(`git config user.email "you@example.com"`);
-    shell.exec(`git config user.name "Your Name"`);
-    shell.exec(`git commit --allow-empty -m "init" --no-gpg-sign`);
+    shelljs.exec(`git init`);
+    shelljs.exec(`git config user.email "you@example.com"`);
+    shelljs.exec(`git config user.name "Your Name"`);
+
+    // `init` comment is special as it forces the commit parser to return an "unknown" convention type.
+    shelljs.exec(`git commit --allow-empty -m "init" --no-gpg-sign`);
+
+    this.config = {
+      token: `token`
+    };
   });
 
   afterEach(function () {
-    process.env.GITLAB_AUTH_TOKEN = this.oldToken;
     process.chdir(this.cwd);
   });
 
+  it(`should do nothing when conducting a dry run`, async function () {
+    expect(await semanticDeliveryGitlab({ dryRun: true })).to.equal(undefined);
+    expect(shelljs.exec(`git tag`).stdout).to.equal(``);
+  });
+
+  it(`should throw an error when no token provided`, async function () {
+    delete this.config.token;
+
+    try {
+      await semanticDeliveryGitlab(this.config);
+    } catch (error) {
+      expect(error.message).to.equal(`No token provided for GitLab.`);
+      expect(shelljs.exec(`git tag`).stdout).to.equal(``);
+      return;
+    }
+
+    throw new Error();
+  });
+
   describe(`no existing tag`, () => {
-    it(`should fetch remote repository from 'git remote'`, () => {
+    it(`should fetch remote repository from 'git remote'`, async function () {
       fs.unlinkSync(`package.json`);
-      shell.exec(`git remote add origin https://gitlab.com/hyper-expanse/semantic-release-gitlab-remote.git`);
+      shelljs.exec(`git remote add origin https://gitlab.com/hyper-expanse/open-source/semantic-delivery-gitlab-remote.git`);
 
       const scope = nock(`https://gitlab.com`)
-        .post(`/api/v4/projects/hyper-expanse%2Fsemantic-release-gitlab-remote/repository/tags`, {
+        .post(`/api/v4/projects/hyper-expanse%2Fopen-source%2Fsemantic-delivery-gitlab-remote/repository/tags`, {
           message: `Release 1.0.0`,
           release_description: /.*/,
           ref: /.*/,
           tag_name: `1.0.0`
         }).reply(201);
 
-      return expect(semanticReleaseGitlab()).to.be.fulfilled
-        .and.to.eventually.equal(`1.0.0`)
-        .then(() => scope.isDone());
+      expect(await semanticDeliveryGitlab(this.config)).to.equal(`1.0.0`);
+      scope.isDone();
     });
 
-    it(`should set initial version to 1.0.0`, () => {
+    it(`should set initial version to 1.0.0`, async function () {
       const scope = nock(`https://gitlab.com`)
-        .post(`/api/v4/projects/hyper-expanse%2Fsemantic-release-gitlab/repository/tags`, {
+        .post(`/api/v4/projects/hyper-expanse%2Fopen-source%2Fsemantic-delivery-gitlab/repository/tags`, {
           message: `Release 1.0.0`,
           release_description: /.*/,
           ref: /.*/,
           tag_name: `1.0.0`
         }).reply(201);
 
-      return expect(semanticReleaseGitlab()).to.be.fulfilled
-        .and.to.eventually.equal(`1.0.0`)
-        .then(() => scope.isDone());
+      expect(await semanticDeliveryGitlab(this.config)).to.equal(`1.0.0`);
+      scope.isDone();
     });
 
-    it(`should clean up newly created tag if there's a failure`, () => {
+    it(`should clean up newly created tag if there's a failure`, async function () {
       const scope = nock(`https://gitlab.com`)
-        .post(`/api/v4/projects/hyper-expanse%2Fsemantic-release-gitlab/repository/tags`, {
+        .post(`/api/v4/projects/hyper-expanse%2Fopen-source%2Fsemantic-delivery-gitlab/repository/tags`, {
           message: `Release 1.0.0`,
           release_description: /.*/,
           ref: /.*/,
           tag_name: `1.0.0`
         }).reply(400);
 
-      return expect(semanticReleaseGitlab()).to.be.rejected
-        .then(() => {
-          expect(shell.exec(`git tag`).stdout).to.equal(``);
-        })
-        .then(() => scope.isDone());
+      try {
+        await semanticDeliveryGitlab(this.config);
+      } catch (error) {
+        expect(error.message).to.equal(`Failed to create GitLab release through API: Response code 400 (Bad Request)`);
+        expect(shelljs.exec(`git tag`).stdout).to.equal(``);
+        scope.isDone();
+        return;
+      }
+
+      throw new Error();
     });
   });
 
   describe(`existing tag`, () => {
     beforeEach(() => {
-      shell.exec(`git tag 1.0.0`);
+      shelljs.exec(`git tag 1.0.0`);
     });
 
-    it(`should return undefined since no commit has happened since last tag`, () => {
-      return expect(semanticReleaseGitlab()).to.be.fulfilled
-        .and.to.eventually.equal(undefined);
+    it(`should return undefined since no commit has happened since last tag`, async function () {
+      expect(await semanticDeliveryGitlab(this.config)).to.equal(undefined);
     });
 
-    it(`should increment last tag with a patch`, () => {
+    it(`should increment last tag with a patch`, async function () {
       const scope = nock(`https://gitlab.com`)
-        .post(`/api/v4/projects/hyper-expanse%2Fsemantic-release-gitlab/repository/tags`, {
+        .post(`/api/v4/projects/hyper-expanse%2Fopen-source%2Fsemantic-delivery-gitlab/repository/tags`, {
           message: `Release 1.0.1`,
           release_description: /.*/,
           ref: /.*/,
           tag_name: `1.0.1`
         }).reply(201);
-      shell.exec(`git commit --allow-empty -m "fix(index): remove bug" --no-gpg-sign`);
+      shelljs.exec(`git commit --allow-empty -m "fix(index): remove bug" --no-gpg-sign`);
 
-      return expect(semanticReleaseGitlab()).to.be.fulfilled
-        .and.to.eventually.equal(`1.0.1`)
-        .then(() => scope.isDone());
+      expect(await semanticDeliveryGitlab(this.config)).to.equal(`1.0.1`);
+      scope.isDone();
     });
 
-    it(`should increment last tag with a patch when provided a valid preset`, () => {
-      const scope = nock(`https://gitlab.com`, { encodedQueryParams: true })
-        .post(`/api/v4/projects/hyper-expanse%2Fsemantic-release-gitlab/repository/tags`, {
+    it(`should increment last tag with a patch when provided a valid preset`, async function () {
+      const scope = nock(`https://gitlab.com`)
+        .post(`/api/v4/projects/hyper-expanse%2Fopen-source%2Fsemantic-delivery-gitlab/repository/tags`, {
           message: `Release 1.0.1`,
           release_description: /.*/,
           ref: /.*/,
           tag_name: `1.0.1`
         })
         .reply(200);
-      const validPreset = {
-        preset: 'angular'
-      };
 
-      shell.exec(`git commit --allow-empty -m "fix(index): remove bug" --no-gpg-sign`);
+      shelljs.exec(`git commit --allow-empty -m "fix(index): remove bug" --no-gpg-sign`);
 
-      return expect(semanticReleaseGitlab(validPreset)).to.be.fulfilled
-        .and.to.eventually.equal(`1.0.1`)
-        .then(() => scope.isDone());
+      expect(await semanticDeliveryGitlab({ preset: `angular`, ...this.config })).to.equal(`1.0.1`);
+      scope.isDone();
     });
 
-    it(`should fail when given an invalid preset`, () => {
-      const noSuchPreset = {
-        preset: 'noSuchPreset'
-      };
+    it(`should fail when given an invalid preset`, async function () {
+      shelljs.exec(`git commit --allow-empty -m "fix(index): remove bug" --no-gpg-sign`);
 
-      shell.exec(`git commit --allow-empty -m "fix(index): remove bug" --no-gpg-sign`);
+      try {
+        await semanticDeliveryGitlab({ preset: `noSuchPreset`, ...this.config });
+      } catch (error) {
+        expect(error.message).to.equal(`Unable to load the "noSuchPreset" preset package. Please make sure it's installed.`);
+        return;
+      }
 
-      return expect(semanticReleaseGitlab(noSuchPreset)).to.be.rejected;
+      throw new Error();
+    });
+  });
+
+  describe(`commenting on references`, () => {
+    beforeEach(() => {
+      shelljs.exec(`git commit --allow-empty -m "fix(git): extract different URLs\n\nFixes #1" --no-gpg-sign`);
+    });
+
+    it(`should not post comments when conducting a dry run`, async function () {
+      expect(await semanticDeliveryGitlab({ dryRun: true, ...this.config })).to.equal(undefined);
+      expect(shelljs.exec(`git tag`).stdout).to.equal(``);
+    });
+
+    it(`should throw an error when it fails to post a comment`, async function () {
+      const releaseScope = nock(`https://gitlab.com`)
+        .post(`/api/v4/projects/hyper-expanse%2Fopen-source%2Fsemantic-delivery-gitlab/repository/tags`, {
+          message: `Release 1.0.0`,
+          release_description: /.*/,
+          ref: /.*/,
+          tag_name: `1.0.0`
+        })
+        .reply(200);
+
+      const referenceScope = nock(`https://gitlab.com`)
+        .post(
+          `/api/v4/projects/hyper-expanse%2Fopen-source%2Fsemantic-delivery-gitlab/issues/1/notes`,
+          `{"body":"Version [1.0.0](https://gitlab.com/hyper-expanse/open-source/semantic-delivery-gitlab/tags/1.0.0) has been released."}`
+        )
+        .reply(404);
+
+      try {
+        await semanticDeliveryGitlab(this.config);
+      } catch (error) {
+        expect(error.message).to.equal(`Failed to post comment to GitLab: Response code 404 (Not Found)`);
+        expect(shelljs.exec(`git tag`).stdout).to.equal(``);
+        releaseScope.isDone();
+        referenceScope.isDone();
+        return;
+      }
+
+      throw new Error();
+    });
+
+    it(`should post a comment on related issues`, async function () {
+      const releaseScope = nock(`https://gitlab.com`)
+        .post(`/api/v4/projects/hyper-expanse%2Fopen-source%2Fsemantic-delivery-gitlab/repository/tags`, {
+          message: `Release 1.0.0`,
+          release_description: /.*/,
+          ref: /.*/,
+          tag_name: `1.0.0`
+        })
+        .reply(200);
+
+      const referenceScope = nock(`https://gitlab.com`)
+        .post(
+          `/api/v4/projects/hyper-expanse%2Fopen-source%2Fsemantic-delivery-gitlab/issues/1/notes`,
+          `{"body":"Version [1.0.0](https://gitlab.com/hyper-expanse/open-source/semantic-delivery-gitlab/tags/1.0.0) has been released."}`
+        )
+        .reply(201);
+
+      await semanticDeliveryGitlab(this.config);
+      releaseScope.isDone();
+      referenceScope.isDone();
+    });
+
+    it.skip(`should post a comment on related merge requests`, async function () {
+      shelljs.exec(`Merge branch 'fix/git/urls' into 'master'\r\n\r\nFix/git/urls
+        \r\n\r\nCloses #1\r\n\r\nSee merge request !2\n`);
+
+      const releaseScope = nock(`https://gitlab.com`)
+        .post(`/api/v4/projects/hyper-expanse%2Fopen-source%2Fsemantic-delivery-gitlab/repository/tags`, {
+          message: `Release 1.0.0`,
+          release_description: /.*/,
+          ref: /.*/,
+          tag_name: `1.0.0`
+        })
+        .reply(200);
+
+      const referenceScope = nock(`https://gitlab.com`)
+        .post(
+          `/api/v4/projects/hyper-expanse%2Fopen-source%2Fsemantic-delivery-gitlab/issues/1/notes`,
+          `{"body":"Version [1.0.0](https://gitlab.com/hyper-expanse/open-source/semantic-delivery-gitlab/tags/1.0.0) has been released."}`
+        )
+        .reply(201);
+
+      await semanticDeliveryGitlab(this.config);
+      releaseScope.isDone();
+      referenceScope.isDone();
     });
   });
 
   describe(`releasing patches and minor versions off of a branch`, () => {
-    // We want to test the ability to run `semantic-release-gitlab` off of a branch.
+    // We want to test the ability to run `semantic-delivery-gitlab` off of a branch.
 
     // Occasionally people will encounter the following scenario:
 
     // Someone has released a new major version of their project. A consumer of that project reports a bug in the
     // earlier major version, and can't, for whatever reason, upgrade to the latest major version at this time. That
     // consumer would greatly benefit if the project could quickly submit a patch against the earlier major version
-    // and have `semantic-release-gitlab` automatically release that version to GitLab.
+    // and have `semantic-delivery-gitlab` automatically release that version to GitLab.
 
     // The owner of the project should be able to create a dedicated branch off of the latest code for the previous
-    // major version, push a bug fix to that branch, and have `semantic-release-gitlab` automatically release a new
+    // major version, push a bug fix to that branch, and have `semantic-delivery-gitlab` automatically release a new
     // patch version.
 
     beforeEach(() => {
-      shell.exec(`git tag 1.0.1`);
-      shell.exec(`git commit --allow-empty -m "feat(index): major change\n\nBREAKING CHANGE: change" --no-gpg-sign`);
+      shelljs.exec(`git tag 1.0.1`);
+      shelljs.exec(`git commit --allow-empty -m "feat(index): major change\n\nBREAKING CHANGE: change" --no-gpg-sign`);
 
       // Tag a new major version for this test package.
-      shell.exec(`git tag 2.0.0`);
+      shelljs.exec(`git tag 2.0.0`);
 
       // Checkout the package at an earlier version so that we can release a patch, or bug fix, on top of the code
       // released as part of the version 1.x.x range.
-      shell.exec(`git checkout -b fix/package 1.0.1`);
+      shelljs.exec(`git checkout -b fix/package 1.0.1`);
     });
 
-    it(`should release patch version within 1.x.x range instead of on the recent 2.x.x version range`, () => {
+    it(`should release patch version within 1.x.x range instead of on the recent 2.x.x version range`, async function () {
       const scope = nock(`https://gitlab.com`)
-        .post(`/api/v4/projects/hyper-expanse%2Fsemantic-release-gitlab/repository/tags`, {
+        .post(`/api/v4/projects/hyper-expanse%2Fopen-source%2Fsemantic-delivery-gitlab/repository/tags`, {
           message: `Release 1.0.2`,
           release_description: /.*/,
           ref: /.*/,
           tag_name: `1.0.2`
         }).reply(201);
-      shell.exec(`git commit --allow-empty -m "fix(index): remove bug" --no-gpg-sign`);
+      shelljs.exec(`git commit --allow-empty -m "fix(index): remove bug" --no-gpg-sign`);
 
-      return expect(semanticReleaseGitlab()).to.be.fulfilled
-        .and.to.eventually.equal(`1.0.2`)
-        .then(() => scope.isDone());
+      expect(await semanticDeliveryGitlab(this.config)).to.equal(`1.0.2`);
+      scope.isDone();
     });
   });
 });
