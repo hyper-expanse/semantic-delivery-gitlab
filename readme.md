@@ -47,11 +47,15 @@ By automating these steps `@hutson/semantic-delivery-gitlab` alleviates some of 
 
 ## Installation
 
-To install the `@hutson/semantic-delivery-gitlab` tool for use in your project's delivery process please run the following command:
+To use the `@hutson/semantic-delivery-gitlab` tool in your project's delivery process you may either install the package or use our [Docker image](https://gitlab.com/hyper-expanse/open-source/semantic-delivery-gitlab/container_registry).
+
+To install the package please run the following command:
 
 ```bash
 yarn add --dev @hutson/semantic-delivery-gitlab
 ```
+
+For Docker, please see the _Continuous Integration and Delivery (CID) Setup_ section below
 
 ## Usage
 
@@ -199,7 +203,26 @@ deliver:
   only:
     - master@<GROUP>/<PROJECT>
   script:
-    - $(yarn bin)/semantic-delivery-gitlab
+    - $(yarn bin)/semantic-delivery-gitlab --token ${GITLAB_TOKEN}
+  stage: deliver
+```
+
+An alternative is to use our [Docker image](https://gitlab.com/hyper-expanse/open-source/semantic-delivery-gitlab/container_registry):
+
+```yaml
+stages:
+  - build
+  - test
+  - deliver
+
+deliver:
+  image:
+    name: registry.gitlab.com/hyper-expanse/open-source/semantic-delivery-gitlab:9.0.0
+    entrypoint: [""]
+  only:
+    - master
+  script:
+    - semantic-delivery-gitlab --token ${GITLAB_TOKEN}
   stage: deliver
 ```
 
