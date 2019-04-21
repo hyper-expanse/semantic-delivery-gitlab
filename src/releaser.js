@@ -22,6 +22,7 @@ async function releaser ({ dryRun, preset, repository, token }) {
   }
 
   try {
+    // TODO: Use `conventional-changelog` directly to generate changelog, and then use `got` to post it to GitLab.
     await conventionalGitlabReleaser(auth, { preset }, { owner: user, repository: project }, { merges: null });
   } catch (error) {
     throw new Error(`Failed to create GitLab release through API: ${error.message}`);
