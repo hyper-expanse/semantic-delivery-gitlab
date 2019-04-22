@@ -283,6 +283,10 @@ The project, or at least the project URL used by `@hutson/semantic-delivery-gitl
 
 It may also be that a token was not provided either on the command line using `--token`, or as a configuration property.
 
+## Security Disclosure Policy
+
+To report a security vulnerability in this package, or one of it's dependencies, please use the [Tidelift security contact](https://tidelift.com/security) page. Tidelift will coordinate the process to address the vulnerability and disclose the incident to our users.
+
 ## Professional Support
 
 [Professional support for `@hutson/semantic-delivery-gitlab` is available with a Tidelift Subscription](https://tidelift.com/subscription/pkg/npm--hutson-semantic-delivery-gitlab?utm_source=npm--hutson-semantic-delivery-gitlab&utm_medium=referral&utm_campaign=readme).
