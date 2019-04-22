@@ -283,6 +283,12 @@ The project, or at least the project URL used by `@hutson/semantic-delivery-gitl
 
 It may also be that a token was not provided either on the command line using `--token`, or as a configuration property.
 
+## Professional Support
+
+[Professional support for `@hutson/semantic-delivery-gitlab` is available with a Tidelift Subscription](https://tidelift.com/subscription/pkg/npm--hutson-semantic-delivery-gitlab?utm_source=npm--hutson-semantic-delivery-gitlab&utm_medium=referral&utm_campaign=readme).
+
+Tidelift helps make open source sustainable for maintainers while giving companies assurances about security, maintenance, and licensing for their dependencies.
+
 ## Debugging
 
 To assist users of `@hutson/semantic-delivery-gitlab` with debugging the behavior of this module we use the [debug](https://www.npmjs.com/package/debug) utility package to print information about the release process to the console. To enable debug message printing, the environment variable `DEBUG`, which is the variable used by the `debug` package, must be set to a value configured by the package containing the debug messages to be printed.
