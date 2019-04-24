@@ -30,6 +30,8 @@ By automating these steps `@hutson/semantic-delivery-gitlab` alleviates some of 
 - [Version Selection](#version-selection)
 - [Common Issues](#common-issues)
   - [GitLabError: 404 Project Not Found (404)](#gitlaberror-404-project-not-found-404)
+- [Security Disclosure Policy](#security-disclosure-policy)
+- [Professional Support](#professional-support)
 - [Debugging](#debugging)
 - [Node Support Policy](#node-support-policy)
 - [Contributing](#contributing)
