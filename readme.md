@@ -291,7 +291,7 @@ To report a security vulnerability in this package, or one of it's dependencies,
 
 ## Professional Support
 
-[Professional support for `@hutson/semantic-delivery-gitlab` is available with a Tidelift Subscription](https://tidelift.com/subscription/pkg/npm-_hutson/semantic-delivery-gitlab?utm_source=npm--hutson-semantic-delivery-gitlab&utm_medium=referral&utm_campaign=readme).
+[Professional support for `@hutson/semantic-delivery-gitlab` is available with a Tidelift Subscription](https://tidelift.com/subscription/pkg/npm-hutson-semantic-delivery-gitlab?utm_source=npm--hutson-semantic-delivery-gitlab&utm_medium=referral&utm_campaign=readme).
 
 Tidelift helps make open source sustainable for maintainers while giving companies assurances about security, maintenance, and licensing for their dependencies.
 
