@@ -69,7 +69,7 @@
     "conventional-commits-detector": "^1.0.0",
     "conventional-commits-parser": "^3.0.0",
     "conventional-gitlab-releaser": "^4.0.0",
-    "conventional-recommended-bump": "^4.0.0",
+    "conventional-recommended-bump": "^5.0.0",
     "debug": "^4.0.0",
     "get-pkg-repo": "^4.0.2",
     "git-raw-commits": "^2.0.0",
