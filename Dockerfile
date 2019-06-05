@@ -1,5 +1,5 @@
 # Use Alpine Linux as our base image so that we minimize the overall size our final container, and minimize the surface area of packages that could be out of date.
-FROM node:11.15.0-alpine@sha256:02210fea6efaf60af6a71a1ea4641086abb34b2ed9cf7b1bf295ff59ecbf43d1
+FROM node:11.15.0-alpine@sha256:9725b8b8f8d61118d251702e0b5378a053ce23eac24d2264e6ad867fb11d4e80
 
 # Container metadata describing the image, where it's configuration is housed, and its maintainer.
 LABEL description="Docker image for executing `@hutson/semantic-delivery-gitlab`."
