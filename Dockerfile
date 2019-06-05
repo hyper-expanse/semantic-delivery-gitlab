@@ -1,4 +1,4 @@
-# Use Alpine Linux as our base image so that we minimize the overall size our final container, and minimize the surface area of packages that could be out of date.
+# Use Alpine Linux as our base image so that we minimize the size our final container and minimize the surface area of packages that could be out of date.
 FROM node:11.15.0-alpine@sha256:9725b8b8f8d61118d251702e0b5378a053ce23eac24d2264e6ad867fb11d4e80
 
 # Container metadata describing the image, where it's configuration is housed, and its maintainer.
@@ -24,6 +24,6 @@ COPY src/ /tmp/semantic-delivery-gitlab/src/
 RUN yarn global add file:/tmp/semantic-delivery-gitlab/
 
 # Command to execute within the Docker container when executed by `docker run`, and unless overriden by `--entrypoint`.
-# This command causes the container to automatically run the delivery tool, `semantic-delivery-gitlab`, within the working directory.
+# This command causes the container to automatically run the delivery tool, `@hutson/semantic-delivery-gitlab`, within the working directory.
 # We assume the contents of a project, including it's `.git` directory, has been mounted inside of the container at the `WORKDIR` specified above.
-ENTRYPOINT ["semantic-delivery-gitlab"]
+ENTRYPOINT exec semantic-delivery-gitlab
