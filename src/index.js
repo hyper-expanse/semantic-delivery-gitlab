@@ -56,8 +56,10 @@ async function semanticRelease ({ dryRun = false, preset, token, notifier }) {
     throw new Error(`No token provided for GitLab.`);
   }
 
-  if (notifier !== false) {
+  if (notifier === 'gitlab' || notifier === undefined) {
     notifier = gitLabNotifier;
+  } else {
+    notifier = () => null;
   }
 
   config.preset = preset || conventionalCommitsDetector(config.commits);
@@ -87,9 +89,7 @@ async function semanticRelease ({ dryRun = false, preset, token, notifier }) {
 
   try {
     await releaser(config);
-    if (notifier) {
-      await notifier(config);
-    }
+    await notifier(config);
   } catch (error) {
     shelljs.exec(`git tag -d ${config.version}`);
     throw error;
