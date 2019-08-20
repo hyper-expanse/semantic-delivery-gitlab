@@ -12,11 +12,12 @@ program
   .option(`-d, --dry-run`, `Dry run without creating a deliverable or commenting on issues and merge requests`)
   .option(`-p, --preset <convention>`, `Preset package name [angular, @scope/angular, ...]. See 'conventional-recommended-bump' for preset package requirements.`)
   .option(`-t, --token <token>`, `Personal access token for creating a GitLab release.`)
+  .option(`-n, --notifier <notifier>`, `whether to use the notifier after the release`, true)
   .parse(process.argv);
 
 (async () => {
   try {
-    const version = await semanticDeliveryGitlab({ dryRun: program.dryRun, preset: program.preset, token: program.token });
+    const version = await semanticDeliveryGitlab({ dryRun: program.dryRun, preset: program.preset, token: program.token, notifier: program.notifier });
 
     const message = program.dryRun
       ? `No release created during dry run.`

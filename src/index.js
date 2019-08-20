@@ -5,7 +5,7 @@ const conventionalCommitsDetector = require(`conventional-commits-detector`);
 const debug = require(`debug`)(`semantic-delivery-gitlab`);
 const gitRemoteOriginUrl = require(`git-remote-origin-url`);
 const fs = require(`fs`);
-const notifier = require(`./notifier`);
+const gitLabNotifier = require(`./notifier`);
 const releaser = require(`./releaser`);
 const gitSemverTags = promisify(require(`git-semver-tags`));
 const gitRawCommits = require(`git-raw-commits`);
@@ -18,7 +18,7 @@ const shelljs = require(`shelljs`);
 
 module.exports = semanticRelease;
 
-async function semanticRelease ({ dryRun = false, preset, token }) {
+async function semanticRelease ({ dryRun = false, preset, token, notifier }) {
   const config = { dryRun, token };
 
   let packageData;
@@ -56,6 +56,10 @@ async function semanticRelease ({ dryRun = false, preset, token }) {
     throw new Error(`No token provided for GitLab.`);
   }
 
+  if (notifier !== false) {
+    notifier = gitLabNotifier;
+  }
+
   config.preset = preset || conventionalCommitsDetector(config.commits);
 
   debug(`detected ${config.preset} commit convention`);
@@ -83,7 +87,9 @@ async function semanticRelease ({ dryRun = false, preset, token }) {
 
   try {
     await releaser(config);
-    await notifier(config);
+    if (notifier) {
+      await notifier(config);
+    }
   } catch (error) {
     shelljs.exec(`git tag -d ${config.version}`);
     throw error;
