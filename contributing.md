@@ -32,7 +32,7 @@ npm test
 
 ## Feature Requests
 
-I'm always looking for suggestions to improve this project. If you have a suggestion for improving an existing feature, or would like to suggest a completely new feature, please file an issue with my [GitLab repository](https://gitlab.com/hyper-expanse/open-source/semantic-delivery-gitlab/issues).
+I'm always looking for suggestions to improve this project. If you have a suggestion for improving an existing feature or would like to suggest a completely new feature, please file an issue with my [GitLab repository](https://gitlab.com/hyper-expanse/open-source/semantic-delivery-gitlab/issues).
 
 ## Bug Reports
 
