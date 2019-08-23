@@ -12,12 +12,12 @@ program
   .option(`-d, --dry-run`, `Dry run without creating a deliverable or commenting on issues and merge requests`)
   .option(`-p, --preset <convention>`, `Preset package name [angular, @scope/angular, ...]. See 'conventional-recommended-bump' for preset package requirements.`)
   .option(`-t, --token <token>`, `Personal access token for creating a GitLab release.`)
-  .option(`-n, --notifier <notifier>`, `Preset notifier name [gitlab ...], Set = 0, to disable notifier`, 'gitlab')
+  .option(`--skip-notifications`, `Disable notifications if you have chosen not to use GitLab issues`)
   .parse(process.argv);
 
 (async () => {
   try {
-    const version = await semanticDeliveryGitlab({ dryRun: program.dryRun, preset: program.preset, token: program.token, notifier: program.notifier });
+    const version = await semanticDeliveryGitlab({ dryRun: program.dryRun, preset: program.preset, token: program.token, skipNotifications: program.skipNotifications });
 
     const message = program.dryRun
       ? `No release created during dry run.`
