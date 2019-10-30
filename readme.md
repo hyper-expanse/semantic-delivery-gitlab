@@ -299,11 +299,11 @@ It may also be that a token was not provided either on the command line using `-
 
 To report a security vulnerability in this package, or one of its dependencies, please use the [Tidelift security contact](https://tidelift.com/security) page. Tidelift will coordinate the process to address the vulnerability and disclose the incident to our users.
 
-## Professional Support
+## Enterprise Support
 
-[Professional support for `@hutson/semantic-delivery-gitlab` is available with a Tidelift Subscription](https://tidelift.com/subscription/pkg/npm-hutson-semantic-delivery-gitlab?utm_source=npm--hutson-semantic-delivery-gitlab&utm_medium=referral&utm_campaign=readme).
+Available as part of the Tidelift Subscription.
 
-Tidelift helps make open source sustainable for maintainers while giving companies assurances about security, maintenance, and licensing for their dependencies.
+The maintainers of `@hutson/semantic-delivery-gitlab` and thousands of other packages are working with Tidelift to deliver commercial support and maintenance for the open source dependencies you use to build your applications. Save time, reduce risk, and improve code health, while paying the maintainers of the exact dependencies you use. [Learn more.](https://tidelift.com/subscription/pkg/npm-hutson-semantic-delivery-gitlab?utm_source=npm-hutson-semantic-delivery-gitlab&utm_medium=referral&utm_campaign=enterprise)
 
 ## Debugging
 
