@@ -1,9 +1,9 @@
 'use strict';
 
-const debug = require(`debug`)(`semantic-delivery-gitlab`);
-const { escape } = require(`querystring`);
-const got = require(`got`);
-const parser = require(`conventional-commits-parser`);
+const debug = require('debug')('semantic-delivery-gitlab');
+const { escape } = require('querystring');
+const got = require('got');
+const parser = require('conventional-commits-parser');
 
 module.exports = notifier;
 
@@ -15,7 +15,7 @@ async function notifier ({ commits, dryRun, repository, token, version }) {
     parser.sync(rawCommit).references.forEach(reference => issueIds.add(reference.issue));
   }
 
-  debug(`posting to the following issues - %O`, Array.from(issueIds));
+  debug('posting to the following issues - %O', Array.from(issueIds));
   for (const issueID of Array.from(issueIds)) {
     debug(`posting comment to - https://${domain}/api/v4/projects/${escape(`${user}/${project}`)}/issues/${issueID}/notes`);
 
