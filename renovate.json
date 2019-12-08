@@ -1,0 +1,14 @@
+{
+  "extends": [
+    "config:base",
+    ":maintainLockFilesWeekly",
+    ":rebaseStalePrs",
+    ":automergeDigest",
+    ":gitSignOff",
+    ":automergeMinor",
+    ":preserveSemverRanges"
+  ],
+  "docker": {
+    "pinDigests": true
+  }
+}

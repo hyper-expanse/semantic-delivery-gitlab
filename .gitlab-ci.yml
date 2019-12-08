@@ -1,4 +1,0 @@
-include:
-  - 'https://gitlab.com/hyper-expanse/open-source/configuration-packages/gitlab-config/raw/master/src/gitlab-ci-common.template.yml'
-  - 'https://gitlab.com/hyper-expanse/open-source/configuration-packages/gitlab-config/raw/master/src/gitlab-ci-npm-library.template.yml'
-  - 'https://gitlab.com/hyper-expanse/open-source/configuration-packages/gitlab-config/raw/master/src/gitlab-ci-docker.template.yml'

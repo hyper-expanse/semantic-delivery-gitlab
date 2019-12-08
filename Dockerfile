@@ -3,9 +3,9 @@ FROM node:11.15.0-alpine@sha256:914ff2c2145de019a19c080a9e42b5763c826194110ec8e0
 
 # Container metadata describing the image, where it's configuration is housed, and its maintainer.
 LABEL description="Docker image for executing `@hutson/semantic-delivery-gitlab`."
-LABEL homepage="https://gitlab.com/hyper-expanse/open-source/semantic-delivery-gitlab"
+LABEL homepage="https://github.com/hyper-expanse/semantic-delivery-gitlab"
 LABEL maintainer="Hutson Betts <hutson@hyper-expanse.net>"
-LABEL repository="https://gitlab.com/hyper-expanse/open-source/semantic-delivery-gitlab.git"
+LABEL repository="https://github.com/hyper-expanse/semantic-delivery-gitlab.git"
 
 # The Alpine base image does not have a standard collection of CA root certificates installed. As a result all HTTPS requests will fail with 'x509: failed to load system roots and no root provided'.
 # We install the `ca-certificates` package to have access to a standard collection of CA root certificates for HTTPS operations that the `@hutson/semantic-delivery-gitlab` tool executes to interact with the GitLab API.
