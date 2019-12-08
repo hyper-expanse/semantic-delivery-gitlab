@@ -1259,7 +1259,7 @@ git-remote-origin-url@^3.0.0:
   dependencies:
     gitconfiglocal "^2.1.0"
 
-git-semver-tags@^2.0.0, git-semver-tags@^2.0.2, git-semver-tags@^2.0.3:
+git-semver-tags@^2.0.0, git-semver-tags@^2.0.3:
   version "2.0.3"
   resolved "https://registry.yarnpkg.com/git-semver-tags/-/git-semver-tags-2.0.3.tgz#48988a718acf593800f99622a952a77c405bfa34"
   integrity sha512-tj4FD4ww2RX2ae//jSrXZzrocla9db5h0V7ikPl1P/WwoZar9epdUhwR7XHXSgc+ZkNq72BEEerqQuicoEQfzA==
