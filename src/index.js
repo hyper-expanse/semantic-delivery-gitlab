@@ -96,3 +96,10 @@ async function semanticRelease ({ dryRun = false, preset, token }) {
 
   return config.version;
 }
+
+/**
+ * Filter Out Reverted Commits - If a commit is made to a project, followed by another commit that reverts it, the first commit is still used by conventional-recommended-bump to determine what version bump to make. Instead, revert commits should be used to filter out other commits, to prevent their consideration by conventional-recommended-bump.
+ * Support Merge Request Comments - Support posting release information to merge requests. Because merge requests use different IDs than issues, we need to duplicate our posting logic for those IDs.
+ * Remove Git Tagging - Remove the functionality that generates a git tag on disk.
+ * Document How to Revert Change - Document how to revert a change successfully. semantic-release documentation - https://github.com/semantic-release/semantic-release/pull/850
+ */
