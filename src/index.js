@@ -18,7 +18,7 @@ const shelljs = require('shelljs');
 
 module.exports = semanticRelease;
 
-async function semanticRelease ({ dryRun = false, preset, token }) {
+async function semanticRelease ({ preset, token, dryRun = false, skipNotifications = false }) {
   const config = { dryRun, token };
 
   let packageData;
@@ -83,7 +83,10 @@ async function semanticRelease ({ dryRun = false, preset, token }) {
 
   try {
     await releaser(config);
-    await notifier(config);
+
+    if (skipNotifications === false) {
+      await notifier(config);
+    }
   } catch (error) {
     shelljs.exec(`git tag -d ${config.version}`);
     throw error;
@@ -102,4 +105,5 @@ async function semanticRelease ({ dryRun = false, preset, token }) {
  * Support Merge Request Comments - Support posting release information to merge requests. Because merge requests use different IDs than issues, we need to duplicate our posting logic for those IDs.
  * Remove Git Tagging - Remove the functionality that generates a git tag on disk.
  * Document How to Revert Change - Document how to revert a change successfully. semantic-release documentation - https://github.com/semantic-release/semantic-release/pull/850
+ * Switch all `isDone()` to `done()` so they act as their own assertions, or wrap `isDone()` in `expect` statements so they act as assertions.
  */
