@@ -2,10 +2,10 @@
   "author": {
     "name": "Hutson Betts",
     "email": "hutson@hyper-expanse.net",
-    "url": "https://gitlab.com/hutson"
+    "url": "https://github.com/hutson"
   },
   "bin": "./src/cli.js",
-  "bugs": "https://gitlab.com/hyper-expanse/open-source/semantic-delivery-gitlab/issues",
+  "bugs": "https://github.com/hyper-expanse/semantic-delivery-gitlab/issues",
   "description": "Automatically generate a deliverable, along with a corresponding git tag, for GitLab-hosted source code.",
   "engines": {
     "node": ">=6.9.0"
@@ -13,7 +13,7 @@
   "files": [
     "src/**/!(*.spec).js"
   ],
-  "homepage": "https://gitlab.com/hyper-expanse/open-source/semantic-delivery-gitlab#readme",
+  "homepage": "https://github.com/hyper-expanse/semantic-delivery-gitlab#readme",
   "keywords": [
     "automation",
     "deliver",
@@ -60,7 +60,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://gitlab.com/hyper-expanse/open-source/semantic-delivery-gitlab.git"
+    "url": "https://github.com/hyper-expanse/semantic-delivery-gitlab.git"
   },
   "scripts": {
     "test": "semistandard 'src/**/*.js' && nyc mocha src/**/*.spec.js"

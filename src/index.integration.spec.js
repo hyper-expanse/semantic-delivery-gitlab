@@ -1,5 +1,7 @@
 'use strict';
 
+/* eslint-disable no-unused-expressions */
+
 const { expect } = require(`chai`);
 const fs = require(`fs`);
 const { afterEach, before, beforeEach, describe, it } = require(`mocha`);
@@ -178,6 +180,29 @@ describe('semantic-delivery-gitlab', function () {
     it(`should not post comments when conducting a dry run`, async function () {
       expect(await semanticDeliveryGitlab({ dryRun: true, ...this.config })).to.equal(undefined);
       expect(shelljs.exec(`git tag`).stdout).to.equal(``);
+    });
+
+    it(`should not post comments when skipping notifications`, async function () {
+      const releaseScope = nock(`https://gitlab.com`)
+        .post(`/api/v4/projects/hyper-expanse%2Fopen-source%2Fsemantic-delivery-gitlab/repository/tags`, {
+          message: `Release 1.0.0`,
+          release_description: /.*/,
+          ref: /.*/,
+          tag_name: `1.0.0`
+        })
+        .reply(200);
+
+      const referenceScope = nock(`https://gitlab.com`)
+        .post(
+          `/api/v4/projects/hyper-expanse%2Fopen-source%2Fsemantic-delivery-gitlab/issues/1/notes`,
+          `{"body":"Version [1.0.0](https://gitlab.com/hyper-expanse/open-source/semantic-delivery-gitlab/tags/1.0.0) has been released."}`
+        )
+        .reply(404);
+
+      await semanticDeliveryGitlab({ skipNotifications: true, ...this.config });
+      expect(releaseScope.isDone()).to.be.true;
+      expect(referenceScope.isDone()).to.be.false; // Returns false because we never post to the notes end-point.
+      nock.cleanAll(); // Clear out the uncalled reference scope.
     });
 
     it(`should throw an error when it fails to post a comment`, async function () {

@@ -18,8 +18,9 @@ const shelljs = require(`shelljs`);
 
 module.exports = semanticRelease;
 
-async function semanticRelease ({ dryRun = false, preset, token, skipNotifications }) {
+async function semanticRelease ({ preset, token, dryRun = false, skipNotifications = false }) {
   const config = { dryRun, token };
+
   let packageData;
   try {
     packageData = JSON.parse(fs.readFileSync(path.join(process.cwd(), `package.json`)));
@@ -82,7 +83,8 @@ async function semanticRelease ({ dryRun = false, preset, token, skipNotificatio
 
   try {
     await releaser(config);
-    if (!skipNotifications) {
+
+    if (skipNotifications === false) {
       await notifier(config);
     }
   } catch (error) {
@@ -97,3 +99,7 @@ async function semanticRelease ({ dryRun = false, preset, token, skipNotificatio
 
   return config.version;
 }
+
+/**
+ * Switch all `isDone()` to `done()` so they act as their own assertions, or wrap `isDone()` in `expect` statements so they act as assertions.
+ */
