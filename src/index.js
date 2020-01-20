@@ -106,4 +106,5 @@ async function semanticRelease ({ preset, token, dryRun = false, skipNotificatio
  * Remove Git Tagging - Remove the functionality that generates a git tag on disk.
  * Document How to Revert Change - Document how to revert a change successfully. semantic-release documentation - https://github.com/semantic-release/semantic-release/pull/850
  * Switch all `isDone()` to `done()` so they act as their own assertions, or wrap `isDone()` in `expect` statements so they act as assertions.
+ * Release notes not getting generated - I believe `\n\n\n` is intended by `conventional-gitlab-releaser`. It has a template that it renders using a list of changes (features or bug fixes). If there are no changes to include in the release notes, then the release notes would be nothing but blank lines. However, I'm surprised GitLab is not creating the Release page for this change. I think it may be related to this reported bug - `gitlab-org/gitlab#27880`
  */
