@@ -58,7 +58,7 @@ By automating these steps `@hutson/semantic-delivery-gitlab` alleviates some of 
 
 ## Installation
 
-To use the `@hutson/semantic-delivery-gitlab` tool in your project's delivery process you may either install the package or use our [Docker image](https://gitlab.com/hyper-expanse/open-source/semantic-delivery-gitlab/container_registry).
+To use the `@hutson/semantic-delivery-gitlab` tool in your project's delivery process you may either install the package or use our [Docker image](https://hub.docker.com/repository/docker/hutson/semantic-delivery-gitlab).
 
 To install the package please run the following command:
 
@@ -220,7 +220,7 @@ deliver:
   stage: deliver
 ```
 
-An alternative is to use our [Docker image](https://gitlab.com/hyper-expanse/open-source/semantic-delivery-gitlab/container_registry):
+An alternative is to use our [Docker image](https://hub.docker.com/repository/docker/hutson/semantic-delivery-gitlab):
 
 ```yaml
 stages:
@@ -230,7 +230,7 @@ stages:
 
 deliver:
   image:
-    name: registry.gitlab.com/hyper-expanse/open-source/semantic-delivery-gitlab:9.0.0
+    name: hutson/semantic-delivery-gitlab:9.1.0
     entrypoint: [""]
   only:
     - master
