@@ -78,7 +78,7 @@
     "git-raw-commits": "^2.0.0",
     "git-remote-origin-url": "^3.0.0",
     "git-semver-tags": "^3.0.1",
-    "got": "^9.6.0",
+    "got": "^10.0.0",
     "semver": "^6.0.0",
     "shelljs": "^0.8.0",
     "stream-to-array": "^2.3.0"
