@@ -8,7 +8,7 @@
   "bugs": "https://github.com/hyper-expanse/semantic-delivery-gitlab/issues",
   "description": "Automatically generate a deliverable, along with a corresponding git tag, for GitLab-hosted source code.",
   "engines": {
-    "node": ">=6.9.0"
+    "node": ">=10.13.0"
   },
   "files": [
     "src/**/!(*.spec).js"
