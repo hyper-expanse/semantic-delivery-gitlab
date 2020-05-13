@@ -77,7 +77,7 @@
     "get-pkg-repo": "^4.0.2",
     "git-raw-commits": "^2.0.0",
     "git-remote-origin-url": "^3.0.0",
-    "git-semver-tags": "^3.0.1",
+    "git-semver-tags": "^4.0.0",
     "got": "^9.6.0",
     "semver": "^7.0.0",
     "shelljs": "^0.8.0",
