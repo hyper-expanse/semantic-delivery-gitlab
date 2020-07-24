@@ -67,7 +67,7 @@
   },
   "version": "1.0.0",
   "dependencies": {
-    "commander": "^5.0.0",
+    "commander": "^6.0.0",
     "conventional-changelog-angular": "^5.0.0",
     "conventional-commits-detector": "^1.0.0",
     "conventional-commits-parser": "^3.0.0",
